@@ -119,7 +119,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\Leon\source\repos\ES-Studio\ES-CLIENT\minhook\include;C:\Users\Leon\source\repos\ES-Studio\ES-CLIENT\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)minhook\include;$(ProjectDir)json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
