@@ -61,11 +61,11 @@ __int64 __fastcall ignitionModuleHk(__int64 a1, double a2) {
 }
 
 void __fastcall simProcessHk(__int64 a1, float a2) {
-    _g->engineInstance = *(QWORD*)(a1 + 0x15F0);
-
-    _g->transmissionInstance = *(QWORD*)(*(QWORD*)(a1 + 0x1608) + 0x520);
+    _g->engineInstance = *(QWORD*)(a1 + 0x1600);
+    
+    _g->transmissionInstance = *(QWORD*)(*(QWORD*)(a1 + 0x1618) + 0x520);
     engineUpdate->gear = *(int*)(_g->transmissionInstance + 0x348);
-    engineUpdate->clutchPosition = *(double*)(a1 + 0x20);
+    engineUpdate->clutchPosition = *(double*)(a1 + 0x28);
 
     if (_g->quickShift && engineEdit->quickShiftAutoClutch) {
         *(double*)(_g->transmissionInstance + 0x368) = 0.0;
@@ -175,7 +175,7 @@ void SetupHooks() {
     else {
         MH_EnableHook(ignitionModulePtr);
     }
-
+    
     if (MH_CreateHook(sampleTrianglePtr, &sampleTriangleHk, reinterpret_cast<LPVOID*>(&simFunctions->m_sampleTriangle)) != MH_OK) {
         printf("Unable to hook sample triangle\n");
     }
