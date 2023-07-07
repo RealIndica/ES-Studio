@@ -472,13 +472,13 @@ namespace ES_GUI
                             {
                                 adjustedSpeed /= (1000.0 / (60 * 60));
                                 speedGauge.DialText = "KM/H";
-                                speedGauge.MaxValue = 300;
+                                speedGauge.MaxValue = Convert.ToSingle(speedoMax.Text);
                             }
                             else if (speedMphButton.Checked)
                             {
                                 adjustedSpeed /= (1609.344 / (60 * 60));
                                 speedGauge.DialText = "MPH";
-                                speedGauge.MaxValue = 200;
+                                speedGauge.MaxValue = Convert.ToSingle(speedoMax.Text);
                             }
 
                             speedGauge.Value = (float)adjustedSpeed;
