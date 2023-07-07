@@ -54,7 +54,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AquaGauge">
-      <HintPath>..\..\ES-StudioOG\ES-GUI\AquaGauge.dll</HintPath>
+      <HintPath>lib/AquaGauge.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
