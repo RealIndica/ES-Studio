@@ -25,7 +25,7 @@ namespace Memory {
 	template< typename T >
 	void WriteLogAddress(const char* name, T addy, bool rebase = true) {
 		if (rebase) {
-			addy = addy - getBase();
+			addy = (T)((unsigned __int64)addy - getBase());
 		}
 		const char* address = Memory::int_to_hex(addy);
 		char buf[256];

@@ -6,8 +6,12 @@ public:
 	EngineEdit();
 
 	int sparkAdvance;
-	double customSpark;
 	bool useIgnTable;
+	double customSpark;
+	bool useRpmTable;
+	double customRevLimit;
+	bool useCylinderTable;
+	int activeCylinderCount;
 	bool quickShiftEnabled;
 	double quickShiftTime;
 	double quickShiftRetardTime;
@@ -23,6 +27,7 @@ public:
 	bool disableRevLimit;
 	double rev1;
 	double rev2;
+	double rev3;
 	bool useCustomIgnitionModule;
 	int twoStepLimiterMode;
 	double twoStepCutTime;

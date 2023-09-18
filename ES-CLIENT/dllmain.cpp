@@ -50,8 +50,12 @@ void UpdateParams() {
 void HandleUpdate(const char* input) {
     json data = json::parse(input);
     engineEdit->sparkAdvance = data["sparkAdvance"];
-    engineEdit->customSpark = data["customSpark"];
     engineEdit->useIgnTable = data["useIgnTable"];
+    engineEdit->customSpark = data["customSpark"];
+    engineEdit->useRpmTable = data["useRpmTable"];
+    engineEdit->customRevLimit = data["customRevLimit"];
+    engineEdit->useCylinderTable = data["useCylinderTable"];
+    engineEdit->activeCylinderCount = data["activeCylinderCount"];
     engineEdit->quickShiftEnabled = data["quickShiftEnabled"];
     engineEdit->quickShiftTime = data["quickShiftTime"];
     engineEdit->quickShiftRetardTime = data["quickShiftRetardTime"];
@@ -67,6 +71,7 @@ void HandleUpdate(const char* input) {
     engineEdit->disableRevLimit = data["disableRevLimit"];
     engineEdit->rev1 = data["rev1"];
     engineEdit->rev2 = data["rev2"];
+    engineEdit->rev3 = data["rev3"];
     engineEdit->useCustomIgnitionModule = data["useCustomIgnitionModule"];
     engineEdit->twoStepLimiterMode = data["twoStepLimiterMode"];
     engineEdit->twoStepCutTime = data["twoStepCutTime"];

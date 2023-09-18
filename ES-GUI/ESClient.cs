@@ -22,9 +22,7 @@ namespace ES_GUI
         public engineUpdate update;
         public engineEdit edit;
 
-        public IgnitionController ignController;
-
-        public DataTable timingTable;
+        public List<Map> customMaps;
 
         private List<double> rpmSmoothingList = new List<double>();
         private double rpmSmoothingNext = 0d;
@@ -39,8 +37,7 @@ namespace ES_GUI
             status = "Disconnected";
             outputPipe = new comPipe("est-output-pipe");
             edit = new engineEdit();
-            timingTable = new DataTable();
-            ignController = new IgnitionController();
+            customMaps = new List<Map>();
         }
 
         public bool Connect()
@@ -117,6 +114,11 @@ namespace ES_GUI
 
         public void onUpdate()
         {
+            foreach (Map m in customMaps)
+            {
+                m.Update();
+            }
+
             inputPipe = new NamedPipeServerStream("est-input-pipe");
             inputPipe.WaitForConnection();
             StreamReader reader = new StreamReader(inputPipe);

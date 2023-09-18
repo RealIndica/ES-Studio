@@ -29,12 +29,15 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series17 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series18 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series19 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series20 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -64,24 +67,23 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label13 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.loadSourceBox = new System.Windows.Forms.ComboBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label32 = new System.Windows.Forms.Label();
             this.sparkTable = new System.Windows.Forms.DataGridView();
-            this.label5 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.maxSpeedBox = new System.Windows.Forms.TextBox();
+            this.speedLimiterKMH = new System.Windows.Forms.RadioButton();
+            this.speedLimiterMPH = new System.Windows.Forms.RadioButton();
+            this.speedLimiterEnabled = new System.Windows.Forms.CheckBox();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
             this.label28 = new System.Windows.Forms.Label();
             this.idleControlTPS = new System.Windows.Forms.TextBox();
@@ -116,6 +118,9 @@
             this.twoStepLimiterModeBox = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.rev3Box = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -125,9 +130,6 @@
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.powerBuilderTwoStepActive = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.powerBuilderGain = new ES_GUI.KnobControl();
-            this.powerBuilderRev2 = new ES_GUI.KnobControl();
-            this.powerBuilderRev1 = new ES_GUI.KnobControl();
             this.ledOnPicture = new System.Windows.Forms.PictureBox();
             this.ledOffPicture = new System.Windows.Forms.PictureBox();
             this.powerBuilderPicture = new System.Windows.Forms.PictureBox();
@@ -159,12 +161,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.groupBox15 = new System.Windows.Forms.GroupBox();
-            this.speedLimiterEnabled = new System.Windows.Forms.CheckBox();
-            this.speedLimiterMPH = new System.Windows.Forms.RadioButton();
-            this.speedLimiterKMH = new System.Windows.Forms.RadioButton();
-            this.maxSpeedBox = new System.Windows.Forms.TextBox();
-            this.label29 = new System.Windows.Forms.Label();
+            this.powerBuilderGain = new ES_GUI.KnobControl();
+            this.powerBuilderRev2 = new ES_GUI.KnobControl();
+            this.powerBuilderRev1 = new ES_GUI.KnobControl();
+            this.label5 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -176,14 +176,12 @@
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sparkTable)).BeginInit();
+            this.tabPage10.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.tabPage4.SuspendLayout();
+            this.groupBox15.SuspendLayout();
             this.groupBox14.SuspendLayout();
             this.ignitionModuleMaster.SuspendLayout();
             this.groupBox9.SuspendLayout();
@@ -204,18 +202,44 @@
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox15.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButton1,
             this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1140, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(38, 22);
+            this.toolStripDropDownButton1.Text = "File";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
+            this.toolStripMenuItem1.Text = "Save";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(100, 22);
+            this.toolStripMenuItem2.Text = "Load";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // toolStripButton1
             // 
@@ -538,21 +562,22 @@
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPage5);
-            this.tabControl2.Controls.Add(this.tabPage6);
+            this.tabControl2.Controls.Add(this.tabPage10);
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(1136, 584);
             this.tabControl2.TabIndex = 10;
+            this.tabControl2.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl2_Selecting);
+            this.tabControl2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseDown);
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.groupBox7);
-            this.tabPage5.Controls.Add(this.loadSourceBox);
+            this.tabPage5.Controls.Add(this.button5);
+            this.tabPage5.Controls.Add(this.button4);
+            this.tabPage5.Controls.Add(this.label32);
             this.tabPage5.Controls.Add(this.sparkTable);
-            this.tabPage5.Controls.Add(this.label5);
             this.tabPage5.Controls.Add(this.button2);
-            this.tabPage5.Controls.Add(this.checkBox1);
             this.tabPage5.Controls.Add(this.label3);
             this.tabPage5.Controls.Add(this.label4);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
@@ -563,92 +588,32 @@
             this.tabPage5.Text = "Ignition";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // groupBox7
+            // button5
             // 
-            this.groupBox7.Controls.Add(this.groupBox8);
-            this.groupBox7.Location = new System.Drawing.Point(127, 405);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(178, 147);
-            this.groupBox7.TabIndex = 10;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Load Calibration";
+            this.button5.Location = new System.Drawing.Point(1018, 499);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(102, 23);
+            this.button5.TabIndex = 13;
+            this.button5.Text = "Enable";
+            this.button5.UseVisualStyleBackColor = true;
             // 
-            // groupBox8
+            // button4
             // 
-            this.groupBox8.Controls.Add(this.label15);
-            this.groupBox8.Controls.Add(this.label14);
-            this.groupBox8.Controls.Add(this.numericUpDown1);
-            this.groupBox8.Controls.Add(this.label13);
-            this.groupBox8.Controls.Add(this.numericUpDown2);
-            this.groupBox8.Location = new System.Drawing.Point(6, 23);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(157, 111);
-            this.groupBox8.TabIndex = 4;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Manifold Pressure";
+            this.button4.Location = new System.Drawing.Point(1018, 528);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(102, 23);
+            this.button4.TabIndex = 12;
+            this.button4.Text = "Disable";
+            this.button4.UseVisualStyleBackColor = true;
             // 
-            // label15
+            // label32
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(11, 35);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(99, 13);
-            this.label15.TabIndex = 11;
-            this.label15.Text = "DISABLED             ";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(6, 16);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(93, 13);
-            this.label14.TabIndex = 3;
-            this.label14.Text = "Min Load Offset %";
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(9, 32);
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 0;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 68);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(96, 13);
-            this.label13.TabIndex = 2;
-            this.label13.Text = "Max Load Offset %";
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(9, 84);
-            this.numericUpDown2.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown2.TabIndex = 1;
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
-            // 
-            // loadSourceBox
-            // 
-            this.loadSourceBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.loadSourceBox.FormattingEnabled = true;
-            this.loadSourceBox.Location = new System.Drawing.Point(19, 456);
-            this.loadSourceBox.Name = "loadSourceBox";
-            this.loadSourceBox.Size = new System.Drawing.Size(102, 21);
-            this.loadSourceBox.TabIndex = 9;
-            this.loadSourceBox.SelectedIndexChanged += new System.EventHandler(this.loadSourceBox_SelectedIndexChanged);
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(16, 402);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(31, 13);
+            this.label32.TabIndex = 11;
+            this.label32.Text = "RPM";
             // 
             // sparkTable
             // 
@@ -662,43 +627,20 @@
             this.sparkTable.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.sparkTable.Size = new System.Drawing.Size(1101, 380);
             this.sparkTable.TabIndex = 0;
-            this.sparkTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.sparkTable_CellValueChanged);
-            this.sparkTable.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sparkTable_KeyDown);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(16, 440);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(68, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Load Source";
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(19, 405);
+            this.button2.Location = new System.Drawing.Point(1018, 405);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(102, 23);
             this.button2.TabIndex = 2;
-            this.button2.Text = "Get Table";
+            this.button2.Text = "Generate Table";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(19, 483);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(65, 17);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "Enabled";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(538, 3);
+            this.label3.Location = new System.Drawing.Point(16, 3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(31, 13);
             this.label3.TabIndex = 3;
@@ -707,22 +649,22 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 168);
+            this.label4.Location = new System.Drawing.Point(6, 19);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(13, 91);
             this.label4.TabIndex = 4;
             this.label4.Text = "i\r\ng\r\nn\r\nl\r\no\r\na\r\nd";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tabPage6
+            // tabPage10
             // 
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1128, 558);
-            this.tabPage6.TabIndex = 1;
-            this.tabPage6.Text = "Fuel";
-            this.tabPage6.UseVisualStyleBackColor = true;
+            this.tabPage10.Controls.Add(this.label5);
+            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Size = new System.Drawing.Size(1128, 558);
+            this.tabPage10.TabIndex = 2;
+            this.tabPage10.Text = "+";
+            this.tabPage10.UseVisualStyleBackColor = true;
             // 
             // tabPage3
             // 
@@ -737,26 +679,26 @@
             // 
             // chart1
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea5);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Location = new System.Drawing.Point(8, 6);
             this.chart1.Name = "chart1";
-            series17.ChartArea = "ChartArea1";
-            series17.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series17.Name = "HP";
-            series18.ChartArea = "ChartArea1";
-            series18.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series18.Name = "NM";
-            series19.ChartArea = "ChartArea1";
-            series19.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series19.Name = "RPM";
-            series20.ChartArea = "ChartArea1";
-            series20.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series20.Name = "TPS";
-            this.chart1.Series.Add(series17);
-            this.chart1.Series.Add(series18);
-            this.chart1.Series.Add(series19);
-            this.chart1.Series.Add(series20);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "HP";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Name = "NM";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Name = "RPM";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series4.Name = "TPS";
+            this.chart1.Series.Add(series1);
+            this.chart1.Series.Add(series2);
+            this.chart1.Series.Add(series3);
+            this.chart1.Series.Add(series4);
             this.chart1.Size = new System.Drawing.Size(1118, 385);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -776,6 +718,73 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Modules";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox15
+            // 
+            this.groupBox15.Controls.Add(this.label29);
+            this.groupBox15.Controls.Add(this.maxSpeedBox);
+            this.groupBox15.Controls.Add(this.speedLimiterKMH);
+            this.groupBox15.Controls.Add(this.speedLimiterMPH);
+            this.groupBox15.Controls.Add(this.speedLimiterEnabled);
+            this.groupBox15.Location = new System.Drawing.Point(8, 462);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(193, 100);
+            this.groupBox15.TabIndex = 5;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "Speed Limiter";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(6, 26);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(61, 13);
+            this.label29.TabIndex = 6;
+            this.label29.Text = "Max Speed";
+            // 
+            // maxSpeedBox
+            // 
+            this.maxSpeedBox.Location = new System.Drawing.Point(9, 42);
+            this.maxSpeedBox.Name = "maxSpeedBox";
+            this.maxSpeedBox.Size = new System.Drawing.Size(100, 20);
+            this.maxSpeedBox.TabIndex = 9;
+            this.maxSpeedBox.Text = "186";
+            this.maxSpeedBox.TextChanged += new System.EventHandler(this.maxSpeedBox_TextChanged);
+            this.maxSpeedBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.quickShiftTimeBox_KeyPress);
+            // 
+            // speedLimiterKMH
+            // 
+            this.speedLimiterKMH.AutoSize = true;
+            this.speedLimiterKMH.Location = new System.Drawing.Point(121, 67);
+            this.speedLimiterKMH.Name = "speedLimiterKMH";
+            this.speedLimiterKMH.Size = new System.Drawing.Size(49, 17);
+            this.speedLimiterKMH.TabIndex = 8;
+            this.speedLimiterKMH.Text = "KMH";
+            this.speedLimiterKMH.UseVisualStyleBackColor = true;
+            // 
+            // speedLimiterMPH
+            // 
+            this.speedLimiterMPH.AutoSize = true;
+            this.speedLimiterMPH.Checked = true;
+            this.speedLimiterMPH.Location = new System.Drawing.Point(121, 42);
+            this.speedLimiterMPH.Name = "speedLimiterMPH";
+            this.speedLimiterMPH.Size = new System.Drawing.Size(49, 17);
+            this.speedLimiterMPH.TabIndex = 7;
+            this.speedLimiterMPH.TabStop = true;
+            this.speedLimiterMPH.Text = "MPH";
+            this.speedLimiterMPH.UseVisualStyleBackColor = true;
+            this.speedLimiterMPH.CheckedChanged += new System.EventHandler(this.speedLimiterMPH_CheckedChanged);
+            // 
+            // speedLimiterEnabled
+            // 
+            this.speedLimiterEnabled.AutoSize = true;
+            this.speedLimiterEnabled.Location = new System.Drawing.Point(121, 19);
+            this.speedLimiterEnabled.Name = "speedLimiterEnabled";
+            this.speedLimiterEnabled.Size = new System.Drawing.Size(65, 17);
+            this.speedLimiterEnabled.TabIndex = 6;
+            this.speedLimiterEnabled.Text = "Enabled";
+            this.speedLimiterEnabled.UseVisualStyleBackColor = true;
+            this.speedLimiterEnabled.CheckedChanged += new System.EventHandler(this.speedLimiterEnabled_CheckedChanged);
             // 
             // groupBox14
             // 
@@ -880,6 +889,7 @@
             // switchThresholdLabel
             // 
             this.switchThresholdLabel.AutoSize = true;
+            this.switchThresholdLabel.BackColor = System.Drawing.SystemColors.Control;
             this.switchThresholdLabel.Location = new System.Drawing.Point(794, 186);
             this.switchThresholdLabel.Name = "switchThresholdLabel";
             this.switchThresholdLabel.Size = new System.Drawing.Size(33, 13);
@@ -1045,7 +1055,7 @@
             this.groupBox11.Controls.Add(this.groupBox12);
             this.groupBox11.Location = new System.Drawing.Point(222, 6);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(345, 185);
+            this.groupBox11.Size = new System.Drawing.Size(345, 214);
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Configuration";
@@ -1058,7 +1068,7 @@
             this.groupBox13.Controls.Add(this.twoStepCutTimeBox);
             this.groupBox13.Location = new System.Drawing.Point(196, 15);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(125, 160);
+            this.groupBox13.Size = new System.Drawing.Size(125, 116);
             this.groupBox13.TabIndex = 4;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Limiter Configuration";
@@ -1107,7 +1117,7 @@
             this.groupBox12.Controls.Add(this.label22);
             this.groupBox12.Location = new System.Drawing.Point(6, 15);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(184, 160);
+            this.groupBox12.Size = new System.Drawing.Size(184, 193);
             this.groupBox12.TabIndex = 3;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Limiter Mode";
@@ -1127,13 +1137,15 @@
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(3, 43);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(162, 104);
+            this.label22.Size = new System.Drawing.Size(162, 143);
             this.label22.TabIndex = 2;
-            this.label22.Text = "SOFT CUT - Cut spark gradually \r\n200RPM below limit.\r\n\r\nHARD CUT - Cut Spark at\r\n" +
-    " exactly X RPMs.\r\n\r\nRETARD - Retard ignition at \r\nexactly X RPMs.";
+            this.label22.Text = resources.GetString("label22.Text");
             // 
             // groupBox10
             // 
+            this.groupBox10.Controls.Add(this.label30);
+            this.groupBox10.Controls.Add(this.label31);
+            this.groupBox10.Controls.Add(this.rev3Box);
             this.groupBox10.Controls.Add(this.label20);
             this.groupBox10.Controls.Add(this.label19);
             this.groupBox10.Controls.Add(this.label18);
@@ -1142,19 +1154,46 @@
             this.groupBox10.Controls.Add(this.rev1Box);
             this.groupBox10.Location = new System.Drawing.Point(6, 6);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(210, 118);
+            this.groupBox10.Size = new System.Drawing.Size(210, 214);
             this.groupBox10.TabIndex = 0;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Rev Limiters";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(108, 118);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(54, 13);
+            this.label30.TabIndex = 8;
+            this.label30.Text = "RPM (LO)";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(6, 99);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(36, 13);
+            this.label31.TabIndex = 7;
+            this.label31.Text = "Rev 3";
+            // 
+            // rev3Box
+            // 
+            this.rev3Box.Location = new System.Drawing.Point(6, 115);
+            this.rev3Box.Name = "rev3Box";
+            this.rev3Box.Size = new System.Drawing.Size(100, 20);
+            this.rev3Box.TabIndex = 6;
+            this.rev3Box.Text = "100";
+            this.rev3Box.TextChanged += new System.EventHandler(this.rev3Box_TextChanged);
             // 
             // label20
             // 
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(108, 79);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(67, 13);
+            this.label20.Size = new System.Drawing.Size(87, 13);
             this.label20.TabIndex = 5;
-            this.label20.Text = "RPM (MAIN)";
+            this.label20.Text = "RPM (MAIN) (HI)";
             // 
             // label19
             // 
@@ -1207,12 +1246,12 @@
             // 
             this.tabPage8.Controls.Add(this.powerBuilderTwoStepActive);
             this.tabPage8.Controls.Add(this.button3);
-            this.tabPage8.Controls.Add(this.powerBuilderGain);
-            this.tabPage8.Controls.Add(this.powerBuilderRev2);
-            this.tabPage8.Controls.Add(this.powerBuilderRev1);
             this.tabPage8.Controls.Add(this.ledOnPicture);
             this.tabPage8.Controls.Add(this.ledOffPicture);
             this.tabPage8.Controls.Add(this.powerBuilderPicture);
+            this.tabPage8.Controls.Add(this.powerBuilderGain);
+            this.tabPage8.Controls.Add(this.powerBuilderRev2);
+            this.tabPage8.Controls.Add(this.powerBuilderRev1);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
@@ -1241,54 +1280,6 @@
             this.button3.Text = "Manual";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // powerBuilderGain
-            // 
-            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
-            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderGain.LargeChange = 1;
-            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
-            this.powerBuilderGain.Maximum = 15;
-            this.powerBuilderGain.Minimum = 0;
-            this.powerBuilderGain.Name = "powerBuilderGain";
-            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderGain.SmallChange = 1;
-            this.powerBuilderGain.TabIndex = 5;
-            this.powerBuilderGain.Value = 0;
-            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
-            // 
-            // powerBuilderRev2
-            // 
-            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
-            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev2.LargeChange = 1;
-            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
-            this.powerBuilderRev2.Maximum = 15;
-            this.powerBuilderRev2.Minimum = 0;
-            this.powerBuilderRev2.Name = "powerBuilderRev2";
-            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev2.SmallChange = 1;
-            this.powerBuilderRev2.TabIndex = 4;
-            this.powerBuilderRev2.Value = 0;
-            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
-            // 
-            // powerBuilderRev1
-            // 
-            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
-            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev1.LargeChange = 1;
-            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
-            this.powerBuilderRev1.Maximum = 15;
-            this.powerBuilderRev1.Minimum = 0;
-            this.powerBuilderRev1.Name = "powerBuilderRev1";
-            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev1.SmallChange = 1;
-            this.powerBuilderRev1.TabIndex = 3;
-            this.powerBuilderRev1.Value = 0;
-            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
             // 
             // ledOnPicture
             // 
@@ -1618,72 +1609,63 @@
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // groupBox15
+            // powerBuilderGain
             // 
-            this.groupBox15.Controls.Add(this.label29);
-            this.groupBox15.Controls.Add(this.maxSpeedBox);
-            this.groupBox15.Controls.Add(this.speedLimiterKMH);
-            this.groupBox15.Controls.Add(this.speedLimiterMPH);
-            this.groupBox15.Controls.Add(this.speedLimiterEnabled);
-            this.groupBox15.Location = new System.Drawing.Point(8, 462);
-            this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(193, 100);
-            this.groupBox15.TabIndex = 5;
-            this.groupBox15.TabStop = false;
-            this.groupBox15.Text = "Speed Limiter";
+            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
+            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderGain.LargeChange = 1;
+            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
+            this.powerBuilderGain.Maximum = 15;
+            this.powerBuilderGain.Minimum = 0;
+            this.powerBuilderGain.Name = "powerBuilderGain";
+            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderGain.SmallChange = 1;
+            this.powerBuilderGain.TabIndex = 5;
+            this.powerBuilderGain.Value = 0;
+            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
             // 
-            // speedLimiterEnabled
+            // powerBuilderRev2
             // 
-            this.speedLimiterEnabled.AutoSize = true;
-            this.speedLimiterEnabled.Location = new System.Drawing.Point(121, 19);
-            this.speedLimiterEnabled.Name = "speedLimiterEnabled";
-            this.speedLimiterEnabled.Size = new System.Drawing.Size(65, 17);
-            this.speedLimiterEnabled.TabIndex = 6;
-            this.speedLimiterEnabled.Text = "Enabled";
-            this.speedLimiterEnabled.UseVisualStyleBackColor = true;
-            this.speedLimiterEnabled.CheckedChanged += new System.EventHandler(this.speedLimiterEnabled_CheckedChanged);
+            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
+            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev2.LargeChange = 1;
+            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
+            this.powerBuilderRev2.Maximum = 15;
+            this.powerBuilderRev2.Minimum = 0;
+            this.powerBuilderRev2.Name = "powerBuilderRev2";
+            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev2.SmallChange = 1;
+            this.powerBuilderRev2.TabIndex = 4;
+            this.powerBuilderRev2.Value = 0;
+            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
             // 
-            // speedLimiterMPH
+            // powerBuilderRev1
             // 
-            this.speedLimiterMPH.AutoSize = true;
-            this.speedLimiterMPH.Checked = true;
-            this.speedLimiterMPH.Location = new System.Drawing.Point(121, 42);
-            this.speedLimiterMPH.Name = "speedLimiterMPH";
-            this.speedLimiterMPH.Size = new System.Drawing.Size(49, 17);
-            this.speedLimiterMPH.TabIndex = 7;
-            this.speedLimiterMPH.TabStop = true;
-            this.speedLimiterMPH.Text = "MPH";
-            this.speedLimiterMPH.UseVisualStyleBackColor = true;
-            this.speedLimiterMPH.CheckedChanged += new System.EventHandler(this.speedLimiterMPH_CheckedChanged);
+            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
+            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev1.LargeChange = 1;
+            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
+            this.powerBuilderRev1.Maximum = 15;
+            this.powerBuilderRev1.Minimum = 0;
+            this.powerBuilderRev1.Name = "powerBuilderRev1";
+            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev1.SmallChange = 1;
+            this.powerBuilderRev1.TabIndex = 3;
+            this.powerBuilderRev1.Value = 0;
+            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
             // 
-            // speedLimiterKMH
+            // label5
             // 
-            this.speedLimiterKMH.AutoSize = true;
-            this.speedLimiterKMH.Location = new System.Drawing.Point(121, 67);
-            this.speedLimiterKMH.Name = "speedLimiterKMH";
-            this.speedLimiterKMH.Size = new System.Drawing.Size(49, 17);
-            this.speedLimiterKMH.TabIndex = 8;
-            this.speedLimiterKMH.Text = "KMH";
-            this.speedLimiterKMH.UseVisualStyleBackColor = true;
-            // 
-            // maxSpeedBox
-            // 
-            this.maxSpeedBox.Location = new System.Drawing.Point(9, 42);
-            this.maxSpeedBox.Name = "maxSpeedBox";
-            this.maxSpeedBox.Size = new System.Drawing.Size(100, 20);
-            this.maxSpeedBox.TabIndex = 9;
-            this.maxSpeedBox.Text = "186";
-            this.maxSpeedBox.TextChanged += new System.EventHandler(this.maxSpeedBox_TextChanged);
-            this.maxSpeedBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.quickShiftTimeBox_KeyPress);
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(6, 26);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(61, 13);
-            this.label29.TabIndex = 6;
-            this.label29.Text = "Max Speed";
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(4, 10);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(333, 18);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "^ Press the \'+\' symbol to create a new map";
             // 
             // Form1
             // 
@@ -1719,15 +1701,14 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sparkTable)).EndInit();
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage10.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.tabPage4.ResumeLayout(false);
+            this.groupBox15.ResumeLayout(false);
+            this.groupBox15.PerformLayout();
             this.groupBox14.ResumeLayout(false);
             this.groupBox14.PerformLayout();
             this.ignitionModuleMaster.ResumeLayout(false);
@@ -1761,8 +1742,6 @@
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox15.ResumeLayout(false);
-            this.groupBox15.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1805,10 +1784,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.ComboBox loadSourceBox;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox quickShiftTimeBox;
@@ -1837,14 +1813,6 @@
         private System.Windows.Forms.Label gearLabel;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ComboBox twoStepSwitch;
@@ -1901,6 +1869,17 @@
         private System.Windows.Forms.CheckBox speedLimiterEnabled;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox maxSpeedBox;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox rev3Box;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label5;
     }
 }
 

@@ -2,8 +2,12 @@
 
 EngineEdit::EngineEdit() {
 	sparkAdvance = 0;
-	customSpark = 0;
 	useIgnTable = false;
+	customSpark = 0;
+	useRpmTable = false;
+	customRevLimit = 0;
+	useCylinderTable = false;
+	activeCylinderCount = 0;
 	quickShiftEnabled = false;
 	quickShiftTime = 0;
 	quickShiftRetardTime = 0;
@@ -19,6 +23,7 @@ EngineEdit::EngineEdit() {
 	disableRevLimit = false;
 	rev1 = 0.0;
 	rev2 = 0.0;
+	rev3 = 0.0;
 	useCustomIgnitionModule = false;
 	twoStepLimiterMode = 0;
 	twoStepCutTime = 0.0;
@@ -28,6 +33,6 @@ EngineEdit::EngineEdit() {
 	idleHelper = false;
 	idleHelperRPM = 0.0;
 	speedLimiter = false;
-	speedLimiterSpeed = 186;
+	speedLimiterSpeed = 0;
 	speedLimiterMode = 0;
 }

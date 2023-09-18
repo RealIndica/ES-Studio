@@ -35,16 +35,20 @@ void Helpers::UpdateEngineType() {
 
 void Helpers::buildSparkList() {
     if (_g->ignitionFunctionInstance != NULL) {
-        std::vector<double> ret;
+        std::vector<double> retSpark;
+        std::vector<double> retRpm;
+
         double maxSparkRPM = ((int)(engineUpdate->maxRPM + 500 - 1) / 500) * 500;
-        double increment = 500;
-        for (int i = 0; i <= maxSparkRPM / increment; i++) {
-            double curRPM = units::rpm(increment * i);
+
+        for (int i = 0; i <= 20; i++) {
+            double curRPM = units::rpm((maxSparkRPM / 20) * i);
             double adv = std::ceil((simFunctions->m_sampleTriangle(_g->ignitionFunctionInstance, curRPM) / units::deg) * 10.) / 10.;
-            ret.push_back(adv);
+            retSpark.push_back(adv);
+            retRpm.push_back(units::toRpm(curRPM));
         }
+
         engineUpdate->sparkTimingList.clear();
-        std::copy(ret.begin(), ret.end(), std::back_inserter(engineUpdate->sparkTimingList));
+        std::copy(retSpark.begin(), retSpark.end(), std::back_inserter(engineUpdate->sparkTimingList));
     }
 }
 

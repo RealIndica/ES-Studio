@@ -23,6 +23,7 @@ protected:
 	double m_limiterDuration;
 	double m_twoStepLimiterDuration;
 	double m_speedLimiterDuration;
+	double m_hiLoNextRPM;
 	Post* m_posts;
 	bool* m_ignitionEvents;
 	double m_revLimitTimer;

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 #include "CustomIgnitionModule.h"
 #include "MinHook.h"
@@ -71,7 +72,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 		return m_crankShaft;
 	}
 
-	if (m_enabled && m_revLimitTimer == 0 && m_twoStepRevLimitTimer == 0 && m_speedLimiterTimer == 0) {
+	if (m_enabled && m_revLimitTimer == 0 && m_twoStepRevLimitTimer == 0 && m_speedLimiterTimer == 0 && m_hiLoNextRPM == 0) {
 		const double cyclePeriod = *(double*)(m_crankShaft + 0xA0);
 		const double advance = simFunctions->m_sampleTriangleMod(_g->ignitionFunctionInstance, -crank_v_theta);
 
@@ -79,6 +80,10 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 		double r1 = cycleAngle;
 
 		int postCount = m_postCount;
+
+		if (engineEdit->useCylinderTable) {
+			postCount = std::clamp(engineEdit->activeCylinderCount, 0, engineUpdate->cylinderCount);
+		}
 
 		if (_g->quickShift && engineEdit->quickShiftMode == 1 && engineEdit->dsgFarts) {
 			postCount = 1;
@@ -113,7 +118,12 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 	m_revLimitTimer -= dt;
 	m_twoStepRevLimitTimer -= dt;
 	if (!engineEdit->disableRevLimit) {
-		if (std::fabs(crank_v_theta) > m_revLimit) {
+		if (engineEdit->useRpmTable) {
+			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->customRevLimit)) {
+				m_revLimitTimer = m_limiterDuration;
+			}
+		}
+		else if (std::fabs(crank_v_theta) > m_revLimit) {
 			m_revLimitTimer = m_limiterDuration;
 		}
 	}
@@ -135,8 +145,13 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 
 	if (engineEdit->twoStepEnabled) {
 		m_twoStepLimiterDuration = engineEdit->twoStepCutTime;
-		if (engineEdit->twoStepLimiterMode == 0) {
-			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2 - 200)) {
+		if (engineEdit->twoStepLimiterMode == 0) { // Soft Cut
+			if (engineEdit->useRpmTable) {
+				if (std::fabs(crank_v_theta) > units::rpm(engineEdit->customRevLimit - 200)) {
+					m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
+				}
+			}
+			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2 - 200)) {
 				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
 			}
 			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1 - 200) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
@@ -152,8 +167,13 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 				engineUpdate->twoStepActive = false;
 			}
 		}
-		if (engineEdit->twoStepLimiterMode == 1) {
-			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
+		if (engineEdit->twoStepLimiterMode == 1) { // Hard Cut
+			if (engineEdit->useRpmTable) {
+				if (std::fabs(crank_v_theta) > units::rpm(engineEdit->customRevLimit)) {
+					m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
+				}
+			}
+			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
 				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
 			}
 			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
@@ -169,8 +189,13 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 				engineUpdate->twoStepActive = false;
 			}
 		}
-		if (engineEdit->twoStepLimiterMode == 2) {
-			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
+		if (engineEdit->twoStepLimiterMode == 2) { // Retard
+			if (engineEdit->useRpmTable) {
+				if (std::fabs(crank_v_theta) > units::rpm(engineEdit->customRevLimit)) {
+					_g->twoStepActive = true;
+				}
+			}
+			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
 				_g->twoStepActive = true;
 			}
 			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
@@ -188,6 +213,32 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 				engineUpdate->twoStepActive = false;
 			}
 		}
+		if (engineEdit->twoStepLimiterMode == 3) { // Hi Lo
+			if (engineEdit->useRpmTable) {
+				if (std::fabs(crank_v_theta) > units::rpm(engineEdit->customRevLimit)) {
+					m_hiLoNextRPM = engineEdit->customRevLimit - engineEdit->rev3;
+				}
+			}
+			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
+				m_hiLoNextRPM = engineEdit->rev2 - engineEdit->rev3;
+			}
+			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
+				if (engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear) {
+					m_hiLoNextRPM = engineEdit->rev1 - engineEdit->rev3;
+					engineUpdate->twoStepActive = true;
+				}
+				else {
+					engineUpdate->twoStepActive = false;
+					m_hiLoNextRPM = 0;
+				}
+			}
+			else {
+				if (engineUpdate->clutchPosition >= engineEdit->twoStepSwitchThreshold && engineUpdate->twoStepActive) {
+					m_hiLoNextRPM = 0;
+				}
+				engineUpdate->twoStepActive = false;
+			}
+		}
 	}
 
 	if (m_revLimitTimer < 0) {
@@ -202,7 +253,11 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 		m_speedLimiterTimer = 0;
 	}
 
-	if (m_revLimitTimer != 0 || m_twoStepRevLimitTimer != 0 || m_speedLimiterTimer || _g->twoStepActive) {
+	if (std::fabs(crank_v_theta) < units::rpm(m_hiLoNextRPM) || m_hiLoNextRPM < 0) {
+		m_hiLoNextRPM = 0;
+	}
+
+	if (m_revLimitTimer != 0 || m_twoStepRevLimitTimer != 0 || m_speedLimiterTimer || _g->twoStepActive || m_hiLoNextRPM != 0) {
 		engineUpdate->atLimiter = true;
 	}
 	else {
@@ -231,6 +286,7 @@ CustomIgnitionModule::CustomIgnitionModule(EngineUpdate* update, EngineEdit* edi
 	m_limiterDuration = 0;
 	m_twoStepLimiterDuration = 0;
 	m_speedLimiterDuration = 0.00001;
+	m_hiLoNextRPM = 0;
 	m_posts = nullptr;
 	m_ignitionEvents = nullptr;
 	m_revLimitTimer = 0;

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ES_GUI
 {
-    public class SparkCell
+    public class MapCell
     {
         public Rectangle Position;
-        public double Advance;
+        public double Value;
     }
 }

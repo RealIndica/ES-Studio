@@ -165,7 +165,7 @@ void SetupHooks() {
     simFunctions->m_sampleTriangleMod = (_sampleTriangle)(sampleTriangleFunc); //So we can call the hooked function instead of the original easily
 
     simFunctions->m_getManifoldPressure = (_getManifoldPressure)(Memory::FindPatternIDA("4C 63 91 ? ? ? ? 45 33 C9 F2 0F 10 2D ? ? ? ? 48 8B D1 0F 57 D2 0F 57 DB 4D 8B C2 49 83 FA 04 0F 8C ? ? ? ? 48 8B 81 ? ?"));
-    simFunctions->m_setThrottleRotary = (_setThrottlePiston)(Memory::FindPatternIDA("88 91 ? ? ? ? C3 CC CC CC CC CC CC CC CC CC 48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08") + 16);
+    simFunctions->m_setThrottleRotary = (_setThrottleRotary)(Memory::FindPatternIDA("48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08 CC CC 48 8B 81 ? ? ? ? 4C 8B C1 48 8B C8 48 8B 10 48 FF 62 10 CC CC CC CC CC CC CC CC CC CC CC CC 40 53 48 83 EC 20 48 8B D9 E8 ? ? ? ?"));
     simFunctions->m_setThrottlePiston = (_setThrottlePiston)(Memory::FindPatternIDA("48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08"));
     simFunctions->m_getCycleAngle = (_getCycleAngle)(Memory::FindPatternIDA("48 83 EC 38 F2 0F 10 41 ? 0F 28 D1 F2 0F 5C 41 ? 0F 29 74 24 ? F2 0F 10 B1 ? ? ? ? 0F 28 CE F2 0F 5C D0 0F 28 C2 E8 ? ? ? ? 0F 57 C9 66"));
 

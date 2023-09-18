@@ -11,34 +11,39 @@ using Newtonsoft.Json;
 using System.Threading;
 using AquaControls;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace ES_GUI
 {
     public partial class Form1 : Form
     {
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
+        private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
+
         private ESClient client;
 
-        private List<double> timingList;
+        public List<Thread> threadPool;
 
-        private PictureBox sparkTableOverlay;
-        private Stopwatch sparkOverlayTimer;
-
-        private List<Thread> threadPool;
-
-        private bool ignReadyEdit = false;
+        private Stopwatch overlayTimer;
 
         private Stopwatch powerBuilderTimer;
-
         private PowerBuilder powerBuilder;
 
         public Form1()
         {
             InitializeComponent();
+
+            tabControl2.HandleCreated += new EventHandler(tabControl2_HandleCreated);
+
             positionAsset(powerBuilderRev1, powerBuilderPicture, true);
             positionAsset(powerBuilderRev2, powerBuilderPicture, true);
             positionAsset(powerBuilderGain, powerBuilderPicture, true);
             positionAsset(ledOffPicture, powerBuilderPicture, true);
             positionAsset(ledOnPicture, powerBuilderPicture, true, ledOffPicture);
+
+            tabControl2.TabPages.RemoveAt(0);
+
 
             ThemeManager.darkMode = true;
             ThemeManager.ApplyTheme(this);
@@ -94,25 +99,13 @@ namespace ES_GUI
         private void Form1_Load(object sender, EventArgs e)
         {
             client = new ESClient();
+
             powerBuilder = new PowerBuilder(client);
 
-            timingList = new List<double>();
             threadPool = new List<Thread>();
 
-            sparkTable.DataSource = client.timingTable;
-            sparkOverlayTimer = new Stopwatch();
-
-            sparkTableOverlay = new PictureBox();
-            sparkTableOverlay.Parent = null;
-            sparkTableOverlay.Size = new Size(0, 0);
-            sparkTableOverlay.Location = new Point(0, 0);
-            sparkTableOverlay.BackColor = Color.Transparent;
-            sparkTableOverlay.Paint += new PaintEventHandler(sparkTableOverlayPaint);
-
             powerBuilderTimer = new Stopwatch();
-
-            loadSourceBox.Items.AddRange(new string[] { "Manifold Pressure", "Throttle Position" });
-            loadSourceBox.SelectedIndex = 0;
+            overlayTimer = new Stopwatch();
 
             quickShifterMode.Items.AddRange(new string[] { "Cut Ignition", "Retard Ignition" });
             quickShifterMode.SelectedIndex = 0;
@@ -120,7 +113,7 @@ namespace ES_GUI
             twoStepSwitch.Items.AddRange(new string[] { "Clutch" });
             twoStepSwitch.SelectedIndex = 0;
 
-            twoStepLimiterModeBox.Items.AddRange(new string[] { "SOFT CUT", "HARD CUT" , "RETARD" });
+            twoStepLimiterModeBox.Items.AddRange(new string[] { "SOFT CUT", "HARD CUT" , "RETARD" ,"HI LO" });
             twoStepLimiterModeBox.SelectedIndex = 0;
 
             ledOffPicture.Visible = true;
@@ -225,148 +218,6 @@ namespace ES_GUI
             threadPool.Add(t);
         }
 
-        private Color HeatMap(float value, float max)
-        {
-            if (value < 0)
-            {
-                return Color.FromArgb(255, 0, 0, 255);
-            }
-            int r, g, b;
-            float val = value / max;
-            if (val > 1)
-                val = 1;
-            if (val > 0.5f)
-            {
-                val = (val - 0.5f) * 2;
-                r = Convert.ToByte(255 * val);
-                g = Convert.ToByte(255 * (1 - val));
-                b = 0;
-            }
-            else
-            {
-                val = val * 2;
-                r = 0;
-                g = Convert.ToByte(255 * val);
-                b = Convert.ToByte(255 * (1 - val));
-            }
-            return Color.FromArgb(255, r, g, b);
-        }
-
-        private void updateHeatMap(DataGridView dgv)
-        {
-            Thread t = new Thread(() =>
-            {
-                dgv.Invoke((MethodInvoker)delegate
-                {
-                    foreach (DataGridViewRow row in dgv.Rows)
-                    {
-                        foreach (DataGridViewCell cell in row.Cells)
-                        {
-                            float i = 0f;
-                            float.TryParse(cell.Value.ToString(), out i);
-                            Color col = HeatMap(i, 40f);
-                            DataGridViewCellStyle style = new DataGridViewCellStyle();
-                            style.BackColor = col;
-                            style.ForeColor = Color.Black;
-                            style.Font = new Font(Font.Name, Font.Size, FontStyle.Bold);
-                            cell.Style = style;
-                        }
-                    }
-                });
-                Thread.Sleep(10);
-            });
-            t.Start();
-        }
-
-        private void BuildSparkData()
-        {
-            sparkTable.Invoke((MethodInvoker)delegate
-            {
-                List<SparkCell> cellList = new List<SparkCell>();
-                foreach (DataGridViewRow row in sparkTable.Rows)
-                {
-                    foreach (DataGridViewCell cell in row.Cells)
-                    {
-                        float i = 0f;
-                        float.TryParse(cell.Value.ToString(), out i);
-                        SparkCell sc = new SparkCell();
-                        Rectangle pos = sparkTable.GetCellDisplayRectangle(cell.ColumnIndex, cell.RowIndex, false);
-                        sc.Position = pos;
-                        sc.Advance = i;
-                        cellList.Add(sc);
-                    }
-                }
-                client.ignController.CacheSparkData(cellList);
-            });
-        }
-
-        private void BuildSparkTable()
-        {
-            if (client.isConnected)
-            {
-                ignReadyEdit = false;
-                client.timingTable.Clear();
-                client.timingTable = new DataTable();
-                sparkTable.DataSource = client.timingTable;
-
-                timingList = client.update.sparkTimingList;
-
-                for (int i = 0; i < timingList.Count; i++)
-                {
-                    client.timingTable.Columns.Add((500 * i).ToString());
-                }
-
-                List<double> last = new List<double>();
-                last.AddRange(timingList);
-
-                double offset = 1;
-                double min = last.OrderBy(x => x).ElementAt(1);
-
-                List<List<double>> processed = new List<List<double>>();
-
-                for (int i = 0; i <= 20; i++)
-                {
-                    List<double> t = new List<double>();
-
-                    if (i == 0)
-                    {
-                        processed.Add(timingList);
-                        continue;
-                    }
-
-                    for (int s = 0; s < last.Count; s++)
-                    {
-                        if (s != 0)
-                            t.Add((last[s] - (offset)).Clamp(min, 100000f));
-                        else
-                            t.Add(last[s]);
-                    }
-
-                    processed.Add(t);
-                    last.Clear();
-                    last.AddRange(t);
-                }
-
-                processed.Reverse();
-
-                for (int i = 0; i <= 20; i++)
-                {
-                    client.timingTable.Rows.Add(processed[i].Select(x => x.ToString()).ToArray());
-                    sparkTable.Rows[i].HeaderCell.Value = (i * 5).ToString();
-                }
-
-                client.ignController.cellRectangle = sparkTable.GetCellDisplayRectangle(sparkTable.ColumnCount - 1, sparkTable.RowCount - 1, false);
-                client.ignController.cellOffset.X = sparkTable.Rows[0].HeaderCell.Size.Width;
-                client.ignController.cellOffset.Y = sparkTable.Columns[0].HeaderCell.Size.Height;
-                client.ignController.sparkTablePoint.Width = client.ignController.cellRectangle.Width;
-                client.ignController.sparkTablePoint.Height = client.ignController.cellRectangle.Height;
-
-                updateHeatMap(sparkTable);
-                BuildSparkData();
-                ignReadyEdit = true;
-            }
-        }
-
         private void ClientUpdate()
         {
             Thread t = new Thread(() =>
@@ -379,30 +230,31 @@ namespace ES_GUI
                     {
                         client.onUpdate();
 
-                        client.ignController.UpdateSparkTablePos(client);
-
-                        if (!sparkOverlayTimer.IsRunning)
+                        if (!overlayTimer.IsRunning)
                         {
-                            sparkOverlayTimer.Start();
+                            overlayTimer.Start();
                         }
                         else
                         {
-                            if (sparkOverlayTimer.ElapsedMilliseconds > 50)
+                            if (overlayTimer.ElapsedMilliseconds > 50)
                             {
-                                sparkOverlayTimer.Stop();
-                                sparkOverlayTimer.Reset();
-                                sparkTableOverlay.Invalidate();
+                                overlayTimer.Stop();
+                                overlayTimer.Reset();
+
+                                foreach (Map m in client.customMaps)
+                                {
+                                    if (m.enabled)
+                                    {
+                                        m.tableOverlay.Invalidate();
+                                    }
+                                }
                             }
                         }
+                        
 
                         if (!powerBuilderTimer.IsRunning)
                         {
                             powerBuilderTimer.Start();
-                        }
-
-                        if (client.edit.useIgnTable)
-                        {
-                            client.edit.customSpark = client.ignController.Pos2Spark();
                         }
 
                         rpmGauge.Invoke((MethodInvoker)delegate
@@ -580,60 +432,9 @@ namespace ES_GUI
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            BuildSparkTable();
-        }
-
-        private void sparkTableOverlayPaint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            using (Pen p = new Pen(Color.Yellow, 3))
-            {
-                g.DrawEllipse(p, client.ignController.sparkTablePoint);
-            }
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox1.Checked)
-            {
-                client.edit.useIgnTable = true;
-                sparkTableOverlay.Parent = sparkTable;
-                sparkTableOverlay.Size = sparkTable.Size;
-            } else
-            {
-                client.edit.useIgnTable = false;
-                sparkTableOverlay.Parent = null;
-                sparkTableOverlay.Size = new Size(0, 0);
-            }
-        }
-
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             this.TopMost = checkBox2.Checked;
-        }
-
-        private void sparkTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (ignReadyEdit)
-            {
-                DataGridViewCell cell = sparkTable[e.ColumnIndex, e.RowIndex];
-                float i = 0f;
-                float.TryParse(cell.Value.ToString(), out i);
-                Color col = HeatMap(i, 40f);
-                DataGridViewCellStyle style = new DataGridViewCellStyle();
-                style.BackColor = col;
-                style.ForeColor = Color.Black;
-                style.Font = new Font(Font.Name, Font.Size, FontStyle.Bold);
-                cell.Style = style;
-                BuildSparkData();
-            }
-        }
-
-        private void loadSourceBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            client.ignController.loadSource = loadSourceBox.Text;
         }
 
         private void quickShiftTimeBox_TextChanged(object sender, EventArgs e)
@@ -721,21 +522,12 @@ namespace ES_GUI
             client.edit.autoBlipTime = autoBlipTimeBox.Text.ToDouble() / 1000;
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            client.ignController.pressureLoadOffsetMin = (int)numericUpDown1.Value;
-        }
-
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-            client.ignController.pressureLoadOffsetMax = (int)numericUpDown2.Value;
-        }
-
         private void initTwoStep()
         {
             client.edit.disableRevLimit = disableRevLimit.Checked;
             client.edit.rev1 = rev1Box.Text.ToDouble();
             client.edit.rev2 = rev2Box.Text.ToDouble();
+            client.edit.rev3 = rev3Box.Text.ToDouble();
             client.edit.twoStepLimiterMode = twoStepLimiterModeBox.SelectedIndex;
             client.edit.twoStepCutTime = twoStepCutTimeBox.Text.ToDouble();
             client.edit.twoStepRetardDeg = twoStepIgnitionRetardBox.Text.ToDouble();
@@ -863,27 +655,7 @@ namespace ES_GUI
             if (idleControlEnabled.Checked)
             {
                 client.edit.idleHelperRPM = idleControlTarget.Text.ToDouble();
-            }
-        }
-
-        private void sparkTable_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control)
-            {
-                if (e.KeyCode == Keys.V)
-                {
-                    foreach (DataGridViewCell cell in sparkTable.SelectedCells)
-                    {
-                        cell.Value = Clipboard.GetText();
-                    }
-                    return;
-                }
-                if (e.KeyCode == Keys.C)
-                {
-                    DataGridViewCell c = sparkTable.SelectedCells[0];
-                    Clipboard.SetText(c.Value.ToString());
-                    return;
-                }
+                MessageBox.Show("To Do");
             }
         }
 
@@ -915,6 +687,56 @@ namespace ES_GUI
         private void maxSpeedBox_TextChanged(object sender, EventArgs e)
         {
             client.edit.speedLimiterSpeed = maxSpeedBox.Text.ToDouble();
+        }
+
+        private void rev3Box_TextChanged(object sender, EventArgs e)
+        {
+            client.edit.rev3 = rev3Box.Text.ToDouble();
+        }
+
+        private void tabControl2_MouseDown(object sender, MouseEventArgs e)
+        {
+            int l = tabControl2.TabCount - 1;
+            if (tabControl2.GetTabRect(l).Contains(e.Location))
+            {
+                Map newMap = new Map(this);
+                CreateMapForm f = new CreateMapForm(newMap, client.customMaps);
+                f.ShowDialog(this);
+                if (f.CreateForm)
+                {
+                    f.Dispose();
+                    newMap.Create(tabControl2, client);
+                    tabControl2.Selecting -= tabControl2_Selecting;
+                    tabControl2.SelectedIndex = tabControl2.TabCount - 2;
+                    tabControl2.Selecting += tabControl2_Selecting;
+                    newMap.BuildTable();
+                    client.customMaps.Add(newMap);
+                    return;
+                }
+                f.Dispose();
+            }
+        }
+        private void tabControl2_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (e.TabPageIndex == tabControl2.TabCount - 1)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void tabControl2_HandleCreated(object sender, EventArgs e)
+        {
+            SendMessage(this.tabControl2.Handle, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("To Do");
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("To Do");
         }
     }
 }
