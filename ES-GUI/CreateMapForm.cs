@@ -32,6 +32,7 @@ namespace ES_GUI
             yAxis.SelectedIndex = 0;
             xAxis.SelectedIndex = 0;
             outputControl.SelectedIndex = 0;
+            ThemeManager.ApplyTheme(this);
         }
 
         private void createMapButton_Click(object sender, EventArgs e)

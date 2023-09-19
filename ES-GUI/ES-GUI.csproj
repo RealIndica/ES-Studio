@@ -78,6 +78,7 @@
     <Compile Include="CreateMapForm.Designer.cs">
       <DependentUpon>CreateMapForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Debug.cs" />
     <Compile Include="engineEdit.cs" />
     <Compile Include="engineUpdate.cs" />
     <Compile Include="ESClient.cs" />

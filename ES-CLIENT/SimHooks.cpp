@@ -151,16 +151,16 @@ void SetupHooks() {
     ignitionModulePtr = (void*)ignitionModFunc;
 
     uintptr_t sampleTriangleFunc = Memory::FindPatternIDA("40 53 48 83 EC 50 0F 29 74 24 ? 48 8B D9 0F 28 F1 F2 0F 59 71 ? 0F 28 CE E8 ? ? ? ? 4C 63 53 44 48 63 D0 45 85 D2 75 0E 0F 57 C0 0F 28");
-    sampleTrianglePtr = (void*)sampleTriangleFunc;
+    sampleTrianglePtr = (void*)sampleTriangleFunc; 
 
     uintptr_t processFunc = Memory::FindPatternIDA("48 8B C4 48 89 58 10 48 89 70 18 48 89 78 20 55 41 54 41 55 41 56 41 57 48 8D 68 A1 48 81 EC ? ? ? ? 0F 29 70 C8 0F 29 78 B8 44 0F 29 40 ? 44");
     simProcessPtr = (void*)processFunc;
 
     uintptr_t rTachRenderFunc = Memory::FindPatternIDA("48 8B C4 55 53 57 48 8D 68 A1 48 81 EC ? ? ? ? 0F 29 70 D8 0F 57 C0 0F 29 78 C8 48 8B DA 44 0F 29 40 ? 48 8B F9 44 0F 29 48 ? 45 0F 57 C9");
-    rTachRenderPtr = (void*)rTachRenderFunc;
+    rTachRenderPtr = (void*)rTachRenderFunc; 
 
     uintptr_t changeGearFunc = Memory::FindPatternIDA("83 FA FF 7C 0E 3B 91 ? ? ? ? 7D 06 89 91 ? ? ? ? C3");
-    changeGearPtr = (void*)changeGearFunc;
+    changeGearPtr = (void*)changeGearFunc; 
 
     simFunctions->m_sampleTriangleMod = (_sampleTriangle)(sampleTriangleFunc); //So we can call the hooked function instead of the original easily
 
@@ -168,6 +168,18 @@ void SetupHooks() {
     simFunctions->m_setThrottleRotary = (_setThrottleRotary)(Memory::FindPatternIDA("48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08 CC CC 48 8B 81 ? ? ? ? 4C 8B C1 48 8B C8 48 8B 10 48 FF 62 10 CC CC CC CC CC CC CC CC CC CC CC CC 40 53 48 83 EC 20 48 8B D9 E8 ? ? ? ?"));
     simFunctions->m_setThrottlePiston = (_setThrottlePiston)(Memory::FindPatternIDA("48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08"));
     simFunctions->m_getCycleAngle = (_getCycleAngle)(Memory::FindPatternIDA("48 83 EC 38 F2 0F 10 41 ? 0F 28 D1 F2 0F 5C 41 ? 0F 29 74 24 ? F2 0F 10 B1 ? ? ? ? 0F 28 CE F2 0F 5C D0 0F 28 C2 E8 ? ? ? ? 0F 57 C9 66"));
+
+    Memory::WriteLogAddress("Base", Memory::getBase(), false);
+    Memory::WriteLogAddress("Ignition Module", ignitionModFunc);
+    Memory::WriteLogAddress("Sample Triangle", sampleTriangleFunc);
+    Memory::WriteLogAddress("SimProcess", processFunc);
+    Memory::WriteLogAddress("Right Tach Render", rTachRenderFunc);
+    Memory::WriteLogAddress("Change Gear", changeGearFunc);
+    Memory::WriteLogAddress("Get Manifold Pressure", (uintptr_t)simFunctions->m_getManifoldPressure);
+    Memory::WriteLogAddress("Set Throttle Rotary", (uintptr_t)simFunctions->m_setThrottleRotary);
+    Memory::WriteLogAddress("Set Throttle Piston", (uintptr_t)simFunctions->m_setThrottlePiston);
+    Memory::WriteLogAddress("Get Cycle Angle", (uintptr_t)simFunctions->m_getCycleAngle);
+
 
     if (MH_CreateHook(ignitionModulePtr, &ignitionModuleHk, reinterpret_cast<LPVOID*>(&simFunctions->m_ignitionModuleUpdate)) != MH_OK) {
         printf("Unable to hook ignition module\n");

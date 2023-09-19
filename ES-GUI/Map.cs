@@ -45,6 +45,16 @@ namespace ES_GUI
         Y
     }
 
+    [Serializable]
+    public struct SerializableMapData
+    {
+        public DataTable dataTable;
+        public MapParam xParam;
+        public MapParam yParam;
+        public MapControlParam controlParam;
+        public string name;
+    }
+
     public class Map
     {
         public MapParam xParam = 0;
@@ -56,10 +66,10 @@ namespace ES_GUI
         ESClient client;
 
         public bool enabled = false;
-        private bool tableReadyEdit = true;
+        private bool tableReadyEdit = false;
 
         private DataGridView gridView;
-        private DataTable dataTable;
+        public DataTable dataTable;
 
         private TabControl parentTabControl;
         private TabPage parentPage;
@@ -85,6 +95,57 @@ namespace ES_GUI
             mainForm = parentForm;
         }
 
+        public SerializableMapData ToSerializableData()
+        {
+            return new SerializableMapData
+            {
+                dataTable = this.dataTable,
+                xParam = this.xParam,
+                yParam = this.yParam,
+                controlParam = this.controlParam,
+                name = this.name
+            };
+        }
+
+        public void LoadFromSerializableData(SerializableMapData data, TabControl parentTab, ESClient inclient)
+        {
+            Configure(data.xParam, data.yParam, data.controlParam, data.name);
+            Create(parentTab, inclient);
+            dataTable = data.dataTable;
+            gridView.DataSource = dataTable;
+
+            getParamDataList(dataTable.Rows.Count, xParam, MapParamType.X);
+            List<string> yParamData = getParamDataList(dataTable.Rows.Count, yParam, MapParamType.Y);
+
+            for (int i = 0; i <= dataTable.Rows.Count - 1; i++)
+            {
+                gridView.Rows[i].HeaderCell.Value = yParamData[i];
+            }
+
+            updateMapCellData();
+            
+            updateHeatMap();
+            BuildData();
+            tableReadyEdit = true;
+        }
+
+        private bool updateMapCellData()
+        {
+            if (mapController.cellRectangle.X == 0 || mapController.cellRectangle.Y == 0 || mapController.cellRectangle.Width == 0 || mapController.cellRectangle.Height == 0
+                || mapController.cellOffset.X == 0 || mapController.cellOffset.Y == 0 || mapController.tablePoint.Width == 0 || mapController.tablePoint.Height == 0)
+            {
+                mapController.cellRectangle = gridView.GetCellDisplayRectangle(gridView.ColumnCount - 1, gridView.RowCount - 1, false);
+                mapController.cellOffset.X = gridView.Rows[0].HeaderCell.Size.Width;
+                mapController.cellOffset.Y = gridView.Columns[0].HeaderCell.Size.Height;
+                mapController.tablePoint.Width = mapController.cellRectangle.Width;
+                mapController.tablePoint.Height = mapController.cellRectangle.Height;
+                Debug.WriteLog("Updated Map Cell Data");
+                BuildData();
+                return true;
+            }
+            return false;
+        }
+
         private void manageGlobalControlParams(bool active)
         {
             switch (controlParam)
@@ -106,8 +167,13 @@ namespace ES_GUI
             }
         }
 
-        public void enable()
+        public void enable(bool focus = false)
         {
+            if (focus)
+            {
+                parentTabControl.SelectedTab = parentPage;
+                while (updateMapCellData()) { Thread.Sleep(100); }
+            }
             manageGlobalControlParams(true);
             mapEnabledIcon.Image = Resources.check;
             enabled = true;
@@ -115,8 +181,13 @@ namespace ES_GUI
             tableOverlay.Size = gridView.Size;;
         }
 
-        public void disable() 
-        { 
+        public void disable(bool focus = false) 
+        {
+            if (focus)
+            {
+                parentTabControl.SelectedTab = parentPage;
+                while (updateMapCellData()) { Thread.Sleep(100); }
+            }
             manageGlobalControlParams(false);
             mapEnabledIcon.Image = Resources.cross;
             enabled = false;
@@ -136,6 +207,8 @@ namespace ES_GUI
 
             if (!enabled) return;
             if (gridView.ColumnCount <= 0 || gridView.RowCount <= 0) return;
+
+            updateMapCellData();
 
             mapController.xValue = GetMapValue(xParam);
             mapController.yValue = GetMapValue(yParam);
@@ -254,6 +327,13 @@ namespace ES_GUI
             name = mapName;
         }
 
+        public void Delete()
+        {
+            disable();
+            client.customMaps.Remove(this);
+            parentTabControl.TabPages.Remove(parentPage);
+        }
+
         public void Create(TabControl parentTab, ESClient inclient)
         {
             TabPage newTab = new TabPage();
@@ -363,6 +443,8 @@ namespace ES_GUI
             gridView.KeyDown += gridView_KeyDown;
 
             parentTabControl.TabPages.Insert(parentTabControl.TabPages.Count - 1, newTab);
+            client.customMaps.Add(this);
+            ThemeManager.ApplyTheme(parentPage);
         }
 
         public void BuildTable(bool autoGradient = false)
@@ -450,11 +532,7 @@ namespace ES_GUI
                     gridView.Rows[i].HeaderCell.Value = yParamData[i];
                 }
 
-                mapController.cellRectangle = gridView.GetCellDisplayRectangle(gridView.ColumnCount - 1, gridView.RowCount - 1, false);
-                mapController.cellOffset.X = gridView.Rows[0].HeaderCell.Size.Width;
-                mapController.cellOffset.Y = gridView.Columns[0].HeaderCell.Size.Height;
-                mapController.tablePoint.Width = mapController.cellRectangle.Width;
-                mapController.tablePoint.Height = mapController.cellRectangle.Height;
+                updateMapCellData();
 
                 updateHeatMap();
                 BuildData();
@@ -467,7 +545,11 @@ namespace ES_GUI
 
         private void regenMapButton_Click(object sender, EventArgs e)
         {
-            BuildTable();
+            DialogResult res = MessageBox.Show("Are you sure you want to regenerate the table?\r\nThis action cannot be undone", "Regenerate Table", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (res == DialogResult.Yes)
+            {
+                BuildTable();
+            }
         }
 
         private void enableButton_Click(object sender, EventArgs e)
@@ -485,9 +567,7 @@ namespace ES_GUI
             DialogResult res = MessageBox.Show("Are you sure you want to delete this map?\r\nThis action cannot be undone", "Delete Map", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (res == DialogResult.Yes)
             {
-                disable();
-                client.customMaps.Remove(this);
-                parentTabControl.TabPages.Remove(parentPage);
+                Delete();
             }
         }
 
@@ -575,7 +655,7 @@ namespace ES_GUI
             }
         }
 
-        private void BuildData()
+        public void BuildData()
         {
             gridView.Invoke((MethodInvoker)delegate
             {
@@ -594,6 +674,7 @@ namespace ES_GUI
                     }
                 }
                 mapController.CacheData(cellList);
+                Debug.WriteLog("Built map data");
             });
         }
 

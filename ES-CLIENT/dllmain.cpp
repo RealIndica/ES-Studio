@@ -7,7 +7,6 @@
 
 #include "comPipe.h"
 #include "MinHook.h"
-#include "Memory.h"
 #include "RTTI.h"
 #include "SimHooks.h"
 #include "Helpers.h"
@@ -135,7 +134,9 @@ void openConsole() {
 }
 
 void Main() {
+    #ifdef _DEBUG
     openConsole();	
+    #endif
     printf("ES Client Loaded!\n");
 
     MH_Initialize();

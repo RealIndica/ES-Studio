@@ -12,6 +12,9 @@ using System.Threading;
 using AquaControls;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO.Compression;
 
 namespace ES_GUI
 {
@@ -45,7 +48,7 @@ namespace ES_GUI
             tabControl2.TabPages.RemoveAt(0);
 
 
-            ThemeManager.darkMode = true;
+            ThemeManager.darkMode = false;
             ThemeManager.ApplyTheme(this);
         }
 
@@ -694,6 +697,18 @@ namespace ES_GUI
             client.edit.rev3 = rev3Box.Text.ToDouble();
         }
 
+        private void checkIgnitionModule()
+        {
+            if (!checkBox3.Checked)
+            {
+                DialogResult result = MessageBox.Show("The custom ignition module is not enabled and your map will not work as expected until it is enabled.\r\n\r\nWould you like to enable it now?", "Custom Ignition Module Not Enabled", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    checkBox3.Checked = true;
+                }
+            }
+        }
+
         private void tabControl2_MouseDown(object sender, MouseEventArgs e)
         {
             int l = tabControl2.TabCount - 1;
@@ -710,16 +725,8 @@ namespace ES_GUI
                     tabControl2.SelectedIndex = tabControl2.TabCount - 2;
                     tabControl2.Selecting += tabControl2_Selecting;
                     newMap.BuildTable();
-                    client.customMaps.Add(newMap);
 
-                    if (!checkBox3.Checked)
-                    {
-                        DialogResult result = MessageBox.Show("The custom ignition module is not enabled and your map will not work as expected until it is enabled.\r\n\r\nWould you like to enable it now?", "Custom Ignition Module Not Enabled", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (result == DialogResult.Yes)
-                        {
-                            checkBox3.Checked = true;
-                        }
-                    }
+                    checkIgnitionModule();
 
                     return;
                 }
@@ -745,14 +752,108 @@ namespace ES_GUI
             SendMessage(this.tabControl2.Handle, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void toolStripMenuItem1_Click(object sender, EventArgs e) // save
         {
-            MessageBox.Show("To Do");
+            if (client.isConnected && client.customMaps.Count > 0)
+            {
+                List<SerializableMapData> mapDatas = new List<SerializableMapData>();
+                foreach (Map m in client.customMaps)
+                {
+                    Debug.WriteLog("Saving Map : " + m.name);
+                    mapDatas.Add(m.ToSerializableData());
+                }
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "ES-Studio Map|*.ess|All|*.*";
+                saveFileDialog.Title = "Save Map";
+                saveFileDialog.FileName = client.update.Name + ".ess";
+                saveFileDialog.ShowDialog();
+
+                if (saveFileDialog.FileName != "")
+                {
+                    using (FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create))
+                    using (GZipStream gz = new GZipStream(fs, CompressionMode.Compress))
+                    {
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        formatter.Serialize(gz, mapDatas);
+                    }
+                }
+                return;
+            }
+            MessageBox.Show("Nothing to save", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        private void toolStripMenuItem2_Click(object sender, EventArgs e) // load
         {
-            MessageBox.Show("To Do");
+            if (client.isConnected)
+            {
+                if (client.customMaps.Count > 0)
+                {
+                    DialogResult = MessageBox.Show("You already have a map open.\r\nIf you load, you will loose them.\r\nContinue?", "Active Instance", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (DialogResult != DialogResult.Yes)
+                    {
+                        return;
+                    }
+                }
+
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "ES-Studio Map|*.ess|All|*.*";
+                openFileDialog.Title = "Load Map";
+                openFileDialog.ShowDialog();
+
+                if (openFileDialog.FileName != "")
+                {
+                    List<Map> removeMaps = new List<Map>();
+
+                    foreach (Map m in client.customMaps)
+                    {
+                        removeMaps.Add(m);
+                    }
+
+                    foreach (Map m in removeMaps)
+                    {
+                        m.Delete();
+                    }
+
+                    List<SerializableMapData> data = new List<SerializableMapData>();
+
+                    using (FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open))
+                    using (GZipStream gz = new GZipStream(fs, CompressionMode.Decompress))
+                    {
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        data = (List<SerializableMapData>)formatter.Deserialize(gz);
+                    }
+
+                    tabControl1.SelectedIndex = 1;
+
+                    foreach (SerializableMapData d in data)
+                    {
+                        Debug.WriteLog("Loading Map : " + d.name);
+                        Map newMap = new Map(this);
+                        newMap.LoadFromSerializableData(d, tabControl2, client);
+                        tabControl2.Selecting -= tabControl2_Selecting;
+                        tabControl2.SelectedIndex = tabControl2.TabCount - 2;
+                        tabControl2.Selecting += tabControl2_Selecting;
+                    }
+
+                    checkIgnitionModule();
+
+                    DialogResult = MessageBox.Show("Would you like to enable the map now?", "Load Map", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (DialogResult == DialogResult.Yes)
+                    {
+                        foreach (Map m in client.customMaps)
+                        {
+                            m.enable(true);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void darkModeWIPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ThemeManager.darkMode = true;
+            ThemeManager.ApplyTheme(this);
         }
     }
 }

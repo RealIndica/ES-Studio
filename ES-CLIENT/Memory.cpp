@@ -52,4 +52,16 @@ namespace Memory {
 		GetModuleInformation(GetCurrentProcess(), hModule, &moduleInfo, sizeof(MODULEINFO));
 		return moduleInfo;
 	}
+
+	void WriteLogAddress(const char* name, uintptr_t addy, bool rebase) {
+		if (rebase) {
+			addy -= getBase();  // Assuming getBase() returns uintptr_t or a compatible type
+		}
+
+		// Convert address to hex string
+		std::stringstream ss;
+		ss << std::hex << std::uppercase << addy;
+
+		std::cout << "[+] " << name << " : 0x" << ss.str() << "\n";
+	}
 }

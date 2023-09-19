@@ -7,7 +7,6 @@
 
 #include "CustomIgnitionModule.h"
 #include "MinHook.h"
-#include "Memory.h"
 #include "units.h"
 
 static EngineUpdate* engineUpdate;
