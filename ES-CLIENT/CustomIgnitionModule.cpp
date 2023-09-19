@@ -187,7 +187,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2 - 200)) {
 				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
 			}
-			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1 - 200) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
+			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1 - 200) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
 				if (engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear) {
 					m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
 					engineUpdate->twoStepActive = true;
@@ -209,7 +209,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
 				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
 			}
-			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
+			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
 				if (engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear) {
 					m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
 					engineUpdate->twoStepActive = true;
@@ -231,7 +231,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
 				_g->twoStepActive = true;
 			}
-			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
+			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
 				if (engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear) {
 					_g->twoStepActive = true;
 					engineUpdate->twoStepActive = true;
@@ -255,7 +255,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
 				m_hiLoNextRPM = engineEdit->rev2 - engineEdit->rev3;
 			}
-			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
+			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
 				if (engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear) {
 					m_hiLoNextRPM = engineEdit->rev1 - engineEdit->rev3;
 					engineUpdate->twoStepActive = true;
