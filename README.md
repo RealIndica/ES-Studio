@@ -30,7 +30,7 @@ ES-Studio (Engine Simulator Studio) is a program to simulate an ECU for Engine t
 # Known Bugs
 - You must restart the GUI if you have disconnected from Engine Simulator or if Engine Simulator has been closed
 - Small chance of crashing when switching between engines
-- Spark table can become unreadable for high RPM engines
+- ~~Spark table can become unreadable for high RPM engines~~
 
 # Building
 - Ensure you have Visual Studio with C++ and C# installed
