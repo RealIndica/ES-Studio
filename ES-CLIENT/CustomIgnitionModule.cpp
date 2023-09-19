@@ -1,6 +1,9 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
+#include <random>
+#include <numeric>
+#include <set>
 
 #include "CustomIgnitionModule.h"
 #include "MinHook.h"
@@ -84,12 +87,42 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 		if (engineEdit->useCylinderTable) {
 			postCount = std::clamp(engineEdit->activeCylinderCount, 0, engineUpdate->cylinderCount);
 		}
+		else if (engineEdit->useCylinderTableRandom) {
+			double cycleAngleR = std::round(cycleAngle * 1.0) / 1.0;
+			double cyclePeriodR = std::round(cyclePeriod * 1.0) / 1.0;
+
+			m_cycleTop = std::clamp(engineEdit->activeCylindersRandomUpdateTime, 1, INT32_MAX);
+
+			if (cycleAngleR == cyclePeriodR && m_cycleCounter % m_cycleTop == 0) {
+				int cutCount = m_postCount - engineEdit->activeCylinderCount;
+				m_cutPosts.clear();
+				std::set<int> uniqueCuts;
+				std::random_device rd;
+				std::default_random_engine generator(rd());
+				std::uniform_int_distribution<int> distribution(0, m_postCount - 1);
+				while (uniqueCuts.size() < cutCount) {
+					uniqueCuts.insert(distribution(generator));
+				}
+				m_cutPosts.assign(uniqueCuts.begin(), uniqueCuts.end());
+			}
+
+			if (cycleAngleR == cyclePeriodR) {
+				m_cycleCounter++;
+				if (m_cycleCounter >= m_cycleTop) {
+					m_cycleCounter = 0;
+				}
+			}
+		}
 
 		if (_g->quickShift && engineEdit->quickShiftMode == 1 && engineEdit->dsgFarts) {
 			postCount = 1;
 		}
 
 		for (int i = 0; i < postCount; ++i) {
+			if (std::find(m_cutPosts.begin(), m_cutPosts.end(), i) != m_cutPosts.end()) {
+				continue;
+			};
+
 			double adjustedAngle = positiveMod(m_posts[i].angle - advance, cyclePeriod);
 
 			if (crank_v_theta < 0) {
@@ -287,6 +320,9 @@ CustomIgnitionModule::CustomIgnitionModule(EngineUpdate* update, EngineEdit* edi
 	m_twoStepLimiterDuration = 0;
 	m_speedLimiterDuration = 0.00001;
 	m_hiLoNextRPM = 0;
+	m_cutPosts = {};
+	m_cycleCounter = 0;
+	m_cycleTop = 1;
 	m_posts = nullptr;
 	m_ignitionEvents = nullptr;
 	m_revLimitTimer = 0;

@@ -24,6 +24,9 @@ protected:
 	double m_twoStepLimiterDuration;
 	double m_speedLimiterDuration;
 	double m_hiLoNextRPM;
+	std::vector<int> m_cutPosts;
+	int m_cycleCounter;
+	int m_cycleTop;
 	Post* m_posts;
 	bool* m_ignitionEvents;
 	double m_revLimitTimer;

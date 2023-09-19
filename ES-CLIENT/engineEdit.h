@@ -11,7 +11,9 @@ public:
 	bool useRpmTable;
 	double customRevLimit;
 	bool useCylinderTable;
+	bool useCylinderTableRandom;
 	int activeCylinderCount;
+	int activeCylindersRandomUpdateTime;
 	bool quickShiftEnabled;
 	double quickShiftTime;
 	double quickShiftRetardTime;

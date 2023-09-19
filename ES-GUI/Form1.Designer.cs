@@ -67,6 +67,11 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.label32 = new System.Windows.Forms.Label();
@@ -75,6 +80,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -133,6 +139,9 @@
             this.ledOnPicture = new System.Windows.Forms.PictureBox();
             this.ledOffPicture = new System.Windows.Forms.PictureBox();
             this.powerBuilderPicture = new System.Windows.Forms.PictureBox();
+            this.powerBuilderGain = new ES_GUI.KnobControl();
+            this.powerBuilderRev2 = new ES_GUI.KnobControl();
+            this.powerBuilderRev1 = new ES_GUI.KnobControl();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.autoBlipTimeBox = new System.Windows.Forms.TextBox();
@@ -161,10 +170,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.powerBuilderGain = new ES_GUI.KnobControl();
-            this.powerBuilderRev2 = new ES_GUI.KnobControl();
-            this.powerBuilderRev1 = new ES_GUI.KnobControl();
-            this.label5 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -176,6 +181,8 @@
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sparkTable)).BeginInit();
             this.tabPage10.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -517,9 +524,9 @@
             this.engineRedlineLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.engineRedlineLabel.Location = new System.Drawing.Point(6, 74);
             this.engineRedlineLabel.Name = "engineRedlineLabel";
-            this.engineRedlineLabel.Size = new System.Drawing.Size(392, 42);
+            this.engineRedlineLabel.Size = new System.Drawing.Size(304, 42);
             this.engineRedlineLabel.TabIndex = 1;
-            this.engineRedlineLabel.Text = "Redline : 10000 RPM";
+            this.engineRedlineLabel.Text = "Redline : 0 RPM";
             // 
             // engineNameLabel
             // 
@@ -573,6 +580,11 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.button6);
+            this.tabPage5.Controls.Add(this.pictureBox2);
+            this.tabPage5.Controls.Add(this.pictureBox1);
+            this.tabPage5.Controls.Add(this.label14);
+            this.tabPage5.Controls.Add(this.label13);
             this.tabPage5.Controls.Add(this.button5);
             this.tabPage5.Controls.Add(this.button4);
             this.tabPage5.Controls.Add(this.label32);
@@ -587,6 +599,56 @@
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Ignition";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.ForeColor = System.Drawing.Color.Red;
+            this.button6.Location = new System.Drawing.Point(1018, 434);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(102, 23);
+            this.button6.TabIndex = 18;
+            this.button6.Text = "Delete Map";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::ES_GUI.Properties.Resources.cross;
+            this.pictureBox2.Location = new System.Drawing.Point(160, 528);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 17;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::ES_GUI.Properties.Resources.cross;
+            this.pictureBox1.Location = new System.Drawing.Point(160, 499);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 16;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(15, 528);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(123, 24);
+            this.label14.TabIndex = 15;
+            this.label14.Text = "Map Enabled";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(15, 499);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(139, 24);
+            this.label13.TabIndex = 14;
+            this.label13.Text = "Ignition Module";
             // 
             // button5
             // 
@@ -665,6 +727,16 @@
             this.tabPage10.TabIndex = 2;
             this.tabPage10.Text = "+";
             this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(4, 10);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(333, 18);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "^ Press the \'+\' symbol to create a new map";
             // 
             // tabPage3
             // 
@@ -1311,6 +1383,54 @@
             this.powerBuilderPicture.TabIndex = 0;
             this.powerBuilderPicture.TabStop = false;
             // 
+            // powerBuilderGain
+            // 
+            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
+            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderGain.LargeChange = 1;
+            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
+            this.powerBuilderGain.Maximum = 15;
+            this.powerBuilderGain.Minimum = 0;
+            this.powerBuilderGain.Name = "powerBuilderGain";
+            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderGain.SmallChange = 1;
+            this.powerBuilderGain.TabIndex = 5;
+            this.powerBuilderGain.Value = 0;
+            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
+            // 
+            // powerBuilderRev2
+            // 
+            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
+            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev2.LargeChange = 1;
+            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
+            this.powerBuilderRev2.Maximum = 15;
+            this.powerBuilderRev2.Minimum = 0;
+            this.powerBuilderRev2.Name = "powerBuilderRev2";
+            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev2.SmallChange = 1;
+            this.powerBuilderRev2.TabIndex = 4;
+            this.powerBuilderRev2.Value = 0;
+            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
+            // 
+            // powerBuilderRev1
+            // 
+            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
+            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev1.LargeChange = 1;
+            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
+            this.powerBuilderRev1.Maximum = 15;
+            this.powerBuilderRev1.Minimum = 0;
+            this.powerBuilderRev1.Name = "powerBuilderRev1";
+            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev1.SmallChange = 1;
+            this.powerBuilderRev1.TabIndex = 3;
+            this.powerBuilderRev1.Value = 0;
+            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
+            // 
             // tabPage9
             // 
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
@@ -1609,64 +1729,6 @@
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // powerBuilderGain
-            // 
-            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
-            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderGain.LargeChange = 1;
-            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
-            this.powerBuilderGain.Maximum = 15;
-            this.powerBuilderGain.Minimum = 0;
-            this.powerBuilderGain.Name = "powerBuilderGain";
-            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderGain.SmallChange = 1;
-            this.powerBuilderGain.TabIndex = 5;
-            this.powerBuilderGain.Value = 0;
-            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
-            // 
-            // powerBuilderRev2
-            // 
-            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
-            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev2.LargeChange = 1;
-            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
-            this.powerBuilderRev2.Maximum = 15;
-            this.powerBuilderRev2.Minimum = 0;
-            this.powerBuilderRev2.Name = "powerBuilderRev2";
-            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev2.SmallChange = 1;
-            this.powerBuilderRev2.TabIndex = 4;
-            this.powerBuilderRev2.Value = 0;
-            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
-            // 
-            // powerBuilderRev1
-            // 
-            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
-            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev1.LargeChange = 1;
-            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
-            this.powerBuilderRev1.Maximum = 15;
-            this.powerBuilderRev1.Minimum = 0;
-            this.powerBuilderRev1.Name = "powerBuilderRev1";
-            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev1.SmallChange = 1;
-            this.powerBuilderRev1.TabIndex = 3;
-            this.powerBuilderRev1.Value = 0;
-            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(4, 10);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(333, 18);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "^ Press the \'+\' symbol to create a new map";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1701,6 +1763,8 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sparkTable)).EndInit();
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
@@ -1880,6 +1944,11 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button button6;
     }
 }
 

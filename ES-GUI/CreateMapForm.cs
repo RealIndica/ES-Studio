@@ -73,6 +73,15 @@ namespace ES_GUI
                     MessageBox.Show("The map \"" + m.name + "\" is already using this name");
                     return;
                 }
+
+                if (thisControlParam == MapControlParam.ActiveCylinders || thisControlParam == MapControlParam.ActiveCylindersRandom)
+                {
+                    if (m.controlParam == MapControlParam.ActiveCylinders || m.controlParam == MapControlParam.ActiveCylindersRandom) 
+                    {
+                        MessageBox.Show("The map \"" + m.name + "\" is already using output control \"" + MapControlParam.ActiveCylinders + "\" or \"" + MapControlParam.ActiveCylindersRandom + "\"");
+                        return;
+                    }
+                }
             }
 
             newMap.Configure((MapParam)xAxis.SelectedIndex, (MapParam)yAxis.SelectedIndex, (MapControlParam)outputControl.SelectedIndex, nameTextBox.Text);

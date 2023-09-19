@@ -15,7 +15,9 @@ namespace ES_GUI
         public bool useRpmTable;
         public double customRevLimit;
         public bool useCylinderTable;
+        public bool useCylinderTableRandom;
         public int activeCylinderCount;
+        public int activeCylindersRandomUpdateTime;
         public bool quickShiftEnabled;
         public double quickShiftTime;
         public double quickShiftRetardTime;

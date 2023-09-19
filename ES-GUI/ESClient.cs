@@ -117,7 +117,7 @@ namespace ES_GUI
             foreach (Map m in customMaps)
             {
                 m.Update();
-            }
+            }         
 
             inputPipe = new NamedPipeServerStream("est-input-pipe");
             inputPipe.WaitForConnection();

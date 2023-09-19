@@ -7,7 +7,9 @@ EngineEdit::EngineEdit() {
 	useRpmTable = false;
 	customRevLimit = 0;
 	useCylinderTable = false;
+	useCylinderTableRandom = false;
 	activeCylinderCount = 0;
+	activeCylindersRandomUpdateTime = 0;
 	quickShiftEnabled = false;
 	quickShiftTime = 0;
 	quickShiftRetardTime = 0;

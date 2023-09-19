@@ -13,6 +13,7 @@ using AquaControls;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.DataVisualization.Charting;
+using ES_GUI.Properties;
 
 namespace ES_GUI
 {
@@ -33,7 +34,9 @@ namespace ES_GUI
         None,
         RevLimit,
         IgnitionAdvance,
-        ActiveCylinders
+        ActiveCylinders,
+        ActiveCylindersRandom,
+        ActiveCylindersRandomUpdateTime
     }
 
     public enum MapParamType
@@ -63,9 +66,14 @@ namespace ES_GUI
         private Label xName;
         private Label yName;
         private Label ctrlName;
+        private Label ignitionModuleLabel;
+        private Label mapEnabledLabel;
+        private PictureBox ignitionModuleIcon;
+        private PictureBox mapEnabledIcon;
         private Button generateMapButton;
         private Button enableButton;
         private Button disableButton;
+        private Button deleteMapButton;
         private Form mainForm;
 
         public MapController mapController;
@@ -90,12 +98,18 @@ namespace ES_GUI
                 case MapControlParam.ActiveCylinders:
                     client.edit.useCylinderTable = active;
                     break;
+                case MapControlParam.ActiveCylindersRandom:
+                    client.edit.useCylinderTableRandom = active;
+                    break;
+                case MapControlParam.ActiveCylindersRandomUpdateTime:
+                    break;
             }
         }
 
         public void enable()
         {
             manageGlobalControlParams(true);
+            mapEnabledIcon.Image = Resources.check;
             enabled = true;
             tableOverlay.Parent = gridView;
             tableOverlay.Size = gridView.Size;;
@@ -104,6 +118,7 @@ namespace ES_GUI
         public void disable() 
         { 
             manageGlobalControlParams(false);
+            mapEnabledIcon.Image = Resources.cross;
             enabled = false;
             tableOverlay.Parent = null;
             tableOverlay.Size = new Size(0, 0);
@@ -111,6 +126,14 @@ namespace ES_GUI
 
         public void Update()
         {
+            if (client.edit.useCustomIgnitionModule)
+            {
+                ignitionModuleIcon.Image = Resources.check;
+            } else
+            {
+                ignitionModuleIcon.Image = Resources.cross;
+            }
+
             if (!enabled) return;
             if (gridView.ColumnCount <= 0 || gridView.RowCount <= 0) return;
 
@@ -128,6 +151,12 @@ namespace ES_GUI
                     break;
                 case MapControlParam.ActiveCylinders:
                     client.edit.activeCylinderCount = (int)mapController.Pos2Val(true);
+                    break;
+                case MapControlParam.ActiveCylindersRandom:
+                    client.edit.activeCylinderCount = (int)mapController.Pos2Val(true);
+                    break;
+                case MapControlParam.ActiveCylindersRandomUpdateTime:
+                    client.edit.activeCylindersRandomUpdateTime = (int)mapController.Pos2Val(true);
                     break;
             }
         }
@@ -250,6 +279,7 @@ namespace ES_GUI
             xName = new Label();
             xName.Text = xParam.ToString();
             xName.Location = new Point(16, 3);
+            xName.Size = new Size(200, 13);
             newTab.Controls.Add(xName);
 
             yName = new Label();
@@ -280,10 +310,47 @@ namespace ES_GUI
             disableButton.Click += disableButton_Click;
             newTab.Controls.Add(disableButton);
 
+            deleteMapButton = new Button();
+            deleteMapButton.Text = "Delete Map";
+            deleteMapButton.Location = new Point(1018, 434);
+            deleteMapButton.Size = new Size(102, 23);
+            deleteMapButton.ForeColor = Color.Red;
+            deleteMapButton.Click += deleteMapButton_Click;
+            newTab.Controls.Add(deleteMapButton);
+
             ctrlName = new Label();
             ctrlName.Text = controlParam.ToString();
             ctrlName.Location = new Point(16, 402);
+            ctrlName.Size = new Size(200, 13);
             newTab.Controls.Add(ctrlName);
+
+            ignitionModuleLabel = new Label();
+            ignitionModuleLabel.Text = "Ignition Module";
+            ignitionModuleLabel.Font = new Font(ignitionModuleLabel.Font.FontFamily, 14.25f, FontStyle.Regular);
+            ignitionModuleLabel.Location = new Point(15, 499);
+            ignitionModuleLabel.Size = new Size(139, 24);
+            newTab.Controls.Add(ignitionModuleLabel);
+
+            mapEnabledLabel = new Label();
+            mapEnabledLabel.Text = "Map Enabled";
+            mapEnabledLabel.Font = new Font(mapEnabledLabel.Font.FontFamily, 14.25f, FontStyle.Regular);
+            mapEnabledLabel.Location = new Point(15, 528);
+            mapEnabledLabel.Size = new Size(139, 24);
+            newTab.Controls.Add(mapEnabledLabel);
+
+            ignitionModuleIcon = new PictureBox();
+            ignitionModuleIcon.SizeMode = PictureBoxSizeMode.Zoom;
+            ignitionModuleIcon.Image = Resources.cross;
+            ignitionModuleIcon.Size = new Size(25, 25);
+            ignitionModuleIcon.Location = new Point(160, 499);
+            newTab.Controls.Add(ignitionModuleIcon);
+
+            mapEnabledIcon = new PictureBox();
+            mapEnabledIcon.SizeMode = PictureBoxSizeMode.Zoom;
+            mapEnabledIcon.Image = Resources.cross;
+            mapEnabledIcon.Size = new Size(25, 25);
+            mapEnabledIcon.Location = new Point(160, 528);
+            newTab.Controls.Add(mapEnabledIcon);
 
             tableOverlay = new PictureBox();
             tableOverlay.Parent = null;
@@ -321,6 +388,12 @@ namespace ES_GUI
                         break;
                     case MapControlParam.ActiveCylinders:
                         entries = Enumerable.Repeat((double)client.update.cylinderCount, 21).ToList();
+                        break;
+                    case MapControlParam.ActiveCylindersRandom:
+                        entries = Enumerable.Repeat((double)client.update.cylinderCount, 21).ToList();
+                        break;
+                    case MapControlParam.ActiveCylindersRandomUpdateTime:
+                        entries = Enumerable.Repeat(1d, 21).ToList();
                         break;
                     default: return;
                 }
@@ -405,6 +478,17 @@ namespace ES_GUI
         private void disableButton_Click(object sender, EventArgs e)
         {
             disable();
+        }
+
+        private void deleteMapButton_Click(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Are you sure you want to delete this map?\r\nThis action cannot be undone", "Delete Map", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (res == DialogResult.Yes)
+            {
+                disable();
+                client.customMaps.Remove(this);
+                parentTabControl.TabPages.Remove(parentPage);
+            }
         }
 
         #endregion

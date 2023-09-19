@@ -55,7 +55,9 @@ void HandleUpdate(const char* input) {
     engineEdit->useRpmTable = data["useRpmTable"];
     engineEdit->customRevLimit = data["customRevLimit"];
     engineEdit->useCylinderTable = data["useCylinderTable"];
+    engineEdit->useCylinderTableRandom = data["useCylinderTableRandom"];
     engineEdit->activeCylinderCount = data["activeCylinderCount"];
+    engineEdit->activeCylindersRandomUpdateTime = data["activeCylindersRandomUpdateTime"];
     engineEdit->quickShiftEnabled = data["quickShiftEnabled"];
     engineEdit->quickShiftTime = data["quickShiftTime"];
     engineEdit->quickShiftRetardTime = data["quickShiftRetardTime"];

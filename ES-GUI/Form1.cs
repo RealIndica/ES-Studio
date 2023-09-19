@@ -711,6 +711,16 @@ namespace ES_GUI
                     tabControl2.Selecting += tabControl2_Selecting;
                     newMap.BuildTable();
                     client.customMaps.Add(newMap);
+
+                    if (!checkBox3.Checked)
+                    {
+                        DialogResult result = MessageBox.Show("The custom ignition module is not enabled and your map will not work as expected until it is enabled.\r\n\r\nWould you like to enable it now?", "Custom Ignition Module Not Enabled", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                        {
+                            checkBox3.Checked = true;
+                        }
+                    }
+
                     return;
                 }
                 f.Dispose();
@@ -718,6 +728,12 @@ namespace ES_GUI
         }
         private void tabControl2_Selecting(object sender, TabControlCancelEventArgs e)
         {
+            if (tabControl2.TabCount == 1)
+            {
+                tabControl2.SelectedIndex = 0;
+                return;
+            }
+
             if (e.TabPageIndex == tabControl2.TabCount - 1)
             {
                 e.Cancel = true;
