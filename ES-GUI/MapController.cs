@@ -36,63 +36,38 @@ namespace ES_GUI
 
         public double Pos2Val(bool useExact = false)
         {
-            Rectangle currentPos = tablePoint;
-            Point acc = new Point(currentPos.X + currentPos.Width / 2, currentPos.Y + currentPos.Height / 2);
+            var acc = new Point(tablePoint.X + tablePoint.Width / 2, tablePoint.Y + tablePoint.Height / 2);
 
             if (!useExact)
             {
-                List<MapCell> neighbors = new List<MapCell>();
+                var neighbors = cellList.Where(c => Math.Abs(c.Position.X - acc.X) <= c.Position.Width && Math.Abs(c.Position.Y - acc.Y) <= c.Position.Height).ToList();
 
-                foreach (MapCell c in cellList)
-                {
-                    if (Math.Abs(c.Position.X - acc.X) <= c.Position.Width && Math.Abs(c.Position.Y - acc.Y) <= c.Position.Height)
-                    {
-                        neighbors.Add(c);
-                    }
-                }
-
-                if (neighbors.Count == 0)
-                {
-                    return 0;
-                }
+                if (!neighbors.Any()) return 0;
 
                 double weightedSum = 0;
                 double totalWeights = 0;
 
                 foreach (var neighbor in neighbors)
                 {
-                    Point cellCenter = new Point(neighbor.Position.X + neighbor.Position.Width / 2, neighbor.Position.Y + neighbor.Position.Height / 2);
+                    var cellCenter = new Point(neighbor.Position.X + neighbor.Position.Width / 2, neighbor.Position.Y + neighbor.Position.Height / 2);
                     double distance = Math.Sqrt(Math.Pow(acc.X - cellCenter.X, 2) + Math.Pow(acc.Y - cellCenter.Y, 2));
                     double weight = 1 / (distance + 1);
                     weightedSum += weight * neighbor.Value;
                     totalWeights += weight;
                 }
 
-                double interpolatedValue = weightedSum / totalWeights;
-                return interpolatedValue;
-            } 
+                return weightedSum / totalWeights;
+            }
             else
             {
-                foreach (MapCell c in cellList)
-                {
-                    if (c.Position.Contains(acc))
-                    {
-                        return c.Value;
-                    }
-                }
-                return 0;
+                return cellList.FirstOrDefault(c => c.Position.Contains(acc))?.Value ?? 0;
             }
         }
 
         public void UpdateTablePos()
         {
-            float percentX = (float)((xValue * 100) / maxX);
-            float p = (percentX * (cellRectangle.X - cellOffset.X)) / 100;
-            tablePoint.X = (int)p + cellOffset.X;
-
-            float percentY = (float)((yValue * 100) / maxY);
-            float pY = (percentY * (cellRectangle.Y - cellOffset.Y) / 100);
-            tablePoint.Y = (int)pY + cellOffset.Y;
+            tablePoint.X = (int)((xValue / maxX) * (cellRectangle.X - cellOffset.X) + cellOffset.X);
+            tablePoint.Y = (int)((yValue / maxY) * (cellRectangle.Y - cellOffset.Y) + cellOffset.Y);
         }
     }
 }
