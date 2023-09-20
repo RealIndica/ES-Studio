@@ -162,6 +162,9 @@ RETARD - Retard ignition at
 exactly X RPMs.
 
 HI LO - Cut RPM at limit (HI) 
-until X (LO) below limit.  </value>
+until X (LO) below limit.  
+
+THROT. CUT - Reduce throttle
+gradually until X RPMs.</value>
   </data>
 </root>

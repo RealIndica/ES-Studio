@@ -38,6 +38,8 @@
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.configToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.darkModeWIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -139,6 +141,9 @@
             this.ledOnPicture = new System.Windows.Forms.PictureBox();
             this.ledOffPicture = new System.Windows.Forms.PictureBox();
             this.powerBuilderPicture = new System.Windows.Forms.PictureBox();
+            this.powerBuilderGain = new ES_GUI.KnobControl();
+            this.powerBuilderRev2 = new ES_GUI.KnobControl();
+            this.powerBuilderRev1 = new ES_GUI.KnobControl();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.autoBlipTimeBox = new System.Windows.Forms.TextBox();
@@ -167,11 +172,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.powerBuilderGain = new ES_GUI.KnobControl();
-            this.powerBuilderRev2 = new ES_GUI.KnobControl();
-            this.powerBuilderRev1 = new ES_GUI.KnobControl();
-            this.configToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.darkModeWIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -241,16 +241,31 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem1.Text = "Save";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem2.Text = "Load";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // configToolStripMenuItem
+            // 
+            this.configToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.darkModeWIPToolStripMenuItem});
+            this.configToolStripMenuItem.Name = "configToolStripMenuItem";
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.configToolStripMenuItem.Text = "Config";
+            // 
+            // darkModeWIPToolStripMenuItem
+            // 
+            this.darkModeWIPToolStripMenuItem.Name = "darkModeWIPToolStripMenuItem";
+            this.darkModeWIPToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.darkModeWIPToolStripMenuItem.Text = "Dark Mode (WIP)";
+            this.darkModeWIPToolStripMenuItem.Click += new System.EventHandler(this.darkModeWIPToolStripMenuItem_Click);
             // 
             // toolStripButton1
             // 
@@ -1131,7 +1146,7 @@
             this.groupBox11.Controls.Add(this.groupBox12);
             this.groupBox11.Location = new System.Drawing.Point(222, 6);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(345, 214);
+            this.groupBox11.Size = new System.Drawing.Size(345, 258);
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Configuration";
@@ -1193,7 +1208,7 @@
             this.groupBox12.Controls.Add(this.label22);
             this.groupBox12.Location = new System.Drawing.Point(6, 15);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(184, 193);
+            this.groupBox12.Size = new System.Drawing.Size(184, 237);
             this.groupBox12.TabIndex = 3;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Limiter Mode";
@@ -1213,7 +1228,7 @@
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(3, 43);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(162, 143);
+            this.label22.Size = new System.Drawing.Size(162, 182);
             this.label22.TabIndex = 2;
             this.label22.Text = resources.GetString("label22.Text");
             // 
@@ -1230,7 +1245,7 @@
             this.groupBox10.Controls.Add(this.rev1Box);
             this.groupBox10.Location = new System.Drawing.Point(6, 6);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(210, 214);
+            this.groupBox10.Size = new System.Drawing.Size(210, 152);
             this.groupBox10.TabIndex = 0;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Rev Limiters";
@@ -1386,6 +1401,54 @@
             this.powerBuilderPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.powerBuilderPicture.TabIndex = 0;
             this.powerBuilderPicture.TabStop = false;
+            // 
+            // powerBuilderGain
+            // 
+            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
+            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderGain.LargeChange = 1;
+            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
+            this.powerBuilderGain.Maximum = 15;
+            this.powerBuilderGain.Minimum = 0;
+            this.powerBuilderGain.Name = "powerBuilderGain";
+            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderGain.SmallChange = 1;
+            this.powerBuilderGain.TabIndex = 5;
+            this.powerBuilderGain.Value = 0;
+            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
+            // 
+            // powerBuilderRev2
+            // 
+            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
+            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev2.LargeChange = 1;
+            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
+            this.powerBuilderRev2.Maximum = 15;
+            this.powerBuilderRev2.Minimum = 0;
+            this.powerBuilderRev2.Name = "powerBuilderRev2";
+            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev2.SmallChange = 1;
+            this.powerBuilderRev2.TabIndex = 4;
+            this.powerBuilderRev2.Value = 0;
+            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
+            // 
+            // powerBuilderRev1
+            // 
+            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
+            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev1.LargeChange = 1;
+            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
+            this.powerBuilderRev1.Maximum = 15;
+            this.powerBuilderRev1.Minimum = 0;
+            this.powerBuilderRev1.Name = "powerBuilderRev1";
+            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev1.SmallChange = 1;
+            this.powerBuilderRev1.TabIndex = 3;
+            this.powerBuilderRev1.Value = 0;
+            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
             // 
             // tabPage9
             // 
@@ -1684,69 +1747,6 @@
             this.checkBox2.Text = "Top Most";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
-            // 
-            // powerBuilderGain
-            // 
-            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
-            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderGain.LargeChange = 1;
-            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
-            this.powerBuilderGain.Maximum = 15;
-            this.powerBuilderGain.Minimum = 0;
-            this.powerBuilderGain.Name = "powerBuilderGain";
-            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderGain.SmallChange = 1;
-            this.powerBuilderGain.TabIndex = 5;
-            this.powerBuilderGain.Value = 0;
-            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
-            // 
-            // powerBuilderRev2
-            // 
-            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
-            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev2.LargeChange = 1;
-            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
-            this.powerBuilderRev2.Maximum = 15;
-            this.powerBuilderRev2.Minimum = 0;
-            this.powerBuilderRev2.Name = "powerBuilderRev2";
-            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev2.SmallChange = 1;
-            this.powerBuilderRev2.TabIndex = 4;
-            this.powerBuilderRev2.Value = 0;
-            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
-            // 
-            // powerBuilderRev1
-            // 
-            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
-            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev1.LargeChange = 1;
-            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
-            this.powerBuilderRev1.Maximum = 15;
-            this.powerBuilderRev1.Minimum = 0;
-            this.powerBuilderRev1.Name = "powerBuilderRev1";
-            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev1.SmallChange = 1;
-            this.powerBuilderRev1.TabIndex = 3;
-            this.powerBuilderRev1.Value = 0;
-            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
-            // 
-            // configToolStripMenuItem
-            // 
-            this.configToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.darkModeWIPToolStripMenuItem});
-            this.configToolStripMenuItem.Name = "configToolStripMenuItem";
-            this.configToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.configToolStripMenuItem.Text = "Config";
-            // 
-            // darkModeWIPToolStripMenuItem
-            // 
-            this.darkModeWIPToolStripMenuItem.Name = "darkModeWIPToolStripMenuItem";
-            this.darkModeWIPToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.darkModeWIPToolStripMenuItem.Text = "Dark Mode (WIP)";
-            this.darkModeWIPToolStripMenuItem.Click += new System.EventHandler(this.darkModeWIPToolStripMenuItem_Click);
             // 
             // Form1
             // 

@@ -5,6 +5,7 @@
 #include "engineEdit.h"
 #include "SimFunctions.h"
 #include "Globals.h"
+#include "ThrottleController.h"
 
 struct Post {
 	double angle = 0;
@@ -34,6 +35,8 @@ protected:
 	double m_speedLimiterTimer;
 	double m_lastCrankshaftAngle;
 	QWORD m_crankShaft;
+
+	ThrottleController* m_throttleController;
 };
 
 #endif

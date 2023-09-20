@@ -14,4 +14,7 @@ Globals::Globals() {
 	shown = false;
 	customIgnitionNeedsUpdate = false;
 	twoStepActive = false;
+	cleanTps = 0;
+	fuelCutTps = 0;
+	overrideThrottle = false;
 }

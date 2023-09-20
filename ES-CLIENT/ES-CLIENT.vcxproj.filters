@@ -90,6 +90,9 @@
     <ClInclude Include="SimFunctionTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ThrottleController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -138,6 +141,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Globals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThrottleController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

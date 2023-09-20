@@ -21,6 +21,8 @@ void* simProcessPtr;
 void* sampleTrianglePtr;
 void* rTachRenderPtr;
 void* changeGearPtr;
+void* setThrottleRotaryPtr;
+void* setThrottlePistonPtr;
 
 __int64 __fastcall ignitionModuleHk(__int64 a1, double a2) {
     engineUpdate->maxRPM = units::toRpm(*(double*)(a1 + 0x88));
@@ -66,12 +68,14 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
     _g->transmissionInstance = *(QWORD*)(*(QWORD*)(a1 + 0x1618) + 0x520);
     engineUpdate->gear = *(int*)(_g->transmissionInstance + 0x348);
     engineUpdate->clutchPosition = *(double*)(a1 + 0x28);
+    _g->cleanTps = *(double*)(a1 + 0x18);
 
     if (_g->quickShift && engineEdit->quickShiftAutoClutch) {
         *(double*)(_g->transmissionInstance + 0x368) = 0.0;
     }
 
     if (_g->autoBlip) {
+        _g->overrideThrottle = true;
         if (_g->isRotary) {
             simFunctions->m_setThrottleRotary(_g->engineInstance, engineEdit->autoBlipThrottle);
         }
@@ -79,10 +83,17 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
             simFunctions->m_setThrottlePiston(_g->engineInstance, engineEdit->autoBlipThrottle);
         }
     }
+    else {
+        _g->overrideThrottle = false;
+    }
+
+    if (engineEdit->twoStepLimiterMode == 4 && engineEdit->twoStepEnabled) {
+        _g->overrideThrottle = true;
+    }
 
     engineUpdate->tps = 1.00 - *(double*)(_g->engineInstance + 0x188);
 
-    if (!_g->autoBlip && !_g->quickShift) {
+    if (!_g->quickShift) {
         simFunctions->m_simProcess(a1, a2);
     }
 }
@@ -146,6 +157,18 @@ __int64 __fastcall changeGearHk(__int64 a1, signed int a2) {
     return simFunctions->m_changeGear(a1, a2);
 }
 
+__int64 __fastcall setThrottleRotaryHk(__int64 a1, double a2) {
+    if (!_g->overrideThrottle) {
+        return simFunctions->m_setThrottleRotary(a1, a2);
+    }
+}
+
+__int64 __fastcall setThrottlePistonHk(__int64 a1, double a2) {
+    if (!_g->overrideThrottle) {
+        return simFunctions->m_setThrottlePiston(a1, a2);
+    }
+}
+
 void SetupHooks() {
     uintptr_t ignitionModFunc = Memory::FindPatternIDA("40 53 48 81 EC ? ? ? ? 44 0F 29 54 24 ? 48 8B D9 48 8B 49 60 44 0F 29 4C 24 ? 45 0F 57 C9 44 0F 29 6C 24 ? 44 0F 28 E9 0F 57 C9 E8 ? ? ? ?");
     ignitionModulePtr = (void*)ignitionModFunc;
@@ -162,11 +185,15 @@ void SetupHooks() {
     uintptr_t changeGearFunc = Memory::FindPatternIDA("83 FA FF 7C 0E 3B 91 ? ? ? ? 7D 06 89 91 ? ? ? ? C3");
     changeGearPtr = (void*)changeGearFunc; 
 
+    uintptr_t setThrottleRotaryFunc = Memory::FindPatternIDA("48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08 CC CC 48 8B 81 ? ? ? ? 4C 8B C1 48 8B C8 48 8B 10 48 FF 62 10 CC CC CC CC CC CC CC CC CC CC CC CC 40 53 48 83 EC 20 48 8B D9 E8 ? ? ? ?");
+    setThrottleRotaryPtr = (void*)setThrottleRotaryFunc;
+
+    uintptr_t setThrottlePistonFunc = Memory::FindPatternIDA("48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08");
+    setThrottlePistonPtr = (void*)setThrottlePistonFunc;
+
     simFunctions->m_sampleTriangleMod = (_sampleTriangle)(sampleTriangleFunc); //So we can call the hooked function instead of the original easily
 
     simFunctions->m_getManifoldPressure = (_getManifoldPressure)(Memory::FindPatternIDA("4C 63 91 ? ? ? ? 45 33 C9 F2 0F 10 2D ? ? ? ? 48 8B D1 0F 57 D2 0F 57 DB 4D 8B C2 49 83 FA 04 0F 8C ? ? ? ? 48 8B 81 ? ?"));
-    simFunctions->m_setThrottleRotary = (_setThrottleRotary)(Memory::FindPatternIDA("48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08 CC CC 48 8B 81 ? ? ? ? 4C 8B C1 48 8B C8 48 8B 10 48 FF 62 10 CC CC CC CC CC CC CC CC CC CC CC CC 40 53 48 83 EC 20 48 8B D9 E8 ? ? ? ?"));
-    simFunctions->m_setThrottlePiston = (_setThrottlePiston)(Memory::FindPatternIDA("48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08"));
     simFunctions->m_getCycleAngle = (_getCycleAngle)(Memory::FindPatternIDA("48 83 EC 38 F2 0F 10 41 ? 0F 28 D1 F2 0F 5C 41 ? 0F 29 74 24 ? F2 0F 10 B1 ? ? ? ? 0F 28 CE F2 0F 5C D0 0F 28 C2 E8 ? ? ? ? 0F 57 C9 66"));
 
     Memory::WriteLogAddress("Base", Memory::getBase(), false);
@@ -175,9 +202,9 @@ void SetupHooks() {
     Memory::WriteLogAddress("SimProcess", processFunc);
     Memory::WriteLogAddress("Right Tach Render", rTachRenderFunc);
     Memory::WriteLogAddress("Change Gear", changeGearFunc);
+    Memory::WriteLogAddress("Set Throttle Rotary", setThrottleRotaryFunc);
+    Memory::WriteLogAddress("Set Throttle Piston", setThrottlePistonFunc);
     Memory::WriteLogAddress("Get Manifold Pressure", (uintptr_t)simFunctions->m_getManifoldPressure);
-    Memory::WriteLogAddress("Set Throttle Rotary", (uintptr_t)simFunctions->m_setThrottleRotary);
-    Memory::WriteLogAddress("Set Throttle Piston", (uintptr_t)simFunctions->m_setThrottlePiston);
     Memory::WriteLogAddress("Get Cycle Angle", (uintptr_t)simFunctions->m_getCycleAngle);
 
 
@@ -214,6 +241,20 @@ void SetupHooks() {
     }
     else {
         MH_EnableHook(changeGearPtr);
+    }
+
+    if (MH_CreateHook(setThrottleRotaryPtr, &setThrottleRotaryHk, reinterpret_cast<LPVOID*>(&simFunctions->m_setThrottleRotary)) != MH_OK) {
+        printf("Unable to hook throttle rotary\n");
+    }
+    else {
+        MH_EnableHook(setThrottleRotaryPtr);
+    }
+
+    if (MH_CreateHook(setThrottlePistonPtr, &setThrottlePistonHk, reinterpret_cast<LPVOID*>(&simFunctions->m_setThrottlePiston)) != MH_OK) {
+        printf("Unable to hook throttle piston\n");
+    }
+    else {
+        MH_EnableHook(setThrottlePistonPtr);
     }
 }
 

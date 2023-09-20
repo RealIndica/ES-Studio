@@ -177,61 +177,47 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 
 	if (engineEdit->twoStepEnabled) {
 		m_twoStepLimiterDuration = engineEdit->twoStepCutTime;
-		if (engineEdit->twoStepLimiterMode == 0) { // Soft Cut
-			if (engineEdit->useRpmTable) {
-				if (std::fabs(crank_v_theta) > units::rpm(engineEdit->customRevLimit - 200)) {
-					m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
-				}
-			}
-			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2 - 200)) {
+
+		double absCrank = std::fabs(crank_v_theta);
+		bool clutchThresholdMet = engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold;
+		bool isNeutralOrAllowedGear = engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear;
+
+		switch (engineEdit->twoStepLimiterMode) {
+		case 0: // Soft Cut
+			if ((engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->customRevLimit - 200)) ||
+				(!engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->rev2 - 200))) {
 				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
 			}
-			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1 - 200) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
-				if (engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear) {
-					m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
-					engineUpdate->twoStepActive = true;
-				}
-				else {
-					engineUpdate->twoStepActive = false;
-				}
+			if (absCrank > units::rpm(engineEdit->rev1 - 200) && clutchThresholdMet && isNeutralOrAllowedGear) {
+				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
+				engineUpdate->twoStepActive = true;
 			}
 			else {
 				engineUpdate->twoStepActive = false;
 			}
-		}
-		if (engineEdit->twoStepLimiterMode == 1) { // Hard Cut
-			if (engineEdit->useRpmTable) {
-				if (std::fabs(crank_v_theta) > units::rpm(engineEdit->customRevLimit)) {
-					m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
-				}
-			}
-			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
+			break;
+
+		case 1: // Hard Cut
+			if ((engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->customRevLimit)) ||
+				(!engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->rev2))) {
 				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
 			}
-			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
-				if (engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear) {
-					m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
-					engineUpdate->twoStepActive = true;
-				}
-				else {
-					engineUpdate->twoStepActive = false;
-				}
+			if (absCrank > units::rpm(engineEdit->rev1) && clutchThresholdMet && isNeutralOrAllowedGear) {
+				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
+				engineUpdate->twoStepActive = true;
 			}
 			else {
 				engineUpdate->twoStepActive = false;
 			}
-		}
-		if (engineEdit->twoStepLimiterMode == 2) { // Retard
-			if (engineEdit->useRpmTable) {
-				if (std::fabs(crank_v_theta) > units::rpm(engineEdit->customRevLimit)) {
-					_g->twoStepActive = true;
-				}
-			}
-			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
+			break;
+
+		case 2: // Retard
+			if ((engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->customRevLimit))
+				|| (!engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->rev2))) {
 				_g->twoStepActive = true;
 			}
-			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
-				if (engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear) {
+			else if (absCrank > units::rpm(engineEdit->rev1) && clutchThresholdMet) {
+				if (isNeutralOrAllowedGear) {
 					_g->twoStepActive = true;
 					engineUpdate->twoStepActive = true;
 				}
@@ -244,25 +230,18 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 				_g->twoStepActive = false;
 				engineUpdate->twoStepActive = false;
 			}
-		}
-		if (engineEdit->twoStepLimiterMode == 3) { // Hi Lo
-			if (engineEdit->useRpmTable) {
-				if (std::fabs(crank_v_theta) > units::rpm(engineEdit->customRevLimit)) {
-					m_hiLoNextRPM = engineEdit->customRevLimit - engineEdit->rev3;
-				}
+			break;
+
+		case 3: // Hi Lo
+			if (engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->customRevLimit)) {
+				m_hiLoNextRPM = engineEdit->customRevLimit - engineEdit->rev3;
 			}
-			else if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev2)) {
+			else if (!engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->rev2)) {
 				m_hiLoNextRPM = engineEdit->rev2 - engineEdit->rev3;
 			}
-			if (std::fabs(crank_v_theta) > units::rpm(engineEdit->rev1) && engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold) {
-				if (engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear) {
-					m_hiLoNextRPM = engineEdit->rev1 - engineEdit->rev3;
-					engineUpdate->twoStepActive = true;
-				}
-				else {
-					engineUpdate->twoStepActive = false;
-					m_hiLoNextRPM = 0;
-				}
+			if (absCrank > units::rpm(engineEdit->rev1) && clutchThresholdMet && isNeutralOrAllowedGear) {
+				m_hiLoNextRPM = engineEdit->rev1 - engineEdit->rev3;
+				engineUpdate->twoStepActive = true;
 			}
 			else {
 				if (engineUpdate->clutchPosition >= engineEdit->twoStepSwitchThreshold && engineUpdate->twoStepActive) {
@@ -270,6 +249,31 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 				}
 				engineUpdate->twoStepActive = false;
 			}
+			break;
+
+		case 4: // Throttle Cut
+			double maxRPM = engineEdit->rev2;
+			if (engineEdit->useRpmTable) {
+				maxRPM = engineEdit->customRevLimit;
+			}
+			if (clutchThresholdMet && isNeutralOrAllowedGear) {
+				maxRPM = engineEdit->rev1;
+				engineUpdate->twoStepActive = true;
+			}
+			else {
+				engineUpdate->twoStepActive = false;
+			}
+
+			if (!_g->autoBlip) {
+				_g->fuelCutTps = m_throttleController->AdjustThrottle(units::toRpm(absCrank), _g->cleanTps, maxRPM);
+				if (_g->isRotary) {
+					simFunctions->m_setThrottleRotary(_g->engineInstance, _g->fuelCutTps);
+				}
+				else {
+					simFunctions->m_setThrottlePiston(_g->engineInstance, _g->fuelCutTps);
+				}
+			}
+			break;
 		}
 	}
 
@@ -329,6 +333,8 @@ CustomIgnitionModule::CustomIgnitionModule(EngineUpdate* update, EngineEdit* edi
 	m_speedLimiterTimer = 0;
 	m_lastCrankshaftAngle = 0;
 	m_crankShaft = 0;
+
+	m_throttleController = new ThrottleController();
 
 	engineUpdate = update;
 	engineEdit = edit;

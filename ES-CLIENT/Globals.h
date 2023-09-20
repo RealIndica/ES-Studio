@@ -21,6 +21,9 @@ public:
 	bool shown;
 	bool customIgnitionNeedsUpdate;
 	bool twoStepActive;
+	double cleanTps;
+	double fuelCutTps;
+	bool overrideThrottle;
 };
 
 #endif

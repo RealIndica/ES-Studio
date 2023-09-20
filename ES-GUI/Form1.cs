@@ -116,7 +116,7 @@ namespace ES_GUI
             twoStepSwitch.Items.AddRange(new string[] { "Clutch" });
             twoStepSwitch.SelectedIndex = 0;
 
-            twoStepLimiterModeBox.Items.AddRange(new string[] { "SOFT CUT", "HARD CUT" , "RETARD" ,"HI LO" });
+            twoStepLimiterModeBox.Items.AddRange(new string[] { "SOFT CUT", "HARD CUT" , "RETARD" ,"HI LO", "THROT. CUT" });
             twoStepLimiterModeBox.SelectedIndex = 0;
 
             ledOffPicture.Visible = true;

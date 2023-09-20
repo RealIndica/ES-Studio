@@ -179,6 +179,7 @@
     <ClInclude Include="SimFunctions.h" />
     <ClInclude Include="SimFunctionTypes.h" />
     <ClInclude Include="SimHooks.h" />
+    <ClInclude Include="ThrottleController.h" />
     <ClInclude Include="units.h" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +199,7 @@
     <ClCompile Include="RTTI.cpp" />
     <ClCompile Include="SimFunctions.cpp" />
     <ClCompile Include="SimHooks.cpp" />
+    <ClCompile Include="ThrottleController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

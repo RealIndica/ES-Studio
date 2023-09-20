@@ -121,7 +121,7 @@ void Update() {
         UpdateParams();
         helpers->buildSparkList();
         helpers->UpdateEngineType();
-        sendJson();
+        sendJson();;
     }
 }
 
