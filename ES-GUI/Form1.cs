@@ -943,10 +943,8 @@ namespace ES_GUI
 
                         double rpmValue = MapMidiNoteToRPM(midiNoteNumber, midiLowRPM.Text.ToDouble(), midiHighRPM.Text.ToDouble(), minMidiNote, maxMidiNote);
                         idleControlTarget.Text = rpmValue.ToString();
-                        // Command your engine to go to this RPM
                         client.edit.idleHelperRPM = rpmValue;
 
-                        // Wait for the note duration before processing the next note
                         System.Threading.Thread.Sleep((int)(noteDuration / 1000) * 2);
 
                         Debug.WriteLog($"Note: {midiNoteNumber}, RPM: {rpmValue}");
@@ -962,10 +960,7 @@ namespace ES_GUI
 
         private double MapMidiNoteToRPM(int midiNoteNumber, double minRPM, double maxRPM, int minMidiNote, int maxMidiNote)
         {
-            // Normalize the MIDI note number to the range between the min and max MIDI notes
             double normalizedNote = (double)(midiNoteNumber - minMidiNote) / (double)(maxMidiNote - minMidiNote);
-
-            // Map the normalized value to the RPM range
             return minRPM + normalizedNote * (maxRPM - minRPM);
         }
 
