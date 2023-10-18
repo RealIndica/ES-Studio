@@ -42,6 +42,7 @@ namespace ES_GUI
         public bool allowTwoStepInGear;
         public bool idleHelper;
         public double idleHelperRPM;
+        public double idleHelperMaxTps;
         public bool speedLimiter;
         public double speedLimiterSpeed;
         public int speedLimiterMode;

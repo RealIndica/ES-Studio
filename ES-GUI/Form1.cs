@@ -15,6 +15,10 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO.Compression;
+using Melanchall.DryWetMidi;
+using Melanchall.DryWetMidi.Core;
+using Melanchall.DryWetMidi.Interaction;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ES_GUI
 {
@@ -32,6 +36,12 @@ namespace ES_GUI
 
         private Stopwatch powerBuilderTimer;
         private PowerBuilder powerBuilder;
+
+        private bool midiLoaded = false;
+        private MidiFile midiFile;
+        private bool stopMidi = false;
+        private int minMidiNote = 127;
+        private int maxMidiNote = 0;
 
         public Form1()
         {
@@ -556,6 +566,7 @@ namespace ES_GUI
         {
             manageModules(checkBox3.Checked);
             client.edit.useCustomIgnitionModule = checkBox3.Checked;
+            client.edit.idleHelperMaxTps = idleHelperTPSMax.Text.ToDouble();
         }
 
         private void rev1Box_TextChanged(object sender, EventArgs e)
@@ -658,7 +669,6 @@ namespace ES_GUI
             if (idleControlEnabled.Checked)
             {
                 client.edit.idleHelperRPM = idleControlTarget.Text.ToDouble();
-                MessageBox.Show("To Do");
             }
         }
 
@@ -854,6 +864,150 @@ namespace ES_GUI
         {
             ThemeManager.darkMode = true;
             ThemeManager.ApplyTheme(this);
+        }
+
+        private void idleControlTarget_TextChanged(object sender, EventArgs e)
+        {
+            client.edit.idleHelperRPM = idleControlTarget.Text.ToDouble();
+        }
+
+        private void loadMidi_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Mid|*.mid|Midi|*.midi|All|*.*";
+            openFileDialog.Title = "Load Midi";
+            openFileDialog.ShowDialog();
+
+            if (openFileDialog.FileName != "")
+            {
+                midiFile = MidiFile.Read(openFileDialog.FileName);
+
+                var notesAtTime = new Dictionary<TimeSpan, int>();
+
+                foreach (var trackChunk in midiFile.GetTrackChunks())
+                {
+                    foreach (var noteEvent in trackChunk.GetTimedEvents().Where(ev => ev.Event is NoteOnEvent))
+                    {
+                        var timedEvent = (TimedEvent)noteEvent;
+                        if (!notesAtTime.ContainsKey(new TimeSpan(timedEvent.Time)))
+                        {
+                            notesAtTime[new TimeSpan(timedEvent.Time)] = 0;
+                        }
+                        notesAtTime[new TimeSpan(timedEvent.Time)]++;
+                    }
+                }
+
+                bool hasChords = notesAtTime.Any(kvp => kvp.Value > 1);
+
+                if (hasChords)
+                {
+                    MessageBox.Show("You cannot use midi that contains chords", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    midiFile = null;
+                    return;
+                }
+                else
+                {
+                    midiLoaded = true;
+                    midiName.Text = openFileDialog.SafeFileName;
+                }
+            }
+        }
+
+        private void midiThread()
+        {
+            Thread t = new Thread(() =>
+            {
+                TempoMap tempoMap = midiFile.GetTempoMap();
+
+                foreach (var trackChunk in midiFile.GetTrackChunks())
+                {
+                    foreach (var note in trackChunk.GetNotes())
+                    {
+                        if (note.NoteNumber < minMidiNote) minMidiNote = note.NoteNumber;
+                        if (note.NoteNumber > maxMidiNote) maxMidiNote = note.NoteNumber;
+                    }
+                }
+
+                foreach (var trackChunk in midiFile.GetTrackChunks())
+                {
+                    foreach (var note in trackChunk.GetNotes())
+                    {
+                        if (stopMidi)
+                        {
+                            stopMidi = false;
+                            break;
+                        }
+
+                        int midiNoteNumber = note.NoteNumber;
+                        long noteDuration = note.LengthAs<MetricTimeSpan>(tempoMap).TotalMicroseconds;
+
+                        double rpmValue = MapMidiNoteToRPM(midiNoteNumber, midiLowRPM.Text.ToDouble(), midiHighRPM.Text.ToDouble(), minMidiNote, maxMidiNote);
+                        idleControlTarget.Text = rpmValue.ToString();
+                        // Command your engine to go to this RPM
+                        client.edit.idleHelperRPM = rpmValue;
+
+                        // Wait for the note duration before processing the next note
+                        System.Threading.Thread.Sleep((int)(noteDuration / 1000) * 2);
+
+                        Debug.WriteLog($"Note: {midiNoteNumber}, RPM: {rpmValue}");
+                    }
+                }
+                Debug.WriteLog("Midi Ended");
+                idleControlEnabled.Checked = false;
+                client.edit.idleHelper = false;
+                client.edit.idleHelperRPM = idleControlTarget.Text.ToDouble();
+            });
+            t.Start();
+        }
+
+        private double MapMidiNoteToRPM(int midiNoteNumber, double minRPM, double maxRPM, int minMidiNote, int maxMidiNote)
+        {
+            // Normalize the MIDI note number to the range between the min and max MIDI notes
+            double normalizedNote = (double)(midiNoteNumber - minMidiNote) / (double)(maxMidiNote - minMidiNote);
+
+            // Map the normalized value to the RPM range
+            return minRPM + normalizedNote * (maxRPM - minRPM);
+        }
+
+        private void midiPlay_Click(object sender, EventArgs e)
+        {
+            if (midiLoaded && client.isConnected)
+            {
+                idleControlEnabled.Checked = true;
+                client.edit.idleHelper = true;
+                midiThread();
+
+            }
+        }
+
+        private void midiPause_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("To Do");
+            if (midiLoaded && client.isConnected)
+            {
+
+            }
+        }
+
+        private void midiStop_Click(object sender, EventArgs e)
+        {
+            if (midiLoaded && client.isConnected)
+            {
+                idleControlEnabled.Checked = true;
+                client.edit.idleHelper = false;
+                stopMidi = true;
+            }
+        }
+
+        private void idleHelperTPSMax_TextChanged(object sender, EventArgs e)
+        {
+            double originalVal = idleHelperTPSMax.Text.ToDouble();
+            double val = Helpers.Clamp(idleHelperTPSMax.Text.ToDouble(), 0, 1);
+            if (originalVal > 1.00 || originalVal < 0.00)
+            {
+                idleHelperTPSMax.Text = val.ToString() + ".00";
+            }
+            client.edit.idleHelperMaxTps = val;
         }
     }
 }

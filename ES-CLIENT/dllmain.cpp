@@ -81,6 +81,7 @@ void HandleUpdate(const char* input) {
     engineEdit->allowTwoStepInGear = data["allowTwoStepInGear"];
     engineEdit->idleHelper = data["idleHelper"];
     engineEdit->idleHelperRPM = data["idleHelperRPM"];
+    engineEdit->idleHelperMaxTps = data["idleHelperMaxTps"];
     engineEdit->speedLimiter = data["speedLimiter"];
     engineEdit->speedLimiterSpeed = data["speedLimiterSpeed"];
     engineEdit->speedLimiterMode = data["speedLimiterMode"];

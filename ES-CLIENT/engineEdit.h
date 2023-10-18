@@ -38,6 +38,7 @@ public:
 	bool allowTwoStepInGear;
 	bool idleHelper;
 	double idleHelperRPM;
+	double idleHelperMaxTps;
 	bool speedLimiter;
 	double speedLimiterSpeed;
 	int speedLimiterMode;

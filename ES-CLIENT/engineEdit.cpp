@@ -34,6 +34,7 @@ EngineEdit::EngineEdit() {
 	allowTwoStepInGear = false;
 	idleHelper = false;
 	idleHelperRPM = 0.0;
+	idleHelperMaxTps = 0.0;
 	speedLimiter = false;
 	speedLimiterSpeed = 0;
 	speedLimiterMode = 0;
