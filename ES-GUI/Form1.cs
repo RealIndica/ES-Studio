@@ -19,6 +19,7 @@ using Melanchall.DryWetMidi;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
 using System.Windows.Forms.DataVisualization.Charting;
+using Melanchall.DryWetMidi.Common;
 
 namespace ES_GUI
 {
@@ -39,6 +40,7 @@ namespace ES_GUI
 
         private bool midiLoaded = false;
         private MidiFile midiFile;
+        private TempoMap tempoMap;
         private bool stopMidi = false;
         private int minMidiNote = 127;
         private int maxMidiNote = 0;
@@ -907,6 +909,42 @@ namespace ES_GUI
                 }
                 else
                 {
+                    foreach (var trackChunk in midiFile.GetTrackChunks())
+                    {
+                        foreach (var note in trackChunk.GetNotes())
+                        {
+                            if (note.NoteNumber < minMidiNote) minMidiNote = note.NoteNumber;
+                            if (note.NoteNumber > maxMidiNote) maxMidiNote = note.NoteNumber;
+                        }
+                    }
+
+                    int range = maxMidiNote - minMidiNote;
+                    Debug.WriteLog($"Minimum Note: {minMidiNote}, Maximum Note: {maxMidiNote}");
+                    Debug.WriteLog($"Midi range is {range} notes");
+                    maxMidiNote = minMidiNote + 12;
+                    if (range > 12)
+                    {
+                        Debug.WriteLog("Midi not in 1 Octave range. Transposing Notes...");
+                        foreach (var trackChunk in midiFile.GetTrackChunks())
+                        {
+                            using (var notesManager = trackChunk.ManageNotes())
+                            {
+                                foreach (var note in notesManager.Objects)
+                                {
+                                    while (note.NoteNumber < new SevenBitNumber((byte)minMidiNote))
+                                    {
+                                        note.NoteNumber = new SevenBitNumber((byte)(note.NoteNumber + 12));
+                                    }
+
+                                    while (note.NoteNumber > new SevenBitNumber((byte)(minMidiNote + 12)))
+                                    {
+                                        note.NoteNumber = new SevenBitNumber((byte)(note.NoteNumber - 12));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    tempoMap = midiFile.GetTempoMap();
                     midiLoaded = true;
                     midiName.Text = openFileDialog.SafeFileName;
                 }
@@ -917,19 +955,11 @@ namespace ES_GUI
         {
             Thread t = new Thread(() =>
             {
-                TempoMap tempoMap = midiFile.GetTempoMap();
-
                 foreach (var trackChunk in midiFile.GetTrackChunks())
                 {
-                    foreach (var note in trackChunk.GetNotes())
-                    {
-                        if (note.NoteNumber < minMidiNote) minMidiNote = note.NoteNumber;
-                        if (note.NoteNumber > maxMidiNote) maxMidiNote = note.NoteNumber;
-                    }
-                }
+                    long previousNoteEndTime = 0;
+                    long noteDuration = 0;
 
-                foreach (var trackChunk in midiFile.GetTrackChunks())
-                {
                     foreach (var note in trackChunk.GetNotes())
                     {
                         if (stopMidi)
@@ -939,17 +969,25 @@ namespace ES_GUI
                         }
 
                         int midiNoteNumber = note.NoteNumber;
-                        long noteDuration = note.LengthAs<MetricTimeSpan>(tempoMap).TotalMicroseconds;
+                        noteDuration = note.LengthAs<MetricTimeSpan>(tempoMap).TotalMicroseconds;
+                        long noteStartTime = note.TimeAs<MetricTimeSpan>(tempoMap).TotalMicroseconds;
+
+                        if (noteStartTime > previousNoteEndTime)
+                        {
+                            System.Threading.Thread.Sleep((int)((noteStartTime - previousNoteEndTime) / 1000));
+                        }
 
                         double rpmValue = MapMidiNoteToRPM(midiNoteNumber, midiLowRPM.Text.ToDouble(), midiHighRPM.Text.ToDouble(), minMidiNote, maxMidiNote);
                         idleControlTarget.Text = rpmValue.ToString();
                         client.edit.idleHelperRPM = rpmValue;
 
-                        System.Threading.Thread.Sleep((int)(noteDuration / 1000) * 2);
-
                         Debug.WriteLog($"Note: {midiNoteNumber}, RPM: {rpmValue}");
+                        previousNoteEndTime = noteStartTime + noteDuration;
+                        System.Threading.Thread.Sleep((int)(noteDuration / 1000));
                     }
+                    System.Threading.Thread.Sleep((int)(noteDuration / 1000));
                 }
+
                 Debug.WriteLog("Midi Ended");
                 idleControlEnabled.Checked = false;
                 client.edit.idleHelper = false;
@@ -1003,6 +1041,11 @@ namespace ES_GUI
                 idleHelperTPSMax.Text = val.ToString() + ".00";
             }
             client.edit.idleHelperMaxTps = val;
+        }
+
+        private void midiLowRPM_TextChanged(object sender, EventArgs e)
+        {
+            midiHighRPM.Text = (midiLowRPM.Text.ToDouble() * 2).ToString();
         }
     }
 }
