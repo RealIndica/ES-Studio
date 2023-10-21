@@ -74,7 +74,19 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 		return m_crankShaft;
 	}
 
-	if (m_enabled && m_revLimitTimer == 0 && m_twoStepRevLimitTimer == 0 && m_speedLimiterTimer == 0 && m_hiLoNextRPM == 0) {
+	bool overrideSparkCut = false;
+	if (engineEdit->twoStepEnabled && engineEdit->twoStepLimiterMode == 4) // Don't bother cutting spark, we're cutting fuel instead.
+	{
+		overrideSparkCut = true;
+		if (m_enabled && m_revLimitTimer == 0 && m_twoStepRevLimitTimer == 0 && m_speedLimiterTimer == 0 && m_hiLoNextRPM == 0) {
+			_g->cutFuel = false;
+		}
+		else {
+			_g->cutFuel = true;
+		}
+	}
+
+	if ((m_enabled && m_revLimitTimer == 0 && m_twoStepRevLimitTimer == 0 && m_speedLimiterTimer == 0 && m_hiLoNextRPM == 0) || overrideSparkCut) {
 		const double cyclePeriod = *(double*)(m_crankShaft + 0xA0);
 		const double advance = simFunctions->m_sampleTriangleMod(_g->ignitionFunctionInstance, -crank_v_theta);
 
@@ -181,23 +193,10 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 		double absCrank = std::fabs(crank_v_theta);
 		bool clutchThresholdMet = engineUpdate->clutchPosition < engineEdit->twoStepSwitchThreshold;
 		bool isNeutralOrAllowedGear = engineUpdate->gear == -1 || engineUpdate->gear == 0 || engineEdit->allowTwoStepInGear;
+		double maxRPM = engineEdit->rev2;
 
 		switch (engineEdit->twoStepLimiterMode) {
-		case 0: // Soft Cut
-			if ((engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->customRevLimit - 200)) ||
-				(!engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->rev2 - 200))) {
-				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
-			}
-			if (absCrank > units::rpm(engineEdit->rev1 - 200) && clutchThresholdMet && isNeutralOrAllowedGear) {
-				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
-				engineUpdate->twoStepActive = true;
-			}
-			else {
-				engineUpdate->twoStepActive = false;
-			}
-			break;
-
-		case 1: // Hard Cut
+		case 0: // Hard Cut
 			if ((engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->customRevLimit)) ||
 				(!engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->rev2))) {
 				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
@@ -211,7 +210,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 			}
 			break;
 
-		case 2: // Retard
+		case 1: // Retard
 			if ((engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->customRevLimit))
 				|| (!engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->rev2))) {
 				_g->twoStepActive = true;
@@ -232,7 +231,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 			}
 			break;
 
-		case 3: // Hi Lo
+		case 2: // Hi Lo
 			if (engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->customRevLimit)) {
 				m_hiLoNextRPM = engineEdit->customRevLimit - engineEdit->rev3;
 			}
@@ -251,8 +250,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 			}
 			break;
 
-		case 4: // Throttle Cut
-			double maxRPM = engineEdit->rev2;
+		case 3: // Throttle Cut
 			if (engineEdit->useRpmTable) {
 				maxRPM = engineEdit->customRevLimit;
 			}
@@ -274,13 +272,26 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 				}
 			}
 			break;
+		case 4: // Fuel Cut
+			if ((engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->customRevLimit)) ||
+				(!engineEdit->useRpmTable && absCrank > units::rpm(engineEdit->rev2))) {
+				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
+			}
+			if (absCrank > units::rpm(engineEdit->rev1) && clutchThresholdMet && isNeutralOrAllowedGear) {
+				m_twoStepRevLimitTimer = m_twoStepLimiterDuration;
+				engineUpdate->twoStepActive = true;
+			}
+			else {
+				engineUpdate->twoStepActive = false;
+			}
+			break;
 		}
 	}
 
 	if (engineEdit->idleHelper) {
 		double aTps = 0;
 
-		if (engineEdit->twoStepEnabled && engineEdit->twoStepLimiterMode == 4) {
+		if (engineEdit->twoStepEnabled && engineEdit->twoStepLimiterMode == 3) {
 			aTps = _g->fuelCutTps;
 		}
 		else {

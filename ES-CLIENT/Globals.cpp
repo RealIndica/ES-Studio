@@ -17,4 +17,5 @@ Globals::Globals() {
 	cleanTps = 0;
 	fuelCutTps = 0;
 	overrideThrottle = false;
+	cutFuel = false;
 }

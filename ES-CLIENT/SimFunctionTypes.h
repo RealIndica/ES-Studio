@@ -12,5 +12,7 @@ typedef double(__fastcall* _getManifoldPressure)(QWORD a1);
 typedef __int64(__fastcall* _setThrottlePiston)(__int64 a1, double a2);
 typedef __int64(__fastcall* _setThrottleRotary)(__int64 a1, double a2);
 typedef double(__fastcall* _getCycleAngle)(__int64 a1, double a2);
+typedef __int64(__fastcall* _gasSystemReset)(__int64 instance, double P, double T, __int64 mix);
+typedef unsigned __int64*(__fastcall* _showMainText)(void* Src, const void* a2, size_t a3);
 
 #endif

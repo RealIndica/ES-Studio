@@ -11,4 +11,6 @@ SimFunctions::SimFunctions() {
 	m_setThrottlePiston = 0;
 	m_setThrottleRotary = 0;
 	m_getCycleAngle = 0;
+	m_gasSystemReset = 0;
+	m_showMainText = 0;
 }

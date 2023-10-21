@@ -16,6 +16,8 @@ public:
 	_setThrottlePiston m_setThrottlePiston;
 	_setThrottleRotary m_setThrottleRotary;
 	_getCycleAngle m_getCycleAngle;
+	_gasSystemReset m_gasSystemReset;
+	_showMainText m_showMainText;
 };
 
 #endif

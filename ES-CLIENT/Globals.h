@@ -24,6 +24,7 @@ public:
 	double cleanTps;
 	double fuelCutTps;
 	bool overrideThrottle;
+	bool cutFuel;
 };
 
 #endif

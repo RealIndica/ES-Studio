@@ -152,10 +152,7 @@
 </value>
   </data>
   <data name="label22.Text" xml:space="preserve">
-    <value>SOFT CUT - Cut spark gradually 
-200RPM below limit.
-
-HARD CUT - Cut Spark at
+    <value>HARD CUT - Cut Spark at
  exactly X RPMs.
 
 RETARD - Retard ignition at 
@@ -165,6 +162,9 @@ HI LO - Cut RPM at limit (HI)
 until X (LO) below limit.  
 
 THROT. CUT - Reduce throttle
-gradually until X RPMs.</value>
+gradually until X RPMs.
+
+FUEL CUT - Cut fuel at
+exactly X RPMs.</value>
   </data>
 </root>

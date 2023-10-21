@@ -23,6 +23,16 @@ void* rTachRenderPtr;
 void* changeGearPtr;
 void* setThrottleRotaryPtr;
 void* setThrottlePistonPtr;
+void* gasSystemResetPtr;
+void* showMainTextPtr;
+
+
+
+struct Mix {
+    double p_fuel = 0.0;
+    double p_inert = 1.0;
+    double p_o2 = 0.0;
+};
 
 __int64 __fastcall ignitionModuleHk(__int64 a1, double a2) {
     engineUpdate->maxRPM = units::toRpm(*(double*)(a1 + 0x88));
@@ -87,7 +97,7 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
         _g->overrideThrottle = false;
     }
 
-    if ((engineEdit->twoStepLimiterMode == 4 && engineEdit->twoStepEnabled) || engineEdit->idleHelper) {
+    if ((engineEdit->twoStepLimiterMode == 3 && engineEdit->twoStepEnabled) || engineEdit->idleHelper) {
         _g->overrideThrottle = true;
     }
 
@@ -169,6 +179,33 @@ __int64 __fastcall setThrottlePistonHk(__int64 a1, double a2) {
     }
 }
 
+__int64 __fastcall gasSystemResetHk(__int64 instance, double P, double T, __int64 mix) {
+    if (_g->cutFuel) {
+        Mix* mixPtr = reinterpret_cast<Mix*>(mix);
+        mixPtr->p_fuel = 0;
+        return simFunctions->m_gasSystemReset(instance, P, T, reinterpret_cast<__int64>(mixPtr));
+    }
+    return simFunctions->m_gasSystemReset(instance, P, T, mix);
+}
+
+unsigned __int64* __fastcall showMainTextHk(void* Src, const void* a2, size_t a3) {
+    const char* text = static_cast<const char*>(a2);
+    const char* substring = " // ";
+    char buffer[1024];
+
+    if (strstr(text, substring)) {
+        const char* newText = " // ES-Studio Connected";
+
+        strncpy_s(buffer, sizeof(buffer), text, _TRUNCATE);
+        strncat_s(buffer, sizeof(buffer), newText, _TRUNCATE);
+
+        text = buffer;
+        a3 = strlen(text);
+    }
+
+    return simFunctions->m_showMainText(Src, text, a3);
+}
+
 void SetupHooks() {
     uintptr_t ignitionModFunc = Memory::FindPatternIDA("40 53 48 81 EC ? ? ? ? 44 0F 29 54 24 ? 48 8B D9 48 8B 49 60 44 0F 29 4C 24 ? 45 0F 57 C9 44 0F 29 6C 24 ? 44 0F 28 E9 0F 57 C9 E8 ? ? ? ?");
     ignitionModulePtr = (void*)ignitionModFunc;
@@ -191,6 +228,12 @@ void SetupHooks() {
     uintptr_t setThrottlePistonFunc = Memory::FindPatternIDA("48 8B 89 ? ? ? ? 48 8B 01 48 FF 60 08");
     setThrottlePistonPtr = (void*)setThrottlePistonFunc;
 
+    uintptr_t gasSystemResetFunc = Memory::FindPatternIDA("F2 0F 59 49 ? 0F 28 C2 33 C0 F2 0F 59 05 ? ? ? ? F2 0F 5E C8 66 0F 6E 41 ? F3 0F E6 C0 F2 0F 11 09 F2 0F 59 05 ? ? ? ? F2");
+    gasSystemResetPtr = (void*)gasSystemResetFunc;
+
+    uintptr_t showMainTextFunc = Memory::FindPatternIDA("48 89 74 24 ? 57 48 83 EC 30 48 8B F9 49 8B F0 48 8B 49 10 4C 8B 47 18 49 8B C0 48 2B C1 48 3B F0 77 3F");
+    showMainTextPtr = (void*)showMainTextFunc;
+
     simFunctions->m_sampleTriangleMod = (_sampleTriangle)(sampleTriangleFunc); //So we can call the hooked function instead of the original easily
 
     simFunctions->m_getManifoldPressure = (_getManifoldPressure)(Memory::FindPatternIDA("4C 63 91 ? ? ? ? 45 33 C9 F2 0F 10 2D ? ? ? ? 48 8B D1 0F 57 D2 0F 57 DB 4D 8B C2 49 83 FA 04 0F 8C ? ? ? ? 48 8B 81 ? ?"));
@@ -204,6 +247,8 @@ void SetupHooks() {
     Memory::WriteLogAddress("Change Gear", changeGearFunc);
     Memory::WriteLogAddress("Set Throttle Rotary", setThrottleRotaryFunc);
     Memory::WriteLogAddress("Set Throttle Piston", setThrottlePistonFunc);
+    Memory::WriteLogAddress("Gas System Reset", gasSystemResetFunc);
+    Memory::WriteLogAddress("Show Main Text", showMainTextFunc);
     Memory::WriteLogAddress("Get Manifold Pressure", (uintptr_t)simFunctions->m_getManifoldPressure);
     Memory::WriteLogAddress("Get Cycle Angle", (uintptr_t)simFunctions->m_getCycleAngle);
 
@@ -255,6 +300,20 @@ void SetupHooks() {
     }
     else {
         MH_EnableHook(setThrottlePistonPtr);
+    }
+
+    if (MH_CreateHook(gasSystemResetPtr, &gasSystemResetHk, reinterpret_cast<LPVOID*>(&simFunctions->m_gasSystemReset)) != MH_OK) {
+        printf("Unable to hook gas system reset\n");
+    }
+    else {
+        MH_EnableHook(gasSystemResetPtr);
+    }
+
+    if (MH_CreateHook(showMainTextPtr, &showMainTextHk, reinterpret_cast<LPVOID*>(&simFunctions->m_showMainText)) != MH_OK) {
+        printf("Unable to hook show main text\n");
+    }
+    else {
+        MH_EnableHook(showMainTextPtr);
     }
 }
 

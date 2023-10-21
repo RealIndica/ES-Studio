@@ -20,6 +20,7 @@ using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
 using System.Windows.Forms.DataVisualization.Charting;
 using Melanchall.DryWetMidi.Common;
+using System.Net;
 
 namespace ES_GUI
 {
@@ -28,6 +29,8 @@ namespace ES_GUI
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
         private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
+
+        private string version = "0.2.3";
 
         private ESClient client;
 
@@ -92,21 +95,47 @@ namespace ES_GUI
             asset.Parent = baseAsset;
         }
 
+        private void UpdateCheck()
+        {
+            string newVersion = string.Empty;
+            try
+            {
+                newVersion = new WebClient().DownloadString("https://raw.githubusercontent.com/RealIndica/ES-Studio/main/version.txt");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Unable to check if a new version is available.\r\n" + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (newVersion != version)
+            {
+                DialogResult = MessageBox.Show("A new version of ES-Studio is available.\r\nWould you like to go download it now?", "Outdated Client", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (DialogResult == DialogResult.Yes)
+                {
+                    Process.Start("https://github.com/RealIndica/ES-Studio/releases");
+                }
+            }
+        }
+
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            if (!client.isConnected)
             {
-                manageControls(true);
-                manageModules(false);
-                this.Text += " - UI Preview Mode";
-            }
-            else
-            {
-                if (client.Connect())
+                if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                 {
-                    ClientUpdate();
                     manageControls(true);
                     manageModules(false);
+                    this.Text += " - UI Preview Mode";
+                }
+                else
+                {
+                    if (client.Connect())
+                    {
+                        ClientUpdate();
+                        manageControls(true);
+                        manageModules(false);
+                    }
                 }
             }
         }
@@ -128,7 +157,7 @@ namespace ES_GUI
             twoStepSwitch.Items.AddRange(new string[] { "Clutch" });
             twoStepSwitch.SelectedIndex = 0;
 
-            twoStepLimiterModeBox.Items.AddRange(new string[] { "SOFT CUT", "HARD CUT" , "RETARD" ,"HI LO", "THROT. CUT" });
+            twoStepLimiterModeBox.Items.AddRange(new string[] { "HARD CUT" , "RETARD" ,"HI LO", "THROT. CUT", "FUEL CUT" });
             twoStepLimiterModeBox.SelectedIndex = 0;
 
             ledOffPicture.Visible = true;
@@ -228,6 +257,7 @@ namespace ES_GUI
                         });
                     }
                 }
+                UpdateCheck();
             });
             t.Start();
             threadPool.Add(t);
