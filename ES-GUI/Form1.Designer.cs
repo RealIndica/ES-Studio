@@ -1031,18 +1031,18 @@
             this.label33.AutoSize = true;
             this.label33.Location = new System.Drawing.Point(6, 58);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(56, 13);
+            this.label33.Size = new System.Drawing.Size(98, 13);
             this.label33.TabIndex = 8;
-            this.label33.Text = "High RPM";
+            this.label33.Text = "High RPM (oct+12)";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(6, 16);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(54, 13);
+            this.label15.Size = new System.Drawing.Size(90, 13);
             this.label15.TabIndex = 7;
-            this.label15.Text = "Low RPM";
+            this.label15.Text = "Low RPM (oct+0)";
             // 
             // label28
             // 
