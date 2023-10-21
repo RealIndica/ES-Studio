@@ -264,7 +264,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 				engineUpdate->twoStepActive = false;
 			}
 
-			if (!_g->autoBlip && _g->cleanTps > 0.1) {
+			if (!_g->autoBlip) {
 				_g->fuelCutTps = m_throttleController->AdjustThrottle(units::toRpm(absCrank), _g->cleanTps, maxRPM);
 				if (_g->isRotary) {
 					simFunctions->m_setThrottleRotary(_g->engineInstance, _g->fuelCutTps);
@@ -277,7 +277,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 		}
 	}
 
-	if (engineEdit->idleHelper && _g->cleanTps < 0.1) {
+	if (engineEdit->idleHelper && units::toRpm(std::fabs(crank_v_theta)) + 100 < engineEdit->idleHelperRPM) {
 		double idleTps = m_throttleController->AdjustIdle(units::toRpm(std::fabs(crank_v_theta)), _g->cleanTps, engineEdit->idleHelperRPM, engineEdit->idleHelperMaxTps);
 		if (_g->isRotary) {
 			simFunctions->m_setThrottleRotary(_g->engineInstance, idleTps);

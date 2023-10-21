@@ -882,6 +882,7 @@ namespace ES_GUI
 
             if (openFileDialog.FileName != "")
             {
+                midiFile = null;
                 midiFile = MidiFile.Read(openFileDialog.FileName);
 
                 var notesAtTime = new Dictionary<TimeSpan, int>();

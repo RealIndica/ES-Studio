@@ -87,7 +87,7 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
         _g->overrideThrottle = false;
     }
 
-    if (engineEdit->twoStepLimiterMode == 4 && engineEdit->twoStepEnabled) {
+    if ((engineEdit->twoStepLimiterMode == 4 && engineEdit->twoStepEnabled) || engineEdit->idleHelper) {
         _g->overrideThrottle = true;
     }
 
