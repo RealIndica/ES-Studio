@@ -11,9 +11,11 @@ ES-Studio (Engine Simulator Studio) is a program to simulate an ECU for Engine t
 - Timing gauge with real-time spark advance adjustment
 - Customizable 2D engine paramater maps with multiple input and output paramaters
 - Advanced Dyno logger (coming soon)
+- Drag strip simulation for 1/4 mile, 1/2 mile and 1 mile times (coming soon)
 - Advanced quick shifter to cut or retard ignition during a gear shift that has customizable shift order, cut time, spark angle and automatic clutch control
 - Advanced auto blipper to "blip" the throttle during a down shift that has customizable blip time and throttle amount
-- Idle control (coming soon)
+- Idle control
+- Midi player so you can make an engine play music (rev to each note)
 - Speed limiter to limit top speed in mph or km/h
 - Custom ignition module
 - Advanced 2-step rev limiter with cut time or ignition retard (in deg) and 4 limiter modes
