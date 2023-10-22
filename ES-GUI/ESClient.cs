@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -36,6 +37,7 @@ namespace ES_GUI
             isConnected = false;
             status = "Disconnected";
             outputPipe = new comPipe("est-output-pipe");
+            update = new engineUpdate();
             edit = new engineEdit();
             customMaps = new List<Map>();
         }
@@ -106,6 +108,8 @@ namespace ES_GUI
                     else
                     {
                         isConnected = false;
+                        status = "Disconnected";
+                        update.Status = status;
                         break;
                     }
                 }
@@ -119,8 +123,26 @@ namespace ES_GUI
                 m.Update();
             }         
 
-            inputPipe = new NamedPipeServerStream("est-input-pipe");
-            inputPipe.WaitForConnection();
+            inputPipe = new NamedPipeServerStream("est-input-pipe", PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances);
+
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
+
+            var waitTask = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    inputPipe.WaitForConnection();
+                } catch {  }
+            }, token);
+
+            if (!waitTask.Wait(TimeSpan.FromSeconds(0.5)))
+            {
+                tokenSource.Cancel();
+                inputPipe.Dispose();
+                return;
+            }
+
             StreamReader reader = new StreamReader(inputPipe);
             string line = reader.ReadLine();
 

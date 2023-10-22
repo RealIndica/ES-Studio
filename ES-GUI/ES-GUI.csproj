@@ -163,6 +163,7 @@
   <ItemGroup>
     <Content Include="assets\icons\check.png" />
     <Content Include="assets\icons\cross.png" />
+    <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

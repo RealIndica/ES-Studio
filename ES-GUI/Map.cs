@@ -36,7 +36,8 @@ namespace ES_GUI
         IgnitionAdvance,
         ActiveCylinders,
         ActiveCylindersRandom,
-        ActiveCylindersRandomUpdateTime
+        ActiveCylindersRandomUpdateTime,
+        TargetAFR
     }
 
     public enum MapParamType
@@ -67,6 +68,9 @@ namespace ES_GUI
 
         public bool enabled = false;
         private bool tableReadyEdit = false;
+
+        private float minCellValue = 0f;
+        private float maxCellValue = 0f;
 
         private DataGridView gridView;
         public DataTable dataTable;
@@ -123,7 +127,7 @@ namespace ES_GUI
             }
 
             updateMapCellData();
-            
+            CheckCellHiLo();
             updateHeatMap();
             BuildData();
             tableReadyEdit = true;
@@ -163,6 +167,8 @@ namespace ES_GUI
                     client.edit.useCylinderTableRandom = active;
                     break;
                 case MapControlParam.ActiveCylindersRandomUpdateTime:
+                    break;
+                case MapControlParam.TargetAFR:
                     break;
             }
         }
@@ -230,6 +236,8 @@ namespace ES_GUI
                     break;
                 case MapControlParam.ActiveCylindersRandomUpdateTime:
                     client.edit.activeCylindersRandomUpdateTime = (int)mapController.Pos2Val(true);
+                    break;
+                case MapControlParam.TargetAFR:
                     break;
             }
         }
@@ -477,6 +485,9 @@ namespace ES_GUI
                     case MapControlParam.ActiveCylindersRandomUpdateTime:
                         entries = Enumerable.Repeat(1d, 21).ToList();
                         break;
+                    case MapControlParam.TargetAFR:
+                        entries = Enumerable.Repeat(13.5d, 21).ToList();
+                        break;
                     default: return;
                 }
 
@@ -533,7 +544,7 @@ namespace ES_GUI
                 }
 
                 updateMapCellData();
-
+                CheckCellHiLo();
                 updateHeatMap();
                 BuildData();
                 tableReadyEdit = true;
@@ -574,14 +585,20 @@ namespace ES_GUI
         #endregion
 
         #region HeatMap
-        private Color HeatMap(float value, float max)
+        private Color HeatMap(float value, float min, float max)
         {
-            if (value < 0)
+            if (value < min)
             {
                 return Color.FromArgb(255, 0, 0, 255);
             }
+
+            if (min == max)
+            {
+                return Color.FromArgb(255, 0, 128, 128);
+            }
+
             int r, g, b;
-            float val = value / max;
+            float val = (value - min) / (max - min);
             if (val > 1)
                 val = 1;
             if (val > 0.5f)
@@ -613,7 +630,7 @@ namespace ES_GUI
                         {
                             float i = 0f;
                             float.TryParse(cell.Value.ToString(), out i);
-                            Color col = HeatMap(i, 40f);
+                            Color col = HeatMap(i, minCellValue, maxCellValue);
                             DataGridViewCellStyle style = new DataGridViewCellStyle();
                             style.BackColor = col;
                             style.ForeColor = Color.Black;
@@ -622,9 +639,49 @@ namespace ES_GUI
                         }
                     }
                 });
+                Debug.WriteLog("Refreshed Heat Map");
                 Thread.Sleep(10);
             });
             t.Start();
+        }
+
+        private void CheckCellHiLo()
+        {
+            float? tentativeMin = null;
+            float? tentativeMax = null;
+
+            foreach (DataGridViewRow row in gridView.Rows)
+            {
+                foreach (DataGridViewCell c in row.Cells)
+                {
+                    if (float.TryParse(c.Value.ToString(), out float val))
+                    {
+                        tentativeMin = !tentativeMin.HasValue ? val : Math.Min(tentativeMin.Value, val);
+                        tentativeMax = !tentativeMax.HasValue ? val : Math.Max(tentativeMax.Value, val);
+                    }
+                }
+            }
+
+            bool needToUpdateHeatMap = false;
+
+            if (tentativeMin.HasValue && tentativeMin.Value != minCellValue)
+            {
+                minCellValue = tentativeMin.Value;
+                needToUpdateHeatMap = true;
+            }
+
+            if (tentativeMax.HasValue && tentativeMax.Value != maxCellValue)
+            {
+                maxCellValue = tentativeMax.Value;
+                needToUpdateHeatMap = true;
+            }
+
+            if (needToUpdateHeatMap)
+            {
+                updateHeatMap();
+            }
+
+            Debug.WriteLog($"Min: {minCellValue} Max: {maxCellValue}");
         }
         #endregion
 
@@ -645,7 +702,11 @@ namespace ES_GUI
                 DataGridViewCell cell = gridView[e.ColumnIndex, e.RowIndex];
                 float i = 0f;
                 float.TryParse(cell.Value.ToString(), out i);
-                Color col = HeatMap(i, 40f);
+
+                CheckCellHiLo();
+
+                Color col = HeatMap(i, minCellValue, maxCellValue);
+
                 DataGridViewCellStyle style = new DataGridViewCellStyle();
                 style.BackColor = col;
                 style.ForeColor = Color.Black;

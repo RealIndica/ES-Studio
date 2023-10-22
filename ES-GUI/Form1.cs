@@ -48,6 +48,8 @@ namespace ES_GUI
         private int minMidiNote = 127;
         private int maxMidiNote = 0;
 
+        private bool readyToConnect = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -67,7 +69,6 @@ namespace ES_GUI
             ThemeManager.ApplyTheme(this);
         }
 
-        //This is so hacky omg winforms suck
         private void positionAsset(Control asset, Control baseAsset, bool bringToFront = false, Control bindAsset = null, bool visible = true)
         {
             asset.BackColor = Color.Transparent;
@@ -120,7 +121,7 @@ namespace ES_GUI
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            if (!client.isConnected)
+            if (!client.isConnected && readyToConnect)
             {
                 if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                 {
@@ -184,10 +185,17 @@ namespace ES_GUI
 
         private void manageControls(bool enabled, Control.ControlCollection controls = null)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => manageControls(enabled, controls)));
+                return;
+            }
+
             if (controls == null)
             {
                 controls = this.Controls;
             }
+
             foreach (Control control in controls)
             {
                 if (control.GetType() != typeof(ToolStrip) && control.GetType() != typeof(Label))
@@ -258,6 +266,7 @@ namespace ES_GUI
                     }
                 }
                 UpdateCheck();
+                readyToConnect = true;
             });
             t.Start();
             threadPool.Add(t);
@@ -396,11 +405,6 @@ namespace ES_GUI
                             engineCylinderCountLabel.Text = "Cylinders : " + client.update.cylinderCount.ToString();
                         });
 
-                        statusLabel.Invoke((MethodInvoker)delegate
-                        {
-                            statusLabel.Text = client.status;
-                        });
-
                         gearLabel.Invoke((MethodInvoker)delegate
                         {
                             string Gear = "N";
@@ -442,10 +446,22 @@ namespace ES_GUI
                     } 
                     else
                     {
+                        statusLabel.Invoke((MethodInvoker)delegate
+                        {
+                            statusLabel.Text = "Disconnected";
+                        });
                         manageControls(false);
-                        tabControl1.SelectedIndex = 0;
+                        tabControl1.Invoke((MethodInvoker)delegate
+                        {
+                            tabControl1.SelectedIndex = 0;
+                        });
                         break;
                     }
+
+                    statusLabel.Invoke((MethodInvoker)delegate
+                    {
+                        statusLabel.Text = client.status;
+                    });
                 }
             });
             t.Start();
