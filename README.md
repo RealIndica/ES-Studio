@@ -1,5 +1,10 @@
-# ES-Studio
-Tuning Engine Simulator with ES-Studio
+<p align="center">
+  <img width="256" height="256" src="https://github.com/RealIndica/ES-Studio/blob/main/preview/icon.png?raw=true">
+</p>
+
+<h1 align="center">ES-Studio</h1>
+<h4 align="center">Tuning Engine Simulator with ES-Studio</h4>
+
 ![ES-Studio](https://github.com/RealIndica/ES-Studio/blob/main/preview/main.png?raw=true)
 
 # What exactly is this?
@@ -31,7 +36,7 @@ ES-Studio (Engine Simulator Studio) is a program to simulate an ECU for Engine t
 - Engine Simulator v0.1.14a+
 
 # Known Bugs
-- You must restart the GUI if you have disconnected from Engine Simulator or if Engine Simulator has been closed
+- ~~You must restart the GUI if you have disconnected from Engine Simulator or if Engine Simulator has been closed~~
 - Small chance of crashing when switching between engines
 - ~~Spark table can become unreadable for high RPM engines~~
 
