@@ -38,4 +38,6 @@ EngineEdit::EngineEdit() {
 	speedLimiter = false;
 	speedLimiterSpeed = 0;
 	speedLimiterMode = 0;
+	useAfrTable = false;
+	targetAfr = 0;
 }

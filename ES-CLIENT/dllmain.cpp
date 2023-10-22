@@ -85,6 +85,8 @@ void HandleUpdate(const char* input) {
     engineEdit->speedLimiter = data["speedLimiter"];
     engineEdit->speedLimiterSpeed = data["speedLimiterSpeed"];
     engineEdit->speedLimiterMode = data["speedLimiterMode"];
+    engineEdit->useAfrTable = data["useAfrTable"];
+    engineEdit->targetAfr = data["targetAfr"];
 }
 
 void PipeReader() {

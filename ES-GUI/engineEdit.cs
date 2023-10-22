@@ -46,5 +46,7 @@ namespace ES_GUI
         public bool speedLimiter;
         public double speedLimiterSpeed;
         public int speedLimiterMode;
+        public bool useAfrTable;
+        public double targetAfr;
     }
 }

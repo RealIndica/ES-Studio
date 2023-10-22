@@ -42,6 +42,8 @@ public:
 	bool speedLimiter;
 	double speedLimiterSpeed;
 	int speedLimiterMode;
+	bool useAfrTable;
+	double targetAfr;
 };
 
 #endif

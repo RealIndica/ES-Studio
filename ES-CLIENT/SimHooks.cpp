@@ -185,6 +185,17 @@ __int64 __fastcall gasSystemResetHk(__int64 instance, double P, double T, __int6
         mixPtr->p_fuel = 0;
         return simFunctions->m_gasSystemReset(instance, P, T, reinterpret_cast<__int64>(mixPtr));
     }
+
+    if (engineEdit->useAfrTable) {
+        Mix* afMix = reinterpret_cast<Mix*>(mix);
+        double target_afr = 0.8 * engineEdit->targetAfr * 4;
+        double p_air = target_afr / (1 + target_afr);
+        afMix->p_fuel = 1 - p_air;
+        afMix->p_inert = p_air * 0.75;
+        afMix->p_o2 = p_air * 0.25;
+        return simFunctions->m_gasSystemReset(instance, P, T, reinterpret_cast<__int64>(afMix));
+    }
+
     return simFunctions->m_gasSystemReset(instance, P, T, mix);
 }
 

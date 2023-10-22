@@ -169,6 +169,7 @@ namespace ES_GUI
                 case MapControlParam.ActiveCylindersRandomUpdateTime:
                     break;
                 case MapControlParam.TargetAFR:
+                    client.edit.useAfrTable = active;
                     break;
             }
         }
@@ -238,6 +239,7 @@ namespace ES_GUI
                     client.edit.activeCylindersRandomUpdateTime = (int)mapController.Pos2Val(true);
                     break;
                 case MapControlParam.TargetAFR:
+                    client.edit.targetAfr = mapController.Pos2Val(false);
                     break;
             }
         }
