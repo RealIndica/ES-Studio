@@ -1,5 +1,6 @@
 # ES-Studio
 Tuning Engine Simulator with ES-Studio
+![alt text](https://github.com/RealIndica/ES-Studio/blob/main/preview/image.png?raw=true)
 
 # What exactly is this?
 ES-Studio (Engine Simulator Studio) is a program to simulate an ECU for Engine the simulator. The idea behind the project was inspired by Tuner Studio. The original idea was to simulate an ECU that Tuner Studio could understand and have that ECU act as a proxy between Engine Simulator and this software but I prefered to create my own user interface. ES-Studio is still under heavy development and everything is subject to change!
