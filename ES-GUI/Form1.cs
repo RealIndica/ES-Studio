@@ -98,6 +98,7 @@ namespace ES_GUI
 
         private void UpdateCheck()
         {
+        #if !DEBUG
             string newVersion = string.Empty;
             try
             {
@@ -117,6 +118,7 @@ namespace ES_GUI
                     Process.Start("https://github.com/RealIndica/ES-Studio/releases");
                 }
             }
+        #endif
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -385,6 +387,11 @@ namespace ES_GUI
                                 adjustedSpeed /= (1609.344 / (60 * 60));
                                 speedGauge.DialText = "MPH";
                                 speedGauge.MaxValue = 200;
+                            }
+
+                            if (speedoDouble.Checked)
+                            {
+                                speedGauge.MaxValue *= 2;
                             }
 
                             speedGauge.Value = (float)adjustedSpeed;
@@ -1095,6 +1102,16 @@ namespace ES_GUI
         private void midiLowRPM_TextChanged(object sender, EventArgs e)
         {
             midiHighRPM.Text = (midiLowRPM.Text.ToDouble() * 2).ToString();
+        }
+
+        private void speedoDouble_CheckedChanged(object sender, EventArgs e)
+        {
+            if (speedoDouble.Checked)
+            {
+                speedGauge.MaxValue *= 2;
+                return;
+            }
+            speedGauge.MaxValue /= 2;
         }
     }
 }
