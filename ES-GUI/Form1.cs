@@ -30,7 +30,7 @@ namespace ES_GUI
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
         private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
 
-        private string version = "0.2.4";
+        private string version = "0.2.5";
 
         private ESClient client;
 
@@ -451,6 +451,8 @@ namespace ES_GUI
                             statusLabel.Text = "Disconnected";
                         });
                         manageControls(false);
+                        client.edit.useCustomIgnitionModule = false;
+                        checkBox3.Checked = false;
                         tabControl1.Invoke((MethodInvoker)delegate
                         {
                             tabControl1.SelectedIndex = 0;

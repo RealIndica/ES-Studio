@@ -288,7 +288,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 		}
 	}
 
-	if (engineEdit->idleHelper) {
+	if (engineEdit->idleHelper && !_g->autoBlip) {
 		double aTps = 0;
 
 		if (engineEdit->twoStepEnabled && engineEdit->twoStepLimiterMode == 3) {

@@ -53,7 +53,7 @@ namespace ES_GUI
             client.edit.rev1 = intToRev(Rev2);
             client.edit.rev2 = intToRev(Rev1);
             client.edit.twoStepCutTime = intToCutTime(Gain);
-            client.edit.twoStepLimiterMode = 1;
+            client.edit.twoStepLimiterMode = 0;
         }
 
     }
