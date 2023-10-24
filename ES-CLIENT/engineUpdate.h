@@ -2,6 +2,7 @@
 #define ENGINEUPDATE_H
 
 #include <vector>
+#include <map>
 
 class EngineUpdate {
 public:
@@ -21,6 +22,8 @@ public:
 	double clutchPosition;
 	bool atLimiter;
 	bool twoStepActive;
+	double engineLoad;
+	std::map<double, double> calibrationTable;
 };
 
 #endif

@@ -153,7 +153,7 @@ namespace ES_GUI
                     update = JsonConvert.DeserializeObject<engineUpdate>(line);
                     status = update.Status;
                 }
-            } catch { }
+            } catch (Exception e) { Debug.WriteLog("\r\n" + e.Message); }
 
             inputPipe.Disconnect();
             inputPipe.Dispose();

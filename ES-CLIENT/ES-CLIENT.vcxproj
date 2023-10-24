@@ -166,6 +166,7 @@
     <ClInclude Include="engineUpdate.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Helpers.h" />
+    <ClInclude Include="LoadCalculator.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="minhook\include\MinHook.h" />
     <ClInclude Include="minhook\src\buffer.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="engineUpdate.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Helpers.cpp" />
+    <ClCompile Include="LoadCalculator.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="minhook\src\buffer.c" />
     <ClCompile Include="minhook\src\hde\hde32.c" />

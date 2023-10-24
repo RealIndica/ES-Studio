@@ -44,6 +44,7 @@ public:
 	int speedLimiterMode;
 	bool useAfrTable;
 	double targetAfr;
+	bool loadCalibrationMode;
 };
 
 #endif

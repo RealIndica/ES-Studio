@@ -40,4 +40,5 @@ EngineEdit::EngineEdit() {
 	speedLimiterMode = 0;
 	useAfrTable = false;
 	targetAfr = 0;
+	loadCalibrationMode = false;
 }

@@ -7,6 +7,7 @@
 #include "MinHook.h"
 #include "SimFunctionTypes.h"
 #include "CustomIgnitionModule.h"
+#include "LoadCalculator.h";
 #include "units.h"
 
 static EngineUpdate* engineUpdate;
@@ -15,6 +16,7 @@ static SimFunctions* simFunctions;
 static Globals* _g;
 
 static CustomIgnitionModule* customIgnition;
+static LoadCalculator* loadCalculator;
 
 void* ignitionModulePtr;
 void* simProcessPtr;
@@ -26,13 +28,44 @@ void* setThrottlePistonPtr;
 void* gasSystemResetPtr;
 void* showMainTextPtr;
 
-
-
 struct Mix {
     double p_fuel = 0.0;
     double p_inert = 1.0;
     double p_o2 = 0.0;
 };
+
+struct Intake { // Size 0x1A0
+    char pad0[0xC8];
+    double m_throttle; //0xC8
+    double m_flow; //0xD0
+    double m_flowRate; //0xD8
+    double m_totalFuelInjected; //0xE0
+    double m_crossSectionArea; //0xE8
+    double m_inputFlowK; //0xF0
+    double m_idleFlowK; //0xF8
+    double m_runnerFlowRate; //0x100
+    double m_molecularAfr; //0x108
+    double m_idleThrottlePlatePosition; //0x110
+    double m_runnerLength; //0x118
+    double m_velocityDecay; //0x120
+    char pad1[0x1A0 - 0x120 - sizeof(double)];
+};
+
+#pragma region Functions
+
+double getIntakeFlowRate() {
+    double airIntake = 0;
+    int m_intakeCount = *(int*)(_g->engineInstance + 0x180);
+    Intake* intakes = *(Intake**)(_g->engineInstance + 0x178);
+    for (int i = 0; i < m_intakeCount; ++i) {
+        airIntake += intakes[i].m_flowRate;
+    }
+    return airIntake;
+}
+
+#pragma endregion
+
+#pragma region Hook Functions
 
 __int64 __fastcall ignitionModuleHk(__int64 a1, double a2) {
     engineUpdate->maxRPM = units::toRpm(*(double*)(a1 + 0x88));
@@ -44,20 +77,6 @@ __int64 __fastcall ignitionModuleHk(__int64 a1, double a2) {
     if (_g->speedInstance != NULL) {
         unsigned __int64 v1 = *(unsigned __int64*)(_g->speedInstance + 0x298);
         engineUpdate->vehicleSpeed = std::abs(*(double*)(_g->speedInstance + 0x298) * *(double*)(_g->speedInstance + 0x30));
-    }
-
-    if (_g->engineInstance != NULL) {
-        engineUpdate->manifoldPressure = simFunctions->m_getManifoldPressure(_g->engineInstance);
-
-        //for some reason, the name address changes into a pointer to the name if the length is 16 or above
-        //simple hacky workaround that works 99% of the time
-        uintptr_t nameAddress = _g->engineInstance + 0x50;
-        if (std::isalnum(*(char*)nameAddress)) {
-            engineUpdate->Name = (char*)(nameAddress);
-        }
-        else {
-            engineUpdate->Name = *(char**)(nameAddress);
-        }
     }
 
     if (engineEdit->useCustomIgnitionModule && _g->ignitionInstance != NULL) {
@@ -79,6 +98,37 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
     engineUpdate->gear = *(int*)(_g->transmissionInstance + 0x348);
     engineUpdate->clutchPosition = *(double*)(a1 + 0x28);
     _g->cleanTps = *(double*)(a1 + 0x18);
+
+    double intakeFlow = units::convert(getIntakeFlowRate(), units::scfm);
+
+    engineUpdate->engineLoad = loadCalculator->calculateLoadPct(loadCalculator->SCFMtoMAF(intakeFlow, 25.0), units::convert(units::pressure(1.0, units::atm), units::inHg), 25.0, engineUpdate->RPM, engineUpdate->tps);
+    engineUpdate->manifoldPressure = simFunctions->m_getManifoldPressure(_g->engineInstance);
+
+    if (engineEdit->loadCalibrationMode) {
+        if (!_g->calibrationCleared) {
+            loadCalculator->ClearCalibration();
+            _g->calibrationCleared = true;
+            _g->calibrationTableSent = false;
+        }
+        loadCalculator->Calibrate(engineUpdate->RPM, intakeFlow);
+    }
+    else {
+        _g->calibrationCleared = false;
+        if (!_g->calibrationTableSent) {
+            engineUpdate->calibrationTable = loadCalculator->getCalibrationTable();
+            _g->calibrationTableSent = true;
+        }
+    }
+
+    //for some reason, the name address changes into a pointer to the name if the length is 16 or above
+    //simple hacky workaround that works 99% of the time
+    uintptr_t nameAddress = _g->engineInstance + 0x50;
+    if (std::isalnum(*(char*)nameAddress)) {
+        engineUpdate->Name = (char*)(nameAddress);
+    }
+    else {
+        engineUpdate->Name = *(char**)(nameAddress);
+    }
 
     if (_g->quickShift && engineEdit->quickShiftAutoClutch) {
         *(double*)(_g->transmissionInstance + 0x368) = 0.0;
@@ -163,7 +213,7 @@ __int64 __fastcall changeGearHk(__int64 a1, signed int a2) {
         _g->autoBlipTimer = engineEdit->autoBlipTime;
         _g->autoBlip = true;
     }
-
+    
     return simFunctions->m_changeGear(a1, a2);
 }
 
@@ -216,6 +266,8 @@ unsigned __int64* __fastcall showMainTextHk(void* Src, const void* a2, size_t a3
 
     return simFunctions->m_showMainText(Src, text, a3);
 }
+
+#pragma endregion
 
 void SetupHooks() {
     uintptr_t ignitionModFunc = Memory::FindPatternIDA("40 53 48 81 EC ? ? ? ? 44 0F 29 54 24 ? 48 8B D9 48 8B 49 60 44 0F 29 4C 24 ? 45 0F 57 C9 44 0F 29 6C 24 ? 44 0F 28 E9 0F 57 C9 E8 ? ? ? ?");
@@ -334,5 +386,6 @@ SimHooks::SimHooks(EngineUpdate* update, EngineEdit* edit, SimFunctions* functio
     simFunctions = functions;
     _g = g;
     customIgnition = new CustomIgnitionModule(update, edit, functions, g);
+    loadCalculator = new LoadCalculator();
     SetupHooks();
 }

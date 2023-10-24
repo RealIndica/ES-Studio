@@ -48,5 +48,6 @@ namespace ES_GUI
         public int speedLimiterMode;
         public bool useAfrTable;
         public double targetAfr;
+        public bool loadCalibrationMode;
     }
 }

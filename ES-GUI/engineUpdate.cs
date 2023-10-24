@@ -22,5 +22,7 @@ namespace ES_GUI
         public double clutchPosition;
         public bool atLimiter;
         public bool twoStepActive;
+        public double engineLoad;
+        public SortedDictionary<double, double> calibrationTable;
     }
 }

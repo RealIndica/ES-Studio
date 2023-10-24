@@ -18,7 +18,8 @@ public:
 	bool autoBlip;
 	double autoBlipTimer;
 	bool isRotary;
-	bool shown;
+	bool calibrationCleared;
+	bool calibrationTableSent;
 	bool customIgnitionNeedsUpdate;
 	bool twoStepActive;
 	double cleanTps;

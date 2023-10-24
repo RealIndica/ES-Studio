@@ -22,6 +22,9 @@ static Globals* _g;
 
 void sendJson() {
     json j;
+
+    json mapJson;
+
     j["Status"] = engineUpdate->Status;
     j["Name"] = engineUpdate->Name;
     j["cylinderCount"] = engineUpdate->cylinderCount;
@@ -36,6 +39,14 @@ void sendJson() {
     j["clutchPosition"] = engineUpdate->clutchPosition;
     j["atLimiter"] = engineUpdate->atLimiter;
     j["twoStepActive"] = engineUpdate->twoStepActive;
+    j["engineLoad"] = engineUpdate->engineLoad;
+
+    for (const auto& pair : engineUpdate->calibrationTable) {
+        mapJson[std::to_string(pair.first)] = pair.second;
+    }
+
+    j["calibrationTable"] = mapJson;
+
     std::string pre = j.dump();
     pre.erase(std::remove(pre.begin(), pre.end(), '\n'), pre.cend());
     const char* result = pre.c_str();
@@ -87,6 +98,7 @@ void HandleUpdate(const char* input) {
     engineEdit->speedLimiterMode = data["speedLimiterMode"];
     engineEdit->useAfrTable = data["useAfrTable"];
     engineEdit->targetAfr = data["targetAfr"];
+    engineEdit->loadCalibrationMode = data["loadCalibrationMode"];
 }
 
 void PipeReader() {

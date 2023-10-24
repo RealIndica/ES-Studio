@@ -15,4 +15,6 @@ EngineUpdate::EngineUpdate() {
 	clutchPosition = 0;
 	atLimiter = false;
 	twoStepActive = false;
+	engineLoad = 0;
+	calibrationTable = { {0, 0} };
 }

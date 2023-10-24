@@ -21,6 +21,7 @@ using Melanchall.DryWetMidi.Interaction;
 using System.Windows.Forms.DataVisualization.Charting;
 using Melanchall.DryWetMidi.Common;
 using System.Net;
+using System.Runtime.Remoting.Messaging;
 
 namespace ES_GUI
 {
@@ -53,6 +54,12 @@ namespace ES_GUI
         public Form1()
         {
             InitializeComponent();
+
+            this.Text += version;
+
+            #if DEBUG
+            this.Text += " - DEBUG";
+            #endif
 
             tabControl2.HandleCreated += new EventHandler(tabControl2_HandleCreated);
 
@@ -127,9 +134,11 @@ namespace ES_GUI
             {
                 if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                 {
+                    #if DEBUG
                     manageControls(true);
                     manageModules(false);
                     this.Text += " - UI Preview Mode";
+                    #endif
                 }
                 else
                 {
@@ -397,6 +406,12 @@ namespace ES_GUI
                             speedGauge.Value = (float)adjustedSpeed;
                         });
 
+                        loadGauge.Invoke((MethodInvoker)delegate
+                        {
+                            loadGauge.Value = (float)client.update.engineLoad;
+                            loadGauge.MaxValue = 100;
+                        });
+
                         engineNameLabel.Invoke((MethodInvoker)delegate
                         {
                             engineNameLabel.Text = "Name : " + client.update.Name;
@@ -436,7 +451,6 @@ namespace ES_GUI
 
                         if (powerBuilderTimer.ElapsedMilliseconds > 50)
                         {
-
                             ledOffPicture.Invoke((MethodInvoker)delegate
                             {
                                 ledOffPicture.Visible = !client.update.atLimiter;
@@ -449,6 +463,16 @@ namespace ES_GUI
 
                             powerBuilderTimer.Stop();
                             powerBuilderTimer.Reset();
+                        }
+
+                        if (client.edit.loadCalibrationMode)
+                        {
+                            if (client.update.RPM >= client.update.maxRPM - 100)
+                            {
+                                client.edit.loadCalibrationMode = false;
+                                calibratingLabel.Text = "Waiting";
+                                ShowMessage("The calibration has completed", "Calibration");
+                            }
                         }
                     } 
                     else
@@ -475,6 +499,18 @@ namespace ES_GUI
             });
             t.Start();
             threadPool.Add(t);
+        }
+
+        private void ShowMessage(string message, string title)
+        {
+            using (CustomMessageBox msgBox = new CustomMessageBox())
+            {
+                Opacity = 0.9;
+                msgBox.SetMessage(message, title);
+                msgBox.StartPosition = FormStartPosition.CenterParent;
+                msgBox.Show(this);
+                Opacity = 1;
+            }
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -1112,6 +1148,33 @@ namespace ES_GUI
                 return;
             }
             speedGauge.MaxValue /= 2;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            {
+                #if DEBUG
+                List<string> l = new List<string>();
+
+                foreach (var v in client.update.calibrationTable)
+                {
+                    l.Add(v.Key.ToString() + " | " + v.Value.ToString());
+                }
+
+                MessageBox.Show(string.Join("\r\n", l), "Calibration Data");
+                #endif
+            }
+            else
+            {
+                DialogResult doCalibrate = MessageBox.Show("1. Make sure engine is in neutral\r\n2. Turn off engine\r\n3. Put engine on dyno\r\n\r\n4. Start engine\r\n5. Wide open throttle until dyno run complete\r\n6. Calibration completed\r\n\r\nReady to calibrate?", "Load calibration", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (doCalibrate == DialogResult.Yes)
+                {
+                    client.edit.loadCalibrationMode = true;
+                    calibratingLabel.Text = "Calibrating";
+                }
+            }
         }
     }
 }

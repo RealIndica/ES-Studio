@@ -143,7 +143,7 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 				}
 
 				if (adjustedAngle >= r0 && adjustedAngle < r1) {
-					m_ignitionEvents[m_posts[i].target] |= m_posts[i].enabled;
+					m_ignitionEvents[m_posts[i].target] |= m_posts[i].enabled;	
 				}
 			}
 			else {

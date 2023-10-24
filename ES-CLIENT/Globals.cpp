@@ -11,7 +11,8 @@ Globals::Globals() {
 	autoBlip = false;
 	autoBlipTimer = 0;
 	isRotary = false;
-	shown = false;
+	calibrationCleared = false;
+	calibrationTableSent = false;
 	customIgnitionNeedsUpdate = false;
 	twoStepActive = false;
 	cleanTps = 0;

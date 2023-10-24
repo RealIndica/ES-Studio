@@ -2,7 +2,7 @@
 #define SIMFUNCTIONTYPES_H
 
 #include "Defs.h"
-
+//TO DO: Update parameter names
 typedef __int64(__fastcall* _ignitionModuleUpdate)(__int64 a1, double a2);
 typedef void(_fastcall* _simProcess)(__int64 a1, float a2);
 typedef double(_fastcall* _sampleTriangle)(__int64 a1, double a2);

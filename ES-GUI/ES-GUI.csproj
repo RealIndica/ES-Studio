@@ -102,6 +102,12 @@
     <Compile Include="CreateMapForm.Designer.cs">
       <DependentUpon>CreateMapForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomMessageBox.Designer.cs">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Debug.cs" />
     <Compile Include="engineEdit.cs" />
     <Compile Include="engineUpdate.cs" />
@@ -126,6 +132,9 @@
     <Compile Include="ThemeManager.cs" />
     <EmbeddedResource Include="CreateMapForm.resx">
       <DependentUpon>CreateMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
