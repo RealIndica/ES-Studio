@@ -43,6 +43,10 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.loadGauge = new AquaControls.AquaGauge();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.calibratingLabel = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
             this.gearLabel = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.sparkAdvanceLabel = new System.Windows.Forms.Label();
@@ -154,6 +158,9 @@
             this.ledOnPicture = new System.Windows.Forms.PictureBox();
             this.ledOffPicture = new System.Windows.Forms.PictureBox();
             this.powerBuilderPicture = new System.Windows.Forms.PictureBox();
+            this.powerBuilderGain = new ES_GUI.KnobControl();
+            this.powerBuilderRev2 = new ES_GUI.KnobControl();
+            this.powerBuilderRev1 = new ES_GUI.KnobControl();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.autoBlipTimeBox = new System.Windows.Forms.TextBox();
@@ -182,16 +189,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.loadGauge = new AquaControls.AquaGauge();
-            this.button7 = new System.Windows.Forms.Button();
-            this.powerBuilderGain = new ES_GUI.KnobControl();
-            this.powerBuilderRev2 = new ES_GUI.KnobControl();
-            this.powerBuilderRev1 = new ES_GUI.KnobControl();
-            this.calibratingLabel = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -229,7 +230,6 @@
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -329,6 +329,53 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // loadGauge
+            // 
+            this.loadGauge.BackColor = System.Drawing.Color.Transparent;
+            this.loadGauge.DialColor = System.Drawing.Color.White;
+            this.loadGauge.DialText = "Load %";
+            this.loadGauge.Glossiness = 11.36364F;
+            this.loadGauge.Location = new System.Drawing.Point(920, 295);
+            this.loadGauge.MaxValue = 100F;
+            this.loadGauge.MinValue = 0F;
+            this.loadGauge.Name = "loadGauge";
+            this.loadGauge.NoOfSubDivisions = 1;
+            this.loadGauge.RecommendedValue = 0F;
+            this.loadGauge.Size = new System.Drawing.Size(199, 199);
+            this.loadGauge.TabIndex = 7;
+            this.loadGauge.ThresholdPercent = 0F;
+            this.loadGauge.Value = 0F;
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel5.Controls.Add(this.calibratingLabel);
+            this.panel5.Controls.Add(this.button7);
+            this.panel5.Location = new System.Drawing.Point(920, 494);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(199, 71);
+            this.panel5.TabIndex = 6;
+            // 
+            // calibratingLabel
+            // 
+            this.calibratingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.calibratingLabel.Location = new System.Drawing.Point(5, 30);
+            this.calibratingLabel.Name = "calibratingLabel";
+            this.calibratingLabel.Size = new System.Drawing.Size(190, 37);
+            this.calibratingLabel.TabIndex = 1;
+            this.calibratingLabel.Text = "Waiting";
+            this.calibratingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(63, 6);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 0;
+            this.button7.Text = "Calibrate";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // gearLabel
             // 
@@ -1565,6 +1612,54 @@
             this.powerBuilderPicture.TabIndex = 0;
             this.powerBuilderPicture.TabStop = false;
             // 
+            // powerBuilderGain
+            // 
+            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
+            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderGain.LargeChange = 1;
+            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
+            this.powerBuilderGain.Maximum = 15;
+            this.powerBuilderGain.Minimum = 0;
+            this.powerBuilderGain.Name = "powerBuilderGain";
+            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderGain.SmallChange = 1;
+            this.powerBuilderGain.TabIndex = 5;
+            this.powerBuilderGain.Value = 0;
+            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
+            // 
+            // powerBuilderRev2
+            // 
+            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
+            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev2.LargeChange = 1;
+            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
+            this.powerBuilderRev2.Maximum = 15;
+            this.powerBuilderRev2.Minimum = 0;
+            this.powerBuilderRev2.Name = "powerBuilderRev2";
+            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev2.SmallChange = 1;
+            this.powerBuilderRev2.TabIndex = 4;
+            this.powerBuilderRev2.Value = 0;
+            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
+            // 
+            // powerBuilderRev1
+            // 
+            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
+            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev1.LargeChange = 1;
+            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
+            this.powerBuilderRev1.Maximum = 15;
+            this.powerBuilderRev1.Minimum = 0;
+            this.powerBuilderRev1.Name = "powerBuilderRev1";
+            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev1.SmallChange = 1;
+            this.powerBuilderRev1.TabIndex = 3;
+            this.powerBuilderRev1.Value = 0;
+            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
+            // 
             // tabPage9
             // 
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
@@ -1863,101 +1958,6 @@
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // panel5
-            // 
-            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.panel5.Controls.Add(this.calibratingLabel);
-            this.panel5.Controls.Add(this.button7);
-            this.panel5.Location = new System.Drawing.Point(920, 494);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(199, 71);
-            this.panel5.TabIndex = 6;
-            // 
-            // loadGauge
-            // 
-            this.loadGauge.BackColor = System.Drawing.Color.Transparent;
-            this.loadGauge.DialColor = System.Drawing.Color.White;
-            this.loadGauge.DialText = null;
-            this.loadGauge.Glossiness = 11.36364F;
-            this.loadGauge.Location = new System.Drawing.Point(920, 295);
-            this.loadGauge.MaxValue = 100F;
-            this.loadGauge.MinValue = 0F;
-            this.loadGauge.Name = "loadGauge";
-            this.loadGauge.NoOfSubDivisions = 1;
-            this.loadGauge.RecommendedValue = 0F;
-            this.loadGauge.Size = new System.Drawing.Size(199, 199);
-            this.loadGauge.TabIndex = 7;
-            this.loadGauge.ThresholdPercent = 0F;
-            this.loadGauge.Value = 0F;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(63, 6);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 0;
-            this.button7.Text = "Calibrate";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // powerBuilderGain
-            // 
-            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
-            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderGain.LargeChange = 1;
-            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
-            this.powerBuilderGain.Maximum = 15;
-            this.powerBuilderGain.Minimum = 0;
-            this.powerBuilderGain.Name = "powerBuilderGain";
-            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderGain.SmallChange = 1;
-            this.powerBuilderGain.TabIndex = 5;
-            this.powerBuilderGain.Value = 0;
-            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
-            // 
-            // powerBuilderRev2
-            // 
-            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
-            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev2.LargeChange = 1;
-            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
-            this.powerBuilderRev2.Maximum = 15;
-            this.powerBuilderRev2.Minimum = 0;
-            this.powerBuilderRev2.Name = "powerBuilderRev2";
-            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev2.SmallChange = 1;
-            this.powerBuilderRev2.TabIndex = 4;
-            this.powerBuilderRev2.Value = 0;
-            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
-            // 
-            // powerBuilderRev1
-            // 
-            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
-            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev1.LargeChange = 1;
-            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
-            this.powerBuilderRev1.Maximum = 15;
-            this.powerBuilderRev1.Minimum = 0;
-            this.powerBuilderRev1.Name = "powerBuilderRev1";
-            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev1.SmallChange = 1;
-            this.powerBuilderRev1.TabIndex = 3;
-            this.powerBuilderRev1.Value = 0;
-            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
-            // 
-            // calibratingLabel
-            // 
-            this.calibratingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.calibratingLabel.Location = new System.Drawing.Point(5, 30);
-            this.calibratingLabel.Name = "calibratingLabel";
-            this.calibratingLabel.Size = new System.Drawing.Size(190, 37);
-            this.calibratingLabel.TabIndex = 1;
-            this.calibratingLabel.Text = "Waiting";
-            this.calibratingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1980,6 +1980,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.panel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
@@ -2038,7 +2039,6 @@
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
