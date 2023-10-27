@@ -1160,7 +1160,7 @@ namespace ES_GUI
 
         private void button7_Click(object sender, EventArgs e)
         {
-            DialogResult doCalibrate = MessageBox.Show("Ensure that the engine has ran for at least 5 seconds before starting this process.\r\n\r\nMake sure engine is running.\r\nReady to calibrate?", "Load calibration", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult doCalibrate = MessageBox.Show("Ensure that the engine has ran for at least 5 seconds before starting this process.\r\n\r\nMake sure engine is off.\r\nReady to calibrate?", "Load calibration", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (doCalibrate == DialogResult.Yes)
             {
