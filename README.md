@@ -6,11 +6,11 @@
 <h4 align="center">Tuning Engine Simulator with ES-Studio</h4>
 
 <p align="center">
-  <img src='preview/UI.png' width='500'>
+  <img src='preview/UI.png' width='400'>
 </p>
 <p float="left">
-  <img src='preview/UI-Map.png' width='500'>
-  <img src='preview/UI-Modules.png' width='500'>
+  <img src='preview/UI-Map.png' width='400'>
+  <img src='preview/UI-Modules.png' width='400'>
 </p>
 
 # What exactly is this?
