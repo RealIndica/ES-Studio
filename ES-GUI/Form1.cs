@@ -295,6 +295,18 @@ namespace ES_GUI
                     {
                         client.onUpdate();
 
+                        if (client.edit.loadCalibrationMode && client.update.RPM >= client.update.maxRPM - 100)
+                        {
+                            client.edit.loadCalibrationMode = false;
+                            client.onUpdate();
+                            calibratingLabel.Invoke((MethodInvoker)delegate
+                            {
+                                calibratingLabel.Text = "Waiting";
+                            });
+
+                            ShowMessage("The calibration has completed", "Calibration");
+                        }
+
                         if (!overlayTimer.IsRunning)
                         {
                             overlayTimer.Start();
@@ -464,16 +476,6 @@ namespace ES_GUI
                             powerBuilderTimer.Stop();
                             powerBuilderTimer.Reset();
                         }
-
-                        if (client.edit.loadCalibrationMode)
-                        {
-                            if (client.update.RPM >= client.update.maxRPM - 100)
-                            {
-                                client.edit.loadCalibrationMode = false;
-                                calibratingLabel.Text = "Waiting";
-                                ShowMessage("The calibration has completed", "Calibration");
-                            }
-                        }
                     } 
                     else
                     {
@@ -503,13 +505,19 @@ namespace ES_GUI
 
         private void ShowMessage(string message, string title)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<string, string>(ShowMessage), message, title);
+                return;
+            }
+
             using (CustomMessageBox msgBox = new CustomMessageBox())
             {
                 Opacity = 0.9;
                 msgBox.SetMessage(message, title);
                 msgBox.StartPosition = FormStartPosition.CenterParent;
-                msgBox.Show(this);
-                Opacity = 1;
+                msgBox.ShowDialog(this);
+                Opacity = 1.0;
             }
         }
 
@@ -1152,28 +1160,12 @@ namespace ES_GUI
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            DialogResult doCalibrate = MessageBox.Show("Ensure that the engine has ran for at least 5 seconds before starting this process.\r\n\r\nMake sure engine is running.\r\nReady to calibrate?", "Load calibration", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (doCalibrate == DialogResult.Yes)
             {
-                #if DEBUG
-                List<string> l = new List<string>();
-
-                foreach (var v in client.update.calibrationTable)
-                {
-                    l.Add(v.Key.ToString() + " | " + v.Value.ToString());
-                }
-
-                MessageBox.Show(string.Join("\r\n", l), "Calibration Data");
-                #endif
-            }
-            else
-            {
-                DialogResult doCalibrate = MessageBox.Show("1. Make sure engine is in neutral\r\n2. Turn off engine\r\n3. Put engine on dyno\r\n\r\n4. Start engine\r\n5. Wide open throttle until dyno run complete\r\n6. Calibration completed\r\n\r\nReady to calibrate?", "Load calibration", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (doCalibrate == DialogResult.Yes)
-                {
-                    client.edit.loadCalibrationMode = true;
-                    calibratingLabel.Text = "Calibrating";
-                }
+                client.edit.loadCalibrationMode = true;
+                calibratingLabel.Text = "Calibrating";
             }
         }
     }

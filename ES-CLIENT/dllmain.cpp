@@ -23,8 +23,6 @@ static Globals* _g;
 void sendJson() {
     json j;
 
-    json mapJson;
-
     j["Status"] = engineUpdate->Status;
     j["Name"] = engineUpdate->Name;
     j["cylinderCount"] = engineUpdate->cylinderCount;
@@ -40,12 +38,6 @@ void sendJson() {
     j["atLimiter"] = engineUpdate->atLimiter;
     j["twoStepActive"] = engineUpdate->twoStepActive;
     j["engineLoad"] = engineUpdate->engineLoad;
-
-    for (const auto& pair : engineUpdate->calibrationTable) {
-        mapJson[std::to_string(pair.first)] = pair.second;
-    }
-
-    j["calibrationTable"] = mapJson;
 
     std::string pre = j.dump();
     pre.erase(std::remove(pre.begin(), pre.end(), '\n'), pre.cend());

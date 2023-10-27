@@ -23,7 +23,6 @@ public:
 	bool atLimiter;
 	bool twoStepActive;
 	double engineLoad;
-	std::map<double, double> calibrationTable;
 };
 
 #endif

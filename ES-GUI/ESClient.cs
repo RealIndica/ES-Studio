@@ -47,7 +47,16 @@ namespace ES_GUI
             string dll = Path.Combine(Environment.CurrentDirectory, "bin\\ES-CLIENT.dll");
 
             if (!isConnected) {
-                if (Injector.InjectDLL("engine-sim-app", dll))
+
+                bool alreadyInjected = Injector.IsDllLoadedInProcess("engine-sim-app", "ES-CLIENT.dll");
+                bool ready = false;
+
+                if (alreadyInjected)
+                    ready = true;
+                else
+                    ready = Injector.InjectDLL("engine-sim-app", dll);
+
+                if (ready)
                 {
                     isConnected = true;
                     processWatcher();

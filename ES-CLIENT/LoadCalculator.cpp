@@ -4,7 +4,7 @@
 LoadCalculator::LoadCalculator() {
     previousLoadPct = 0.0;
     previousAirflowEMA = 0.0;
-    maxAlpha = 0.1;
+    maxAlpha = 0.05;
     minAlpha = 0.01;
     currentAlpha = maxAlpha;
     maxLoadChangePctPerCycle = 0.01;
@@ -21,7 +21,7 @@ void LoadCalculator::Calibrate(double rpm, double scfm) {
         auto lastElem = rpmToSCFM.rbegin();
 
         if (lastElem == rpmToSCFM.rend()) {
-            printf("Calibrate (First Entry): Adding rpm: %f, scfm: %f\n", rpm, scfm);
+            printf("Calibrate (Start): Adding rpm: %f, scfm: %f\n", rpm, scfm);
             rpmToSCFM[rpm] = scfm;
             scfmSum = 0.0;
             scfmSampleCount = 0;
@@ -82,12 +82,6 @@ double LoadCalculator::calculateLoadPct(double currentAirflow, double BARO, doub
     const double STP_BARO = 29.92;
     const double STP_TEMP_C = 25.0;
 
-    if (TPS >= 0.995) {
-        return 100.0;
-    }
-
-    currentAlpha = maxAlpha - (maxAlpha - minAlpha) * TPS;
-
     currentAirflow = currentAlpha * currentAirflow + (1 - currentAlpha) * previousAirflowEMA;
     previousAirflowEMA = currentAirflow;
 
@@ -99,6 +93,14 @@ double LoadCalculator::calculateLoadPct(double currentAirflow, double BARO, doub
     double change = load_pct - previousLoadPct;
     if (std::abs(change) > maxLoadChangePctPerCycle) {
         load_pct = previousLoadPct + std::copysign(maxLoadChangePctPerCycle, change);
+    }
+
+    if (TPS >= 0.995) {
+        load_pct = 1.0;
+    }
+
+    if (TPS == 0) {
+        load_pct = 0.0;
     }
 
     previousLoadPct = load_pct;

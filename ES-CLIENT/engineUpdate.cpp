@@ -16,5 +16,4 @@ EngineUpdate::EngineUpdate() {
 	atLimiter = false;
 	twoStepActive = false;
 	engineLoad = 0;
-	calibrationTable = { {0, 0} };
 }

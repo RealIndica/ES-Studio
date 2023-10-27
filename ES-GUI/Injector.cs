@@ -70,6 +70,31 @@ namespace ES_GUI
             return processes[0].Id;
         }
 
+        public static bool IsDllLoadedInProcess(string processName, string dllName)
+        {
+            Process[] processes = Process.GetProcessesByName(processName);
+
+            foreach (var process in processes)
+            {
+                try
+                {
+                    foreach (ProcessModule module in process.Modules)
+                    {
+                        if (module.ModuleName.Equals(dllName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLog($"Error checking modules for process {processName}: {ex.Message}");
+                }
+            }
+
+            return false;
+        }
+
         public static bool InjectDLL(int pid, string dllPath)
         {
             if (pid == -1)

@@ -26,7 +26,8 @@ namespace ES_GUI
         Gear,
         SpeedMPH,
         SpeedKMH,
-        Clutch
+        Clutch,
+        Load
     }
 
     public enum MapControlParam
@@ -262,6 +263,8 @@ namespace ES_GUI
                     return client.update.vehicleSpeed /= (1609.344 / (60 * 60));
                 case MapParam.Clutch:
                     return client.update.clutchPosition;
+                case MapParam.Load:
+                    return client.update.engineLoad;
                 default:
                     return 0;
             }
@@ -321,6 +324,10 @@ namespace ES_GUI
                     case MapParam.Clutch:
                         ret.Add((5 * i).ToString());
                         setControllerValue(t, 1, true);
+                        break;
+                    case MapParam.Load:
+                        ret.Add((5 * i).ToString());
+                        setControllerValue(t, 100, true);
                         break;
                     default: return new List<string>();
                 }
