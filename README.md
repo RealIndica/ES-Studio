@@ -5,7 +5,9 @@
 <h1 align="center">ES-Studio</h1>
 <h4 align="center">Tuning Engine Simulator with ES-Studio</h4>
 
-![ES-Studio](https://github.com/RealIndica/ES-Studio/blob/main/preview/main.png?raw=true)
+![ES-Studio](https://github.com/RealIndica/ES-Studio/blob/main/preview/UI.png?raw=true)
+![ES-Studio](https://github.com/RealIndica/ES-Studio/blob/main/preview/UI-Map.png?raw=true)
+![ES-Studio](https://github.com/RealIndica/ES-Studio/blob/main/preview/UI-Modules.png?raw=true)
 
 # What exactly is this?
 ES-Studio (Engine Simulator Studio) is a program to simulate an ECU for Engine the simulator. The idea behind the project was inspired by Tuner Studio. The original idea was to simulate an ECU that Tuner Studio could understand and have that ECU act as a proxy between Engine Simulator and this software but I prefered to create my own user interface. ES-Studio is still under heavy development and everything is subject to change!
