@@ -21,6 +21,8 @@ namespace ES_GUI
         public double xValue = 0;
         public double yValue = 0;
 
+        private double lastValue = 0;
+
         public MapController()
         {
             tablePoint = new Rectangle(0, 0, 0, 0);
@@ -42,7 +44,7 @@ namespace ES_GUI
             {
                 var neighbors = cellList.Where(c => Math.Abs(c.Position.X - acc.X) <= c.Position.Width && Math.Abs(c.Position.Y - acc.Y) <= c.Position.Height).ToList();
 
-                if (!neighbors.Any()) return 0;
+                if (!neighbors.Any()) return lastValue;
 
                 double weightedSum = 0;
                 double totalWeights = 0;
@@ -56,11 +58,18 @@ namespace ES_GUI
                     totalWeights += weight;
                 }
 
-                return weightedSum / totalWeights;
+                lastValue = weightedSum / totalWeights;
+                return lastValue;
             }
             else
             {
-                return cellList.FirstOrDefault(c => c.Position.Contains(acc))?.Value ?? 0;
+                var exactVal = cellList.FirstOrDefault(c => c.Position.Contains(acc))?.Value;
+                if (exactVal.HasValue)
+                {
+                    lastValue = exactVal.Value;
+                    return lastValue;
+                }
+                return lastValue;
             }
         }
 
