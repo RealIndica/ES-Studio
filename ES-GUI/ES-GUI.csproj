@@ -95,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynoUtil.cs" />
     <Compile Include="comPipe.cs" />
     <Compile Include="CreateMapForm.cs">
       <SubType>Form</SubType>

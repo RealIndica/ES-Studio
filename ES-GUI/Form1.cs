@@ -31,7 +31,7 @@ namespace ES_GUI
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
         private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
 
-        private string version = "0.2.5";
+        private string version = "0.3.0";
 
         private ESClient client;
 
@@ -50,7 +50,7 @@ namespace ES_GUI
         private int maxMidiNote = 0;
 
         private bool dynoLogging = false;
-        private Dictionary<string, Panel> seriesPanels = new Dictionary<string, Panel>();
+        private DynoUtil chartUtil;
 
         private bool readyToConnect = false;
 
@@ -161,6 +161,8 @@ namespace ES_GUI
 
             powerBuilder = new PowerBuilder(client);
 
+            chartUtil = new DynoUtil(dynoChart);
+
             threadPool = new List<Thread>();
 
             powerBuilderTimer = new Stopwatch();
@@ -178,14 +180,14 @@ namespace ES_GUI
             ledOffPicture.Visible = true;
             ledOnPicture.Visible = false;
 
-            dynoChart.MouseMove += dynoChart_MouseMove;
-            dynoChart.MouseHover += dynoChart_MouseHover;
+            dynoChart.MouseMove += chartUtil.dynoChart_MouseMove;
+            dynoChart.MouseHover += chartUtil.dynoChart_MouseHover;
 
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
-            ConfigureDynoChart();
-            CreateDynoLabels();
+            chartUtil.ConfigureDynoChart();
+            chartUtil.CreateDynoLabels();
             manageControls(false);
             GaugeSweep();
         }
@@ -236,178 +238,6 @@ namespace ES_GUI
                 c.Enabled = enabled;
             }
             tab.Controls.Find("ignitionModuleMaster", true)[0].Enabled = true;
-        }
-
-        private void ConfigureDynoChart()
-        {
-            dynoChart.Series.Clear();
-            dynoChart.ChartAreas.Clear();
-
-            ChartArea dynoArea = new ChartArea();
-            dynoArea.Name = "DynoArea";
-
-            dynoChart.ChartAreas.Add(dynoArea);
-
-            dynoArea.Position = new ElementPosition(0, 0, 90, 100);
-            dynoArea.InnerPlotPosition = new ElementPosition(5, 5, 90, 90);
-
-            dynoArea.AxisX.Title = "RPM";
-            dynoArea.AxisX.Minimum = 0;
-            dynoArea.AxisX.Maximum = 1000;
-
-            dynoArea.AxisY.Title = "Data";
-            dynoArea.AxisY.Minimum = 0;
-            dynoArea.AxisY.Maximum = 100;
-
-            Series hpSeries = new Series("Horsepower");
-            hpSeries.ChartType = SeriesChartType.Line;
-            hpSeries.Color = Color.Red;
-            hpSeries.ChartArea = "DynoArea";
-            dynoChart.Series.Add(hpSeries);
-
-            Series torqueSeries = new Series("Torque");
-            torqueSeries.ChartType = SeriesChartType.Line;
-            torqueSeries.Color = Color.Blue;
-            torqueSeries.ChartArea = "DynoArea";
-            dynoChart.Series.Add(torqueSeries);
-
-            Series tpsSeries = new Series("TPS");
-            tpsSeries.ChartType = SeriesChartType.Line;
-            tpsSeries.Color = Color.LightBlue;
-            tpsSeries.ChartArea = "DynoArea";
-            tpsSeries.BorderDashStyle = ChartDashStyle.Dot;
-            dynoChart.Series.Add(tpsSeries);
-
-            dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.Enabled = true;
-            dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.LineColor = Color.LightGray;
-            dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
-            dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.LineWidth = 1;
-
-            dynoChart.ChartAreas["DynoArea"].AxisY.MajorGrid.Enabled = true;
-            dynoChart.ChartAreas["DynoArea"].AxisY.MajorGrid.LineColor = Color.LightGray;
-            dynoChart.ChartAreas["DynoArea"].AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
-            dynoChart.ChartAreas["DynoArea"].AxisY.MajorGrid.LineWidth = 1;
-
-            dynoChart.ChartAreas["DynoArea"].CursorX.IsUserEnabled = true;
-            dynoChart.ChartAreas["DynoArea"].CursorX.IsUserSelectionEnabled = true;
-            dynoChart.ChartAreas["DynoArea"].CursorX.LineColor = Color.Gray;
-            dynoChart.ChartAreas["DynoArea"].CursorX.LineWidth = 1;
-            dynoChart.ChartAreas["DynoArea"].CursorX.LineDashStyle = ChartDashStyle.Dot;
-        }
-
-        public void AddDataToChart(double rpm, double torque, double horsepower, double tps)
-        {
-            DataPointCollection hpPoints = dynoChart.Series["Horsepower"].Points;
-            if (hpPoints.Count > 0 && rpm <= hpPoints[hpPoints.Count - 1].XValue)
-                return;
-
-            dynoChart.Series["Horsepower"].Points.AddXY(rpm, horsepower);
-            dynoChart.Series["Torque"].Points.AddXY(rpm, torque);
-            dynoChart.Series["TPS"].Points.AddXY(rpm, tps);
-
-            if (rpm > dynoChart.ChartAreas["DynoArea"].AxisX.Maximum)
-            {
-                double adjustedRPM = Math.Ceiling((rpm + 100) / 500) * 500;
-                dynoChart.ChartAreas["DynoArea"].AxisX.Maximum = adjustedRPM;
-            }
-
-            double newMaxHorsepower = Math.Ceiling((horsepower + 5) / 10) * 10;
-            if (newMaxHorsepower > dynoChart.ChartAreas["DynoArea"].AxisY.Maximum)
-            {
-                dynoChart.ChartAreas["DynoArea"].AxisY.Maximum = newMaxHorsepower;
-            }
-
-            double newMaxTorque = Math.Ceiling((torque + 5) / 10) * 10;
-            if (newMaxTorque > dynoChart.ChartAreas["DynoArea"].AxisY.Maximum)
-            {
-                dynoChart.ChartAreas["DynoArea"].AxisY.Maximum = newMaxTorque;
-            }
-        }
-
-        private void CreateDynoLabels()
-        {
-            foreach (Series s in dynoChart.Series)
-            {
-                Panel p = new Panel
-                {
-                    Size = new Size(100, 25),
-                    BackColor = Color.FromArgb(150, 255, 255, 255),
-                    Visible = false
-                };
-
-                Label l = new Label
-                {
-                    Dock = DockStyle.Fill,
-                    TextAlign = ContentAlignment.MiddleCenter
-                };
-
-                p.Controls.Add(l);
-
-                dynoChart.Controls.Add(p);
-                seriesPanels[s.Name] = p;
-            }
-        }
-
-        private void dynoChart_MouseMove(object sender, MouseEventArgs e)
-        {
-            double mouseX = dynoChart.ChartAreas["DynoArea"].AxisX.PixelPositionToValue(e.Location.X);
-            dynoChart.ChartAreas["DynoArea"].CursorX.Position = mouseX;
-
-            const int panelSpacing = 5;
-
-            foreach (Series s in dynoChart.Series)
-            {
-                DataPoint closestDataPoint = s.Points.OrderBy(p => Math.Abs(p.XValue - mouseX)).FirstOrDefault();
-
-                if (closestDataPoint != null)
-                {
-                    Label labelInPanel = (Label)seriesPanels[s.Name].Controls[0];
-                    labelInPanel.Text = $"{s.Name}: {closestDataPoint.YValues[0]:F2}";
-
-                    int panelX = (int)dynoChart.ChartAreas["DynoArea"].AxisX.ValueToPixelPosition(closestDataPoint.XValue);
-                    int panelY = (int)dynoChart.ChartAreas["DynoArea"].AxisY.ValueToPixelPosition(closestDataPoint.YValues[0]);
-
-                    foreach (Series otherSeries in dynoChart.Series)
-                    {
-                        if (otherSeries != s)
-                        {
-                            DataPoint otherDataPoint = otherSeries.Points.OrderBy(p => Math.Abs(p.XValue - mouseX)).FirstOrDefault();
-                            if (otherDataPoint != null)
-                            {
-                                int otherPanelY = (int)dynoChart.ChartAreas["DynoArea"].AxisY.ValueToPixelPosition(otherDataPoint.YValues[0]);
-                                int distanceBetweenPanels = Math.Abs(panelY - otherPanelY);
-                                int requiredDistance = seriesPanels[s.Name].Height + panelSpacing;
-
-                                if (distanceBetweenPanels < requiredDistance)
-                                {
-                                    int adjustment = (requiredDistance - distanceBetweenPanels) / 2;
-
-                                    if (closestDataPoint.YValues[0] > otherDataPoint.YValues[0])
-                                    {
-                                        panelY -= adjustment;
-                                    }
-                                    else
-                                    {
-                                        panelY += adjustment;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    seriesPanels[s.Name].Location = new Point(panelX - seriesPanels[s.Name].Width / 2, panelY - seriesPanels[s.Name].Height / 2);
-                    seriesPanels[s.Name].Visible = true;
-                }
-                else
-                {
-                    seriesPanels[s.Name].Visible = false;
-                }
-            }
-        }
-
-        private void dynoChart_MouseHover(object sender, EventArgs e)
-        {
-            //
         }
 
         private void GaugeSweep()
@@ -696,7 +526,7 @@ namespace ES_GUI
                 return;
             }
 
-            AddDataToChart(client.update.RPM, client.update.power, client.update.torque, client.update.tps * 100);
+            chartUtil.AddDataToChart(client.update.RPM, client.update.power, client.update.torque, client.update.tps * 100);
         }
 
         private void ShowMessage(string message, string title)
@@ -1372,12 +1202,17 @@ namespace ES_GUI
 
         private void dynoStop_Click(object sender, EventArgs e)
         {
-            dynoLogging = false;
+            dynoLogging = false;          
         }
 
         private void roundButton1_Click(object sender, EventArgs e)
         {
-            ConfigureDynoChart();
+            chartUtil.ConfigureDynoChart();
+        }
+
+        private void smoothChartData_Click(object sender, EventArgs e)
+        {
+            chartUtil.SmoothAllSeries((int)smoothWindow.Value);
         }
     }
 }
