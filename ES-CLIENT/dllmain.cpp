@@ -38,6 +38,8 @@ void sendJson() {
     j["atLimiter"] = engineUpdate->atLimiter;
     j["twoStepActive"] = engineUpdate->twoStepActive;
     j["engineLoad"] = engineUpdate->engineLoad;
+    j["power"] = engineUpdate->power;
+    j["torque"] = engineUpdate->torque;
 
     std::string pre = j.dump();
     pre.erase(std::remove(pre.begin(), pre.end(), '\n'), pre.cend());

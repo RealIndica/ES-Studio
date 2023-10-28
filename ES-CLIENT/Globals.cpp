@@ -7,6 +7,7 @@ Globals::Globals() {
 	speedInstance = 0;
 	engineInstance = 0;
 	transmissionInstance = 0;
+	dynoInstance = 0;
 	engineOld = 0;
 	quickShift = false;
 	quickShiftTimer = 0;

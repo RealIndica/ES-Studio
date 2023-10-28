@@ -18,6 +18,7 @@ public:
 	_getCycleAngle m_getCycleAngle;
 	_gasSystemReset m_gasSystemReset;
 	_showMainText m_showMainText;
+	_updateHpAndTorque m_updateHpAndTorque;
 };
 
 #endif

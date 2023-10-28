@@ -23,6 +23,7 @@ namespace ES_GUI
         public bool atLimiter;
         public bool twoStepActive;
         public double engineLoad;
-        public SortedDictionary<double, double> calibrationTable;
+        public double power;
+        public double torque;
     }
 }

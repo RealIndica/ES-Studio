@@ -16,4 +16,6 @@ EngineUpdate::EngineUpdate() {
 	atLimiter = false;
 	twoStepActive = false;
 	engineLoad = 0;
+	power = 0;
+	torque = 0;
 }

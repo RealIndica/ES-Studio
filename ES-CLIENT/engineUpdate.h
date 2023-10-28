@@ -23,6 +23,8 @@ public:
 	bool atLimiter;
 	bool twoStepActive;
 	double engineLoad;
+	double power;
+	double torque;
 };
 
 #endif

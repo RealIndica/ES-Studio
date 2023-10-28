@@ -12,6 +12,7 @@ public:
 	QWORD speedInstance;
 	QWORD engineInstance;
 	QWORD transmissionInstance;
+	QWORD dynoInstance;
 
 	QWORD engineOld;
 

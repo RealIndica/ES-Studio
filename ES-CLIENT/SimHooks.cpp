@@ -27,6 +27,7 @@ void* setThrottleRotaryPtr;
 void* setThrottlePistonPtr;
 void* gasSystemResetPtr;
 void* showMainTextPtr;
+void* updateHpAndTorquePtr;
 
 struct Mix {
     double p_fuel = 0.0;
@@ -175,6 +176,7 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
             Memory::WriteLogAddress("Ignition", _g->ignitionInstance, false);
             Memory::WriteLogAddress("Ignition Function", _g->ignitionFunctionInstance, false);
             Memory::WriteLogAddress("Speed", _g->speedInstance, false);
+            Memory::WriteLogAddress("Dyno", _g->dynoInstance, false);
             _g->debugShow = true;
         }
 
@@ -331,6 +333,15 @@ unsigned __int64* __fastcall showMainTextHk(void* Src, const void* a2, size_t a3
     return simFunctions->m_showMainText(Src, a2, a3);
 }
 
+unsigned __int64* __fastcall updateHpAndTorqueHk(__int64 instance, float dt) {
+    _g->dynoInstance = instance;
+    if (_g->fullAttached) {
+        engineUpdate->torque = *(double*)(instance + 0xA0);
+        engineUpdate->power = *(double*)(instance + 0xA8);
+    }
+    return simFunctions->m_updateHpAndTorque(instance, dt);
+}
+
 #pragma endregion
 
 void SetupHooks() {
@@ -363,6 +374,9 @@ void SetupHooks() {
     uintptr_t showMainTextFunc = Memory::FindPatternIDA("48 89 74 24 ? 57 48 83 EC 30 48 8B F9 49 8B F0 48 8B 49 10 4C 8B 47 18 49 8B C0 48 2B C1 48 3B F0 77 3F");
     showMainTextPtr = (void*)showMainTextFunc;
 
+    uintptr_t updateHpAndTorqueFunc = Memory::FindPatternIDA("40 53 48 83 EC 40 48 8B D9 48 8B 89 ? ? ? ? 48 85 C9 0F 84 ? ? ? ? 48 8B 01 0F 29 74 24 ? 0F 29 7C 24 ? 0F 57 FF F3 0F 5A F9 0F 28 C7 F2 0F 58 05 ? ? ? ? F2");
+    updateHpAndTorquePtr = (void*)updateHpAndTorqueFunc;
+
     simFunctions->m_sampleTriangleMod = (_sampleTriangle)(sampleTriangleFunc); //So we can call the hooked function instead of the original easily
 
     simFunctions->m_getManifoldPressure = (_getManifoldPressure)(Memory::FindPatternIDA("4C 63 91 ? ? ? ? 45 33 C9 F2 0F 10 2D ? ? ? ? 48 8B D1 0F 57 D2 0F 57 DB 4D 8B C2 49 83 FA 04 0F 8C ? ? ? ? 48 8B 81 ? ?"));
@@ -378,12 +392,14 @@ void SetupHooks() {
     Memory::WriteLogAddress("Set Throttle Piston", setThrottlePistonFunc);
     Memory::WriteLogAddress("Gas System Reset", gasSystemResetFunc);
     Memory::WriteLogAddress("Show Main Text", showMainTextFunc);
+    Memory::WriteLogAddress("Dyno Update", updateHpAndTorqueFunc);
     Memory::WriteLogAddress("Get Manifold Pressure", (uintptr_t)simFunctions->m_getManifoldPressure);
     Memory::WriteLogAddress("Get Cycle Angle", (uintptr_t)simFunctions->m_getCycleAngle);
 
 
     if (MH_CreateHook(ignitionModulePtr, &ignitionModuleHk, reinterpret_cast<LPVOID*>(&simFunctions->m_ignitionModuleUpdate)) != MH_OK) {
         printf("Unable to hook ignition module\n");
+        return;
     }
     else {
         MH_EnableHook(ignitionModulePtr);
@@ -391,6 +407,7 @@ void SetupHooks() {
     
     if (MH_CreateHook(sampleTrianglePtr, &sampleTriangleHk, reinterpret_cast<LPVOID*>(&simFunctions->m_sampleTriangle)) != MH_OK) {
         printf("Unable to hook sample triangle\n");
+        return;
     }
     else {
         MH_EnableHook(sampleTrianglePtr);
@@ -398,6 +415,7 @@ void SetupHooks() {
 
     if (MH_CreateHook(simProcessPtr, &simProcessHk, reinterpret_cast<LPVOID*>(&simFunctions->m_simProcess)) != MH_OK) {
         printf("Unable to hook main process\n");
+        return;
     }
     else {
         MH_EnableHook(simProcessPtr);
@@ -405,6 +423,7 @@ void SetupHooks() {
 
     if (MH_CreateHook(rTachRenderPtr, &rTachRenderHk, reinterpret_cast<LPVOID*>(&simFunctions->m_rTachRender)) != MH_OK) {
         printf("Unable to hook right tach render\n");
+        return;
     }
     else {
         MH_EnableHook(rTachRenderPtr);
@@ -412,6 +431,7 @@ void SetupHooks() {
 
     if (MH_CreateHook(changeGearPtr, &changeGearHk, reinterpret_cast<LPVOID*>(&simFunctions->m_changeGear)) != MH_OK) {
         printf("Unable to hook change gear\n");
+        return;
     }
     else {
         MH_EnableHook(changeGearPtr);
@@ -419,6 +439,7 @@ void SetupHooks() {
 
     if (MH_CreateHook(setThrottleRotaryPtr, &setThrottleRotaryHk, reinterpret_cast<LPVOID*>(&simFunctions->m_setThrottleRotary)) != MH_OK) {
         printf("Unable to hook throttle rotary\n");
+        return;
     }
     else {
         MH_EnableHook(setThrottleRotaryPtr);
@@ -426,6 +447,7 @@ void SetupHooks() {
 
     if (MH_CreateHook(setThrottlePistonPtr, &setThrottlePistonHk, reinterpret_cast<LPVOID*>(&simFunctions->m_setThrottlePiston)) != MH_OK) {
         printf("Unable to hook throttle piston\n");
+        return;
     }
     else {
         MH_EnableHook(setThrottlePistonPtr);
@@ -433,6 +455,7 @@ void SetupHooks() {
 
     if (MH_CreateHook(gasSystemResetPtr, &gasSystemResetHk, reinterpret_cast<LPVOID*>(&simFunctions->m_gasSystemReset)) != MH_OK) {
         printf("Unable to hook gas system reset\n");
+        return;
     }
     else {
         MH_EnableHook(gasSystemResetPtr);
@@ -440,9 +463,18 @@ void SetupHooks() {
 
     if (MH_CreateHook(showMainTextPtr, &showMainTextHk, reinterpret_cast<LPVOID*>(&simFunctions->m_showMainText)) != MH_OK) {
         printf("Unable to hook show main text\n");
+        return;
     }
     else {
         MH_EnableHook(showMainTextPtr);
+    }
+
+    if (MH_CreateHook(updateHpAndTorquePtr, &updateHpAndTorqueHk, reinterpret_cast<LPVOID*>(&simFunctions->m_updateHpAndTorque)) != MH_OK) {
+        printf("Unable to hook dyno update\n");
+        return;
+    }
+    else {
+        MH_EnableHook(updateHpAndTorquePtr);
     }
 
     _g->fullAttached = true;
