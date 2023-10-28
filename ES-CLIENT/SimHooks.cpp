@@ -183,11 +183,11 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
         //for some reason, the name address changes into a pointer to the name if the length is 16 or above
         //simple hacky workaround that works 99% of the time
         uintptr_t nameAddress = _g->engineInstance + 0x50;
-        if (std::isalnum(*(char*)nameAddress)) {
-            engineUpdate->Name = (char*)(nameAddress);
+        if (std::isalnum(*reinterpret_cast<char*>(nameAddress))) {
+            engineUpdate->Name = reinterpret_cast<char*>(nameAddress);
         }
         else {
-            engineUpdate->Name = *(char**)(nameAddress);
+            engineUpdate->Name = *reinterpret_cast<char**>(nameAddress);
         }
 
         if (_g->quickShift && engineEdit->quickShiftAutoClutch) {
