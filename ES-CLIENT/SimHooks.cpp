@@ -302,7 +302,7 @@ __int64 __fastcall gasSystemResetHk(__int64 instance, double P, double T, __int6
 
         if (engineEdit->useAfrTable) {
             Mix* afMix = reinterpret_cast<Mix*>(mix);
-            double target_afr = 0.8 * engineEdit->targetAfr * 4;
+            double target_afr = 0.8 * (13.8 * (engineEdit->targetAfr / 14.7)) * 4;
             double p_air = target_afr / (1 + target_afr);
             afMix->p_fuel = 1 - p_air;
             afMix->p_inert = p_air * 0.75;
