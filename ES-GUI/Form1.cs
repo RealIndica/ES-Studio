@@ -467,7 +467,7 @@ namespace ES_GUI
                         {
                             idleControlTPS.Invoke((MethodInvoker)delegate
                             {
-                                idleControlTPS.Text = client.update.tps.ToString();
+                                idleControlTPS.Text = Math.Round(client.update.tps, 4).ToString();
                             });
                         }
 

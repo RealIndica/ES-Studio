@@ -32,5 +32,12 @@ double ThrottleController::AdjustIdle(double currentRPM, double inputThrottle, d
     double adjustedThrottle = inputThrottle + adjustmentFactor;
 
     previousRPM = currentRPM;
-    return std::clamp(adjustedThrottle, 0.0, maxTps);
+
+    double newTps = std::clamp(adjustedThrottle, 0.0, maxTps);
+
+    if (inputThrottle > newTps) {
+        return inputThrottle;
+    }
+
+    return newTps;
 }

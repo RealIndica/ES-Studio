@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Globalization;
 
 namespace ES_GUI
 {
@@ -22,6 +23,11 @@ namespace ES_GUI
             #if DEBUG
             AllocConsole();
             #endif
+
+            CultureInfo defaultCulture = new CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
