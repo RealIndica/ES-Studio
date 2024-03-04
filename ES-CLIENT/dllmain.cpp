@@ -40,6 +40,7 @@ void sendJson() {
     j["engineLoad"] = engineUpdate->engineLoad;
     j["power"] = engineUpdate->power;
     j["torque"] = engineUpdate->torque;
+    j["airSCFM"] = engineUpdate->airSCFM;
 
     std::string pre = j.dump();
     pre.erase(std::remove(pre.begin(), pre.end(), '\n'), pre.cend());

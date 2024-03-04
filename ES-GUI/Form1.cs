@@ -22,6 +22,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using Melanchall.DryWetMidi.Common;
 using System.Net;
 using System.Runtime.Remoting.Messaging;
+using ClosedXML.Excel;
 
 namespace ES_GUI
 {
@@ -60,9 +61,9 @@ namespace ES_GUI
 
             this.Text += version;
 
-            #if DEBUG
+#if DEBUG
             this.Text += " - DEBUG";
-            #endif
+#endif
 
             tabControl2.HandleCreated += new EventHandler(tabControl2_HandleCreated);
 
@@ -74,8 +75,6 @@ namespace ES_GUI
 
             tabControl2.TabPages.RemoveAt(0);
 
-
-            ThemeManager.darkMode = false;
             ThemeManager.ApplyTheme(this);
         }
 
@@ -91,7 +90,8 @@ namespace ES_GUI
                 center.X += bindAsset.Width / 2;
                 center.Y += bindAsset.Height / 2;
                 asset.Location = center;
-            } else
+            }
+            else
             {
                 Point pos = baseAsset.PointToClient(asset.Parent.PointToScreen(asset.Location));
                 asset.Location = pos;
@@ -108,7 +108,7 @@ namespace ES_GUI
 
         private void UpdateCheck()
         {
-        #if !DEBUG
+#if !DEBUG
             string newVersion = string.Empty;
             try
             {
@@ -128,7 +128,7 @@ namespace ES_GUI
                     Process.Start("https://github.com/RealIndica/ES-Studio/releases");
                 }
             }
-        #endif
+#endif
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -137,11 +137,11 @@ namespace ES_GUI
             {
                 if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                 {
-                    #if DEBUG
+#if DEBUG
                     manageControls(true);
                     manageModules(false);
                     this.Text += " - UI Preview Mode";
-                    #endif
+#endif
                 }
                 else
                 {
@@ -161,7 +161,7 @@ namespace ES_GUI
 
             powerBuilder = new PowerBuilder(client);
 
-            chartUtil = new DynoUtil(dynoChart);
+            chartUtil = new DynoUtil(dynoChart, dynoPowerLabel, dynoPowerRPMLabel, dynoTorqueLabel, dynoTorqueRPMLabel);
 
             threadPool = new List<Thread>();
 
@@ -174,7 +174,7 @@ namespace ES_GUI
             twoStepSwitch.Items.AddRange(new string[] { "Clutch" });
             twoStepSwitch.SelectedIndex = 0;
 
-            twoStepLimiterModeBox.Items.AddRange(new string[] { "HARD CUT" , "RETARD" ,"HI LO", "THROT. CUT", "FUEL CUT" });
+            twoStepLimiterModeBox.Items.AddRange(new string[] { "HARD CUT", "RETARD", "HI LO", "THROT. CUT", "FUEL CUT" });
             twoStepLimiterModeBox.SelectedIndex = 0;
 
             ledOffPicture.Visible = true;
@@ -184,6 +184,9 @@ namespace ES_GUI
             dynoChart.MouseLeave += chartUtil.dynoChart_MouseLeave;
             dynoChart.MouseMove += chartUtil.dynoChart_MouseMove;
             dynoChart.MouseHover += chartUtil.dynoChart_MouseHover;
+
+            groupBox8.Parent = dynoChart;
+            groupBox16.Parent = dynoChart;
 
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
@@ -339,7 +342,7 @@ namespace ES_GUI
                                 }
                             }
                         }
-                        
+
 
                         if (!powerBuilderTimer.IsRunning)
                         {
@@ -493,7 +496,7 @@ namespace ES_GUI
                         {
                             DynoLog();
                         }
-                    } 
+                    }
                     else
                     {
                         statusLabel.Invoke((MethodInvoker)delegate
@@ -528,7 +531,7 @@ namespace ES_GUI
                 return;
             }
 
-            chartUtil.AddDataToChart(client.update.RPM, client.update.power, client.update.torque, client.update.tps * 100, client.update.sparkAdvance);
+            chartUtil.AddDataToChart(client.update.RPM, client.update.power, client.update.torque, client.update.tps * 100, client.update.sparkAdvance, client.update.airSCFM);
         }
 
         private void ShowMessage(string message, string title)
@@ -745,7 +748,8 @@ namespace ES_GUI
             {
                 powerBuilderTwoStepActive.Checked = false;
                 initTwoStep();
-            } else
+            }
+            else
             {
                 powerBuilderTwoStepActive.Checked = true;
                 powerBuilder.update();
@@ -758,7 +762,8 @@ namespace ES_GUI
             {
                 basicTwoStepActive.Checked = false;
                 powerBuilder.update();
-            } else
+            }
+            else
             {
                 basicTwoStepActive.Checked = true;
                 initTwoStep();
@@ -991,8 +996,7 @@ namespace ES_GUI
 
         private void darkModeWIPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ThemeManager.darkMode = true;
-            ThemeManager.ApplyTheme(this);
+            //...
         }
 
         private void idleControlTarget_TextChanged(object sender, EventArgs e)
@@ -1224,6 +1228,87 @@ namespace ES_GUI
         private void smoothChartData_Click(object sender, EventArgs e)
         {
             chartUtil.SmoothAllSeries((int)smoothWindow.Value);
+        }
+
+        private void darkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ThemeManager.setThemeState(true);
+            ThemeManager.ApplyTheme(this);
+        }
+
+        private void lightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ThemeManager.setThemeState(false);
+            ShowMessage("Restart to Apply Changes", "Theme");
+        }
+
+        private void exportDataButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Excel Document|*.xlsx|CSV (Comma Delimited)|*.csv|All|*.*";
+            saveFileDialog.Title = "Export Dyno Run";
+            saveFileDialog.ShowDialog();
+
+            if (saveFileDialog.FileName != "")
+            {
+                if (saveFileDialog.FileName.ToLower().EndsWith(".xlsx"))
+                {
+                    using (var workbook = new XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add("ChartData");
+                        var firstSeries = dynoChart.Series[0];
+                        worksheet.Cell(1, 1).Value = "RPM";
+                        for (int pointIndex = 0; pointIndex < firstSeries.Points.Count; pointIndex++)
+                        {
+                            worksheet.Cell(pointIndex + 2, 1).Value = firstSeries.Points[pointIndex].XValue;
+                        }
+                        for (int i = 0; i < dynoChart.Series.Count; i++)
+                        {
+                            var series = dynoChart.Series[i];
+                            worksheet.Cell(1, i + 2).Value = series.Name;
+                            for (int pointIndex = 0; pointIndex < series.Points.Count; pointIndex++)
+                            {
+                                var point = series.Points[pointIndex];
+                                worksheet.Cell(pointIndex + 2, i + 2).Value = point.YValues[0];
+                            }
+                        }
+                        workbook.SaveAs(saveFileDialog.FileName);
+                    }
+                }
+                else if (saveFileDialog.FileName.ToLower().EndsWith(".csv"))
+                {
+                    using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName))
+                    {
+                        var headers = new List<string> { "RPM" };
+                        headers.AddRange(dynoChart.Series.Select(s => s.Name));
+                        sw.WriteLine(string.Join(",", headers));
+
+                        for (int pointIndex = 0; pointIndex < dynoChart.Series[0].Points.Count; pointIndex++)
+                        {
+                            var line = new List<string>{ dynoChart.Series[0].Points[pointIndex].XValue.ToString() };
+
+                            foreach (var series in dynoChart.Series)
+                            {
+                                line.Add(series.Points[pointIndex].YValues[0].ToString());
+                            }
+
+                            sw.WriteLine(string.Join(",", line));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void dynoShowAdvanced_CheckedChanged(object sender, EventArgs e)
+        {
+            chartUtil.ToggleAdvancedInfo(dynoShowAdvanced.Checked);
+        }
+
+        private void screenshotButton_Click(object sender, EventArgs e)
+        {
+            Bitmap bitmap = new Bitmap(dynoChart.Width, dynoChart.Height);
+            dynoChart.DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
+            Clipboard.SetImage(bitmap);
         }
     }
 }

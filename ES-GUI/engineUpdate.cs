@@ -25,5 +25,6 @@ namespace ES_GUI
         public double engineLoad;
         public double power;
         public double torque;
+        public double airSCFM;
     }
 }

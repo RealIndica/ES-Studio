@@ -18,4 +18,5 @@ EngineUpdate::EngineUpdate() {
 	engineLoad = 0;
 	power = 0;
 	torque = 0;
+	airSCFM = 0;
 }

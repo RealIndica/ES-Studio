@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
+using Microsoft.Win32;
 
 namespace ES_GUI
 {
@@ -35,12 +36,12 @@ namespace ES_GUI
 
     public static class ThemeManager
     {
-        public static bool darkMode = false;
+        private static string userSettingsPath = @"Software\ES-Studio\Settings";
 
         private static void ApplyColor(Control c)
         {
             Debug.WriteLog(c.Name+ " old : " + c.BackColor);
-            
+
             if (c is KnobControl || c is PictureBox)
             {
                 if (c.BackColor == Color.Transparent)
@@ -113,9 +114,30 @@ namespace ES_GUI
             Debug.WriteLog(c.Name + " new : " + c.BackColor);
         }
 
+        public static void setThemeState(bool darkModeEnabled)
+        {
+            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(userSettingsPath))
+            {
+                key.SetValue("DarkMode", darkModeEnabled ? "1" : "0");
+            }
+        }
+
+        public static bool getThemeState()
+        {
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(userSettingsPath))
+            {
+                if (key != null)
+                {
+                    object value = key.GetValue("DarkMode", "0");
+                    return value.ToString() == "1";
+                }
+            }
+            return false;
+        }
+
         public static void ApplyTheme(Control control)
         {
-            if (darkMode)
+            if (getThemeState())
             {
                 ApplyColor(control);
 

@@ -135,6 +135,7 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
 
         engineUpdate->engineLoad = loadCalculator->calculateLoadPct(loadCalculator->SCFMtoMAF(intakeFlow, 25.0), units::convert(units::pressure(1.0, units::atm), units::inHg), 25.0, engineUpdate->RPM, engineUpdate->tps);
         engineUpdate->manifoldPressure = simFunctions->m_getManifoldPressure(_g->engineInstance);
+        engineUpdate->airSCFM = intakeFlow;
 
         if (engineEdit->loadCalibrationMode) {
             if (!_g->calibrationCleared) {

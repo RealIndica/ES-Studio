@@ -25,6 +25,7 @@ public:
 	double engineLoad;
 	double power;
 	double torque;
+	double airSCFM;
 };
 
 #endif
