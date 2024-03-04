@@ -40,7 +40,7 @@ namespace ES_GUI
             dynoArea.AxisY.Minimum = 0;
             dynoArea.AxisY.Maximum = 100;
 
-            Series hpSeries = new Series("Horsepower");
+            Series hpSeries = new Series("Power");
             hpSeries.ChartType = SeriesChartType.Line;
             hpSeries.Color = Color.Red;
             hpSeries.ChartArea = "DynoArea";
@@ -59,6 +59,13 @@ namespace ES_GUI
             tpsSeries.BorderDashStyle = ChartDashStyle.Dot;
             dynoChart.Series.Add(tpsSeries);
 
+            Series sparkSeries = new Series("Spark");
+            sparkSeries.ChartType = SeriesChartType.Line;
+            sparkSeries.Color = Color.DarkGreen;
+            sparkSeries.ChartArea = "DynoArea";
+            sparkSeries.BorderDashStyle = ChartDashStyle.Dot;
+            dynoChart.Series.Add(sparkSeries);
+
             dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.Enabled = true;
             dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.LineColor = Color.LightGray;
             dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
@@ -74,17 +81,20 @@ namespace ES_GUI
             dynoChart.ChartAreas["DynoArea"].CursorX.LineColor = Color.Gray;
             dynoChart.ChartAreas["DynoArea"].CursorX.LineWidth = 1;
             dynoChart.ChartAreas["DynoArea"].CursorX.LineDashStyle = ChartDashStyle.Dot;
+
+            ThemeManager.ApplyTheme(dynoChart);
         }
 
-        public void AddDataToChart(double rpm, double torque, double horsepower, double tps)
+        public void AddDataToChart(double rpm, double torque, double horsepower, double tps, double spark)
         {
-            DataPointCollection hpPoints = dynoChart.Series["Horsepower"].Points;
+            DataPointCollection hpPoints = dynoChart.Series["Power"].Points;
             if (hpPoints.Count > 0 && rpm <= hpPoints[hpPoints.Count - 1].XValue)
                 return;
 
-            dynoChart.Series["Horsepower"].Points.AddXY(rpm, horsepower);
+            dynoChart.Series["Power"].Points.AddXY(rpm, horsepower);
             dynoChart.Series["Torque"].Points.AddXY(rpm, torque);
             dynoChart.Series["TPS"].Points.AddXY(rpm, tps);
+            dynoChart.Series["Spark"].Points.AddXY(rpm, spark);
 
             if (rpm > dynoChart.ChartAreas["DynoArea"].AxisX.Maximum)
             {
@@ -129,6 +139,21 @@ namespace ES_GUI
             }
         }
 
+        public void dynoChart_MouseEnter(object sender, EventArgs e)
+        {
+            foreach (KeyValuePair<string, Panel> s in seriesPanels)
+            {
+                s.Value.Visible = true;
+            }
+        }
+
+        public void dynoChart_MouseLeave(object sender, EventArgs e)
+        {
+            foreach (KeyValuePair<string, Panel> s in seriesPanels)
+            {
+                s.Value.Visible = false;
+            }
+        }
 
         public void dynoChart_MouseMove(object sender, MouseEventArgs e)
         {

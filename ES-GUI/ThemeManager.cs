@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ES_GUI
 {
@@ -79,8 +80,6 @@ namespace ES_GUI
                 txt.BorderStyle = BorderStyle.FixedSingle;
             }
 
-            Debug.WriteLog(c.Name + " new : " + c.BackColor);
-
             if (c is GroupBox gb)
             {
                 c.ForeColor = Color.FromArgb(255, 180, 180, 180);
@@ -91,6 +90,27 @@ namespace ES_GUI
                 ts.Renderer = new DarkBorderToolStripRenderer(Color.FromArgb(255, 15, 15, 15), 2f);
                 ts.BackColor = Color.FromArgb(255, 20, 20, 20);
             }
+
+            if (c is Chart ch)
+            {
+                foreach (ChartArea e in ch.ChartAreas)
+                {
+                    e.BackColor = Color.FromArgb(255, 20, 20, 20);
+                    e.BorderColor = Color.LightGray;
+                    e.AxisX.MajorGrid.LineColor = Color.FromArgb(255, 30, 30, 30);
+                    e.AxisY.MajorGrid.LineColor = Color.FromArgb(255, 30, 30, 30);
+                    e.AxisX.LabelStyle.ForeColor = Color.White;
+                    e.AxisY.LabelStyle.ForeColor = Color.White;
+                }
+
+                foreach (Legend e in ch.Legends)
+                {
+                    e.BackColor = Color.FromArgb(255, 20, 20, 20);
+                    e.ForeColor = Color.White;
+                }
+            }
+
+            Debug.WriteLog(c.Name + " new : " + c.BackColor);
         }
 
         public static void ApplyTheme(Control control)

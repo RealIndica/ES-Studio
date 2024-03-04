@@ -180,6 +180,8 @@ namespace ES_GUI
             ledOffPicture.Visible = true;
             ledOnPicture.Visible = false;
 
+            dynoChart.MouseEnter += chartUtil.dynoChart_MouseEnter;
+            dynoChart.MouseLeave += chartUtil.dynoChart_MouseLeave;
             dynoChart.MouseMove += chartUtil.dynoChart_MouseMove;
             dynoChart.MouseHover += chartUtil.dynoChart_MouseHover;
 
@@ -526,7 +528,7 @@ namespace ES_GUI
                 return;
             }
 
-            chartUtil.AddDataToChart(client.update.RPM, client.update.power, client.update.torque, client.update.tps * 100);
+            chartUtil.AddDataToChart(client.update.RPM, client.update.power, client.update.torque, client.update.tps * 100, client.update.sparkAdvance);
         }
 
         private void ShowMessage(string message, string title)
@@ -1198,16 +1200,25 @@ namespace ES_GUI
         private void dynoStart_Click(object sender, EventArgs e)
         {
             dynoLogging = true;
+            dynoNoDataMsg.Visible = false;
+            dynoClear.ForeColor = Color.DimGray;
+            dynoClear.CircleColor = Color.MidnightBlue;
         }
 
         private void dynoStop_Click(object sender, EventArgs e)
         {
-            dynoLogging = false;          
+            dynoLogging = false;
+            dynoClear.ForeColor = Color.White;
+            dynoClear.CircleColor = Color.MediumBlue;
         }
 
         private void roundButton1_Click(object sender, EventArgs e)
         {
-            chartUtil.ConfigureDynoChart();
+            if (!dynoLogging)
+            {
+                chartUtil.ConfigureDynoChart();
+                dynoNoDataMsg.Visible = true;
+            }
         }
 
         private void smoothChartData_Click(object sender, EventArgs e)

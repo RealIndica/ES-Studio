@@ -87,10 +87,11 @@
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label35 = new System.Windows.Forms.Label();
+            this.smoothWindow = new System.Windows.Forms.NumericUpDown();
+            this.smoothChartData = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.roundButton1 = new ES_GUI.RoundButton();
-            this.dynoStop = new ES_GUI.RoundButton();
-            this.dynoStart = new ES_GUI.RoundButton();
             this.dynoChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
@@ -160,9 +161,6 @@
             this.ledOnPicture = new System.Windows.Forms.PictureBox();
             this.ledOffPicture = new System.Windows.Forms.PictureBox();
             this.powerBuilderPicture = new System.Windows.Forms.PictureBox();
-            this.powerBuilderGain = new ES_GUI.KnobControl();
-            this.powerBuilderRev2 = new ES_GUI.KnobControl();
-            this.powerBuilderRev1 = new ES_GUI.KnobControl();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.autoBlipTimeBox = new System.Windows.Forms.TextBox();
@@ -191,10 +189,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.smoothChartData = new System.Windows.Forms.Button();
-            this.smoothWindow = new System.Windows.Forms.NumericUpDown();
-            this.label35 = new System.Windows.Forms.Label();
+            this.dynoClear = new ES_GUI.RoundButton();
+            this.dynoStop = new ES_GUI.RoundButton();
+            this.dynoStart = new ES_GUI.RoundButton();
+            this.powerBuilderGain = new ES_GUI.KnobControl();
+            this.powerBuilderRev2 = new ES_GUI.KnobControl();
+            this.powerBuilderRev1 = new ES_GUI.KnobControl();
+            this.dynoNoDataMsg = new System.Windows.Forms.Panel();
+            this.label36 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -212,6 +214,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.sparkTable)).BeginInit();
             this.tabPage10.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.smoothWindow)).BeginInit();
             this.panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dynoChart)).BeginInit();
             this.tabPage4.SuspendLayout();
@@ -237,8 +241,7 @@
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.panel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.smoothWindow)).BeginInit();
+            this.dynoNoDataMsg.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -269,14 +272,14 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem1.Text = "Save";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(110, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem2.Text = "Load";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -285,14 +288,14 @@
             this.configToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.darkModeWIPToolStripMenuItem});
             this.configToolStripMenuItem.Name = "configToolStripMenuItem";
-            this.configToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.configToolStripMenuItem.Text = "Config";
             // 
             // darkModeWIPToolStripMenuItem
             // 
             this.darkModeWIPToolStripMenuItem.Name = "darkModeWIPToolStripMenuItem";
-            this.darkModeWIPToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.darkModeWIPToolStripMenuItem.Text = "Dark Mode (WIP)";
+            this.darkModeWIPToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.darkModeWIPToolStripMenuItem.Text = "Dark Mode";
             this.darkModeWIPToolStripMenuItem.Click += new System.EventHandler(this.darkModeWIPToolStripMenuItem_Click);
             // 
             // toolStripButton1
@@ -848,6 +851,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.dynoNoDataMsg);
             this.tabPage3.Controls.Add(this.panel7);
             this.tabPage3.Controls.Add(this.panel6);
             this.tabPage3.Controls.Add(this.dynoChart);
@@ -859,56 +863,73 @@
             this.tabPage3.Text = "Dyno";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel7.Controls.Add(this.label35);
+            this.panel7.Controls.Add(this.smoothWindow);
+            this.panel7.Controls.Add(this.smoothChartData);
+            this.panel7.Location = new System.Drawing.Point(1042, 263);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(82, 101);
+            this.panel7.TabIndex = 4;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(7, 17);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(43, 13);
+            this.label35.TabIndex = 2;
+            this.label35.Text = "Amount";
+            // 
+            // smoothWindow
+            // 
+            this.smoothWindow.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.smoothWindow.Location = new System.Drawing.Point(7, 36);
+            this.smoothWindow.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.smoothWindow.Name = "smoothWindow";
+            this.smoothWindow.Size = new System.Drawing.Size(71, 20);
+            this.smoothWindow.TabIndex = 1;
+            this.smoothWindow.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // smoothChartData
+            // 
+            this.smoothChartData.Location = new System.Drawing.Point(7, 62);
+            this.smoothChartData.Name = "smoothChartData";
+            this.smoothChartData.Size = new System.Drawing.Size(71, 35);
+            this.smoothChartData.TabIndex = 0;
+            this.smoothChartData.Text = "Smooth Data";
+            this.smoothChartData.UseVisualStyleBackColor = true;
+            this.smoothChartData.Click += new System.EventHandler(this.smoothChartData_Click);
+            // 
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.panel6.Controls.Add(this.roundButton1);
+            this.panel6.Controls.Add(this.dynoClear);
             this.panel6.Controls.Add(this.dynoStop);
             this.panel6.Controls.Add(this.dynoStart);
-            this.panel6.Location = new System.Drawing.Point(8, 487);
+            this.panel6.Location = new System.Drawing.Point(1042, 6);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(245, 91);
+            this.panel6.Size = new System.Drawing.Size(82, 251);
             this.panel6.TabIndex = 3;
-            // 
-            // roundButton1
-            // 
-            this.roundButton1.CircleColor = System.Drawing.Color.Blue;
-            this.roundButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.roundButton1.ForeColor = System.Drawing.Color.White;
-            this.roundButton1.Location = new System.Drawing.Point(165, 7);
-            this.roundButton1.Name = "roundButton1";
-            this.roundButton1.Size = new System.Drawing.Size(75, 75);
-            this.roundButton1.TabIndex = 4;
-            this.roundButton1.Text = "CLEAR";
-            this.roundButton1.Click += new System.EventHandler(this.roundButton1_Click);
-            // 
-            // dynoStop
-            // 
-            this.dynoStop.CircleColor = System.Drawing.Color.Red;
-            this.dynoStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dynoStop.ForeColor = System.Drawing.Color.White;
-            this.dynoStop.Location = new System.Drawing.Point(84, 7);
-            this.dynoStop.Name = "dynoStop";
-            this.dynoStop.Size = new System.Drawing.Size(75, 75);
-            this.dynoStop.TabIndex = 2;
-            this.dynoStop.Text = "STOP";
-            this.dynoStop.Click += new System.EventHandler(this.dynoStop_Click);
-            // 
-            // dynoStart
-            // 
-            this.dynoStart.CircleColor = System.Drawing.Color.Green;
-            this.dynoStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dynoStart.ForeColor = System.Drawing.Color.White;
-            this.dynoStart.Location = new System.Drawing.Point(3, 7);
-            this.dynoStart.Name = "dynoStart";
-            this.dynoStart.Size = new System.Drawing.Size(75, 75);
-            this.dynoStart.TabIndex = 1;
-            this.dynoStart.Text = "START";
-            this.dynoStart.Click += new System.EventHandler(this.dynoStart_Click);
             // 
             // dynoChart
             // 
             this.dynoChart.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            chartArea1.AxisY.TitleForeColor = System.Drawing.Color.DimGray;
             chartArea1.Name = "ChartArea1";
             this.dynoChart.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
@@ -919,7 +940,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.dynoChart.Series.Add(series1);
-            this.dynoChart.Size = new System.Drawing.Size(1116, 475);
+            this.dynoChart.Size = new System.Drawing.Size(1028, 572);
             this.dynoChart.TabIndex = 0;
             // 
             // tabPage4
@@ -1660,54 +1681,6 @@
             this.powerBuilderPicture.TabIndex = 0;
             this.powerBuilderPicture.TabStop = false;
             // 
-            // powerBuilderGain
-            // 
-            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
-            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderGain.LargeChange = 1;
-            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
-            this.powerBuilderGain.Maximum = 15;
-            this.powerBuilderGain.Minimum = 0;
-            this.powerBuilderGain.Name = "powerBuilderGain";
-            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderGain.SmallChange = 1;
-            this.powerBuilderGain.TabIndex = 5;
-            this.powerBuilderGain.Value = 0;
-            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
-            // 
-            // powerBuilderRev2
-            // 
-            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
-            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev2.LargeChange = 1;
-            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
-            this.powerBuilderRev2.Maximum = 15;
-            this.powerBuilderRev2.Minimum = 0;
-            this.powerBuilderRev2.Name = "powerBuilderRev2";
-            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev2.SmallChange = 1;
-            this.powerBuilderRev2.TabIndex = 4;
-            this.powerBuilderRev2.Value = 0;
-            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
-            // 
-            // powerBuilderRev1
-            // 
-            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
-            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
-            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.powerBuilderRev1.LargeChange = 1;
-            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
-            this.powerBuilderRev1.Maximum = 15;
-            this.powerBuilderRev1.Minimum = 0;
-            this.powerBuilderRev1.Name = "powerBuilderRev1";
-            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
-            this.powerBuilderRev1.SmallChange = 1;
-            this.powerBuilderRev1.TabIndex = 3;
-            this.powerBuilderRev1.Value = 0;
-            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
-            // 
             // tabPage9
             // 
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
@@ -2006,57 +1979,108 @@
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // panel7
+            // dynoClear
             // 
-            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.panel7.Controls.Add(this.label35);
-            this.panel7.Controls.Add(this.smoothWindow);
-            this.panel7.Controls.Add(this.smoothChartData);
-            this.panel7.Location = new System.Drawing.Point(259, 487);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(112, 91);
-            this.panel7.TabIndex = 4;
+            this.dynoClear.CircleColor = System.Drawing.Color.MediumBlue;
+            this.dynoClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dynoClear.ForeColor = System.Drawing.Color.White;
+            this.dynoClear.Location = new System.Drawing.Point(3, 166);
+            this.dynoClear.Name = "dynoClear";
+            this.dynoClear.Size = new System.Drawing.Size(75, 75);
+            this.dynoClear.TabIndex = 4;
+            this.dynoClear.Text = "CLEAR";
+            this.dynoClear.Click += new System.EventHandler(this.roundButton1_Click);
             // 
-            // smoothChartData
+            // dynoStop
             // 
-            this.smoothChartData.Location = new System.Drawing.Point(7, 62);
-            this.smoothChartData.Name = "smoothChartData";
-            this.smoothChartData.Size = new System.Drawing.Size(97, 23);
-            this.smoothChartData.TabIndex = 0;
-            this.smoothChartData.Text = "Smooth Data";
-            this.smoothChartData.UseVisualStyleBackColor = true;
-            this.smoothChartData.Click += new System.EventHandler(this.smoothChartData_Click);
+            this.dynoStop.CircleColor = System.Drawing.Color.DarkRed;
+            this.dynoStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dynoStop.ForeColor = System.Drawing.Color.White;
+            this.dynoStop.Location = new System.Drawing.Point(3, 87);
+            this.dynoStop.Name = "dynoStop";
+            this.dynoStop.Size = new System.Drawing.Size(75, 75);
+            this.dynoStop.TabIndex = 2;
+            this.dynoStop.Text = "STOP";
+            this.dynoStop.Click += new System.EventHandler(this.dynoStop_Click);
             // 
-            // smoothWindow
+            // dynoStart
             // 
-            this.smoothWindow.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.smoothWindow.Location = new System.Drawing.Point(7, 36);
-            this.smoothWindow.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.smoothWindow.Name = "smoothWindow";
-            this.smoothWindow.Size = new System.Drawing.Size(97, 20);
-            this.smoothWindow.TabIndex = 1;
-            this.smoothWindow.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            this.dynoStart.CircleColor = System.Drawing.Color.DarkGreen;
+            this.dynoStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dynoStart.ForeColor = System.Drawing.Color.White;
+            this.dynoStart.Location = new System.Drawing.Point(3, 7);
+            this.dynoStart.Name = "dynoStart";
+            this.dynoStart.Size = new System.Drawing.Size(75, 75);
+            this.dynoStart.TabIndex = 1;
+            this.dynoStart.Text = "START";
+            this.dynoStart.Click += new System.EventHandler(this.dynoStart_Click);
             // 
-            // label35
+            // powerBuilderGain
             // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(7, 17);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(43, 13);
-            this.label35.TabIndex = 2;
-            this.label35.Text = "Amount";
+            this.powerBuilderGain.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderGain.Image = global::ES_GUI.Properties.Resources.GAIN_KNOB;
+            this.powerBuilderGain.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderGain.LargeChange = 1;
+            this.powerBuilderGain.Location = new System.Drawing.Point(589, 97);
+            this.powerBuilderGain.Maximum = 15;
+            this.powerBuilderGain.Minimum = 0;
+            this.powerBuilderGain.Name = "powerBuilderGain";
+            this.powerBuilderGain.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderGain.SmallChange = 1;
+            this.powerBuilderGain.TabIndex = 5;
+            this.powerBuilderGain.Value = 0;
+            this.powerBuilderGain.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderGain_ValueChanged);
+            // 
+            // powerBuilderRev2
+            // 
+            this.powerBuilderRev2.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev2.Image = global::ES_GUI.Properties.Resources.REV2_KNOB;
+            this.powerBuilderRev2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev2.LargeChange = 1;
+            this.powerBuilderRev2.Location = new System.Drawing.Point(456, 98);
+            this.powerBuilderRev2.Maximum = 15;
+            this.powerBuilderRev2.Minimum = 0;
+            this.powerBuilderRev2.Name = "powerBuilderRev2";
+            this.powerBuilderRev2.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev2.SmallChange = 1;
+            this.powerBuilderRev2.TabIndex = 4;
+            this.powerBuilderRev2.Value = 0;
+            this.powerBuilderRev2.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev2_ValueChanged);
+            // 
+            // powerBuilderRev1
+            // 
+            this.powerBuilderRev1.BackColor = System.Drawing.Color.Transparent;
+            this.powerBuilderRev1.Image = global::ES_GUI.Properties.Resources.REV1_KNOB;
+            this.powerBuilderRev1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.powerBuilderRev1.LargeChange = 1;
+            this.powerBuilderRev1.Location = new System.Drawing.Point(322, 97);
+            this.powerBuilderRev1.Maximum = 15;
+            this.powerBuilderRev1.Minimum = 0;
+            this.powerBuilderRev1.Name = "powerBuilderRev1";
+            this.powerBuilderRev1.Size = new System.Drawing.Size(72, 72);
+            this.powerBuilderRev1.SmallChange = 1;
+            this.powerBuilderRev1.TabIndex = 3;
+            this.powerBuilderRev1.Value = 0;
+            this.powerBuilderRev1.ValueChanged += new ES_GUI.ValueChangedEventHandler(this.powerBuilderRev1_ValueChanged);
+            // 
+            // dynoNoDataMsg
+            // 
+            this.dynoNoDataMsg.BackColor = System.Drawing.Color.Gainsboro;
+            this.dynoNoDataMsg.Controls.Add(this.label36);
+            this.dynoNoDataMsg.Location = new System.Drawing.Point(254, 208);
+            this.dynoNoDataMsg.Name = "dynoNoDataMsg";
+            this.dynoNoDataMsg.Size = new System.Drawing.Size(399, 142);
+            this.dynoNoDataMsg.TabIndex = 5;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label36.Location = new System.Drawing.Point(37, 34);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(323, 73);
+            this.label36.TabIndex = 0;
+            this.label36.Text = "NO DATA";
             // 
             // Form1
             // 
@@ -2100,6 +2124,9 @@
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.smoothWindow)).EndInit();
             this.panel6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dynoChart)).EndInit();
             this.tabPage4.ResumeLayout(false);
@@ -2140,9 +2167,8 @@
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.smoothWindow)).EndInit();
+            this.dynoNoDataMsg.ResumeLayout(false);
+            this.dynoNoDataMsg.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2308,11 +2334,13 @@
         private System.Windows.Forms.Panel panel6;
         private RoundButton dynoStop;
         private RoundButton dynoStart;
-        private RoundButton roundButton1;
+        private RoundButton dynoClear;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.NumericUpDown smoothWindow;
         private System.Windows.Forms.Button smoothChartData;
+        private System.Windows.Forms.Panel dynoNoDataMsg;
+        private System.Windows.Forms.Label label36;
     }
 }
 
