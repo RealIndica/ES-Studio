@@ -99,20 +99,26 @@ double getStarterRPM() {
     return units::toRpm(std::fabs(*(double*)(_g->simulatorInstance + 0x1B8)));
 }
 
-double getTemperature() {
+double getTemperaturePiston() {
     if (_g->engineInstance) {
-        double temperature = 0;
-        int m_chamberCount = engineUpdate->cylinderCount;
-        CombustionChamber* chambers = *(CombustionChamber**)(_g->engineInstance + 0x1C0);
-        for (int i = 0; i < m_chamberCount; ++i) {
-            double v = chambers[i].v;
-            double c = (double)chambers[i].c * 0.5 * v * 8.31446261815324;
-            double t = chambers[i].t / c;
+            double temperature = 0;
+            int m_chamberCount = engineUpdate->cylinderCount;
+            CombustionChamber* chambers = *(CombustionChamber**)(_g->engineInstance + 0x1C0);
+            if (chambers) {
+                for (int i = 0; i < m_chamberCount; ++i) {
+                    double v = chambers[i].v;
+                    double c = (double)chambers[i].c * 0.5 * v * 8.31446261815324;
+                    double t = chambers[i].t / c;
 
-            temperature += t;
-        }
-        return temperature / m_chamberCount;
+                    temperature += t;
+                }
+                return temperature / m_chamberCount;
+            }
     }
+    return 0;
+}
+
+double getTemperatureRotary() {
     return 0;
 }
 
@@ -164,7 +170,12 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
         engineUpdate->manifoldPressure = simFunctions->m_getManifoldPressure(_g->engineInstance);
         engineUpdate->airSCFM = intakeFlow;
 
-        engineUpdate->temperature = getTemperature();
+        if (_g->isRotary) {
+            engineUpdate->temperature = getTemperatureRotary();
+        }
+        else {
+           engineUpdate->temperature = getTemperaturePiston();
+        }
 
         if (engineEdit->loadCalibrationMode) {
             if (!_g->calibrationCleared) {
