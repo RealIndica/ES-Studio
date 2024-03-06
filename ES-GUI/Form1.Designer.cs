@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,13 +41,31 @@
             this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.label1 = new System.Windows.Forms.Label();
+            this.statusLabel = new System.Windows.Forms.Label();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.tabControl1 = new ES_GUI.CustomTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel12 = new System.Windows.Forms.Panel();
+            this.tempSmoothing = new System.Windows.Forms.CheckBox();
+            this.tempGauge = new AquaControls.AquaGauge();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.afrGauge = new AquaControls.AquaGauge();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.scfmSmoothing = new System.Windows.Forms.CheckBox();
+            this.air10000Button = new System.Windows.Forms.RadioButton();
+            this.air2000Button = new System.Windows.Forms.RadioButton();
+            this.air500Button = new System.Windows.Forms.RadioButton();
+            this.airGauge = new AquaControls.AquaGauge();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.engineCylinderCountLabel = new System.Windows.Forms.Label();
+            this.engineNameLabel = new System.Windows.Forms.Label();
+            this.gearLabel = new System.Windows.Forms.Label();
+            this.engineRedlineLabel = new System.Windows.Forms.Label();
             this.loadGauge = new AquaControls.AquaGauge();
             this.panel5 = new System.Windows.Forms.Panel();
             this.calibratingLabel = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
-            this.gearLabel = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.sparkAdvanceLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -66,13 +84,9 @@
             this.rpmX100 = new System.Windows.Forms.RadioButton();
             this.rpmX10 = new System.Windows.Forms.RadioButton();
             this.tpsGauge = new AquaControls.AquaGauge();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.engineCylinderCountLabel = new System.Windows.Forms.Label();
-            this.engineRedlineLabel = new System.Windows.Forms.Label();
-            this.engineNameLabel = new System.Windows.Forms.Label();
             this.rpmGauge = new AquaControls.AquaGauge();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabControl2 = new ES_GUI.CustomTabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -89,6 +103,7 @@
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.screenshotButton = new System.Windows.Forms.Button();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.dynoTorqueRPMLabel = new System.Windows.Forms.Label();
             this.dynoTorqueLabel = new System.Windows.Forms.Label();
@@ -145,7 +160,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.twoStepSwitch = new System.Windows.Forms.ComboBox();
             this.twoStepEnabled = new System.Windows.Forms.CheckBox();
-            this.twoStepTabControl = new System.Windows.Forms.TabControl();
+            this.twoStepTabControl = new ES_GUI.CustomTabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.basicTwoStepActive = new System.Windows.Forms.CheckBox();
             this.label26 = new System.Windows.Forms.Label();
@@ -205,19 +220,17 @@
             this.label6 = new System.Windows.Forms.Label();
             this.quickShifterMode = new System.Windows.Forms.ComboBox();
             this.quickShifterEnabled = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.statusLabel = new System.Windows.Forms.Label();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.screenshotButton = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.panel12.SuspendLayout();
+            this.panel9.SuspendLayout();
+            this.panel8.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -339,24 +352,69 @@
             this.toolStripButton1.Text = "Connect";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 644);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Status : ";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.Location = new System.Drawing.Point(46, 644);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(73, 13);
+            this.statusLabel.TabIndex = 3;
+            this.statusLabel.Text = "Disconnected";
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(1069, 644);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(71, 17);
+            this.checkBox2.TabIndex = 4;
+            this.checkBox2.Text = "Top Most";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
             // tabControl1
             // 
+            this.tabControl1.BorderColor = System.Drawing.SystemColors.ControlDark;
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.tabControl1.ItemSize = new System.Drawing.Size(74, 20);
+            this.tabControl1.lastTabFunction = false;
             this.tabControl1.Location = new System.Drawing.Point(0, 28);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1140, 610);
+            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabControl1.TabControlBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.tabControl1.TabHeaderColor = System.Drawing.SystemColors.Control;
+            this.tabControl1.TabHeaderInactiveColor = System.Drawing.Color.LightGray;
+            this.tabControl1.TabHeaderTextColor = System.Drawing.Color.Black;
+            this.tabControl1.TabHeaderTextInactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.panel12);
+            this.tabPage1.Controls.Add(this.tempGauge);
+            this.tabPage1.Controls.Add(this.panel11);
+            this.tabPage1.Controls.Add(this.afrGauge);
+            this.tabPage1.Controls.Add(this.panel9);
+            this.tabPage1.Controls.Add(this.airGauge);
+            this.tabPage1.Controls.Add(this.panel8);
             this.tabPage1.Controls.Add(this.loadGauge);
             this.tabPage1.Controls.Add(this.panel5);
-            this.tabPage1.Controls.Add(this.gearLabel);
             this.tabPage1.Controls.Add(this.panel4);
             this.tabPage1.Controls.Add(this.panel3);
             this.tabPage1.Controls.Add(this.panel2);
@@ -364,15 +422,199 @@
             this.tabPage1.Controls.Add(this.speedGauge);
             this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Controls.Add(this.tpsGauge);
-            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.rpmGauge);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1132, 584);
+            this.tabPage1.Size = new System.Drawing.Size(1132, 582);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // panel12
+            // 
+            this.panel12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel12.Controls.Add(this.tempSmoothing);
+            this.panel12.Location = new System.Drawing.Point(8, 494);
+            this.panel12.Name = "panel12";
+            this.panel12.Size = new System.Drawing.Size(199, 71);
+            this.panel12.TabIndex = 15;
+            // 
+            // tempSmoothing
+            // 
+            this.tempSmoothing.AutoSize = true;
+            this.tempSmoothing.Location = new System.Drawing.Point(120, 3);
+            this.tempSmoothing.Name = "tempSmoothing";
+            this.tempSmoothing.Size = new System.Drawing.Size(76, 17);
+            this.tempSmoothing.TabIndex = 4;
+            this.tempSmoothing.Text = "Smoothing";
+            this.tempSmoothing.UseVisualStyleBackColor = true;
+            // 
+            // tempGauge
+            // 
+            this.tempGauge.BackColor = System.Drawing.Color.Transparent;
+            this.tempGauge.DialColor = System.Drawing.Color.White;
+            this.tempGauge.DialText = "C. Temp";
+            this.tempGauge.Glossiness = 11.36364F;
+            this.tempGauge.Location = new System.Drawing.Point(8, 289);
+            this.tempGauge.MaxValue = 4000F;
+            this.tempGauge.MinValue = 0F;
+            this.tempGauge.Name = "tempGauge";
+            this.tempGauge.NoOfSubDivisions = 1;
+            this.tempGauge.RecommendedValue = 0F;
+            this.tempGauge.Size = new System.Drawing.Size(199, 199);
+            this.tempGauge.TabIndex = 16;
+            this.tempGauge.ThresholdPercent = 0F;
+            this.tempGauge.Value = 0F;
+            // 
+            // panel11
+            // 
+            this.panel11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel11.Location = new System.Drawing.Point(213, 494);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(199, 71);
+            this.panel11.TabIndex = 13;
+            // 
+            // afrGauge
+            // 
+            this.afrGauge.BackColor = System.Drawing.Color.Transparent;
+            this.afrGauge.DialColor = System.Drawing.Color.White;
+            this.afrGauge.DialText = "AFR";
+            this.afrGauge.Glossiness = 11.36364F;
+            this.afrGauge.Location = new System.Drawing.Point(213, 289);
+            this.afrGauge.MaxValue = 50F;
+            this.afrGauge.MinValue = 0F;
+            this.afrGauge.Name = "afrGauge";
+            this.afrGauge.NoOfSubDivisions = 1;
+            this.afrGauge.RecommendedValue = 0F;
+            this.afrGauge.Size = new System.Drawing.Size(199, 199);
+            this.afrGauge.TabIndex = 14;
+            this.afrGauge.ThresholdPercent = 0F;
+            this.afrGauge.Value = 0F;
+            // 
+            // panel9
+            // 
+            this.panel9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel9.Controls.Add(this.scfmSmoothing);
+            this.panel9.Controls.Add(this.air10000Button);
+            this.panel9.Controls.Add(this.air2000Button);
+            this.panel9.Controls.Add(this.air500Button);
+            this.panel9.Location = new System.Drawing.Point(721, 494);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(199, 71);
+            this.panel9.TabIndex = 9;
+            // 
+            // scfmSmoothing
+            // 
+            this.scfmSmoothing.AutoSize = true;
+            this.scfmSmoothing.Location = new System.Drawing.Point(120, 3);
+            this.scfmSmoothing.Name = "scfmSmoothing";
+            this.scfmSmoothing.Size = new System.Drawing.Size(76, 17);
+            this.scfmSmoothing.TabIndex = 3;
+            this.scfmSmoothing.Text = "Smoothing";
+            this.scfmSmoothing.UseVisualStyleBackColor = true;
+            // 
+            // air10000Button
+            // 
+            this.air10000Button.AutoSize = true;
+            this.air10000Button.Location = new System.Drawing.Point(3, 52);
+            this.air10000Button.Name = "air10000Button";
+            this.air10000Button.Size = new System.Drawing.Size(55, 17);
+            this.air10000Button.TabIndex = 2;
+            this.air10000Button.Text = "10000";
+            this.air10000Button.UseVisualStyleBackColor = true;
+            // 
+            // air2000Button
+            // 
+            this.air2000Button.AutoSize = true;
+            this.air2000Button.Location = new System.Drawing.Point(3, 29);
+            this.air2000Button.Name = "air2000Button";
+            this.air2000Button.Size = new System.Drawing.Size(49, 17);
+            this.air2000Button.TabIndex = 1;
+            this.air2000Button.Text = "2000";
+            this.air2000Button.UseVisualStyleBackColor = true;
+            // 
+            // air500Button
+            // 
+            this.air500Button.AutoSize = true;
+            this.air500Button.Checked = true;
+            this.air500Button.Location = new System.Drawing.Point(3, 6);
+            this.air500Button.Name = "air500Button";
+            this.air500Button.Size = new System.Drawing.Size(43, 17);
+            this.air500Button.TabIndex = 0;
+            this.air500Button.TabStop = true;
+            this.air500Button.Text = "500";
+            this.air500Button.UseVisualStyleBackColor = true;
+            // 
+            // airGauge
+            // 
+            this.airGauge.BackColor = System.Drawing.Color.Transparent;
+            this.airGauge.DialColor = System.Drawing.Color.White;
+            this.airGauge.DialText = "Air SCFM";
+            this.airGauge.Glossiness = 11.36364F;
+            this.airGauge.Location = new System.Drawing.Point(721, 289);
+            this.airGauge.MaxValue = 500F;
+            this.airGauge.MinValue = 0F;
+            this.airGauge.Name = "airGauge";
+            this.airGauge.NoOfSubDivisions = 1;
+            this.airGauge.RecommendedValue = 0F;
+            this.airGauge.Size = new System.Drawing.Size(199, 199);
+            this.airGauge.TabIndex = 10;
+            this.airGauge.ThresholdPercent = 0F;
+            this.airGauge.Value = 0F;
+            // 
+            // panel8
+            // 
+            this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel8.Controls.Add(this.engineCylinderCountLabel);
+            this.panel8.Controls.Add(this.engineNameLabel);
+            this.panel8.Controls.Add(this.gearLabel);
+            this.panel8.Controls.Add(this.engineRedlineLabel);
+            this.panel8.Location = new System.Drawing.Point(418, 6);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(297, 266);
+            this.panel8.TabIndex = 8;
+            // 
+            // engineCylinderCountLabel
+            // 
+            this.engineCylinderCountLabel.AutoSize = true;
+            this.engineCylinderCountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.engineCylinderCountLabel.Location = new System.Drawing.Point(3, 238);
+            this.engineCylinderCountLabel.Name = "engineCylinderCountLabel";
+            this.engineCylinderCountLabel.Size = new System.Drawing.Size(126, 24);
+            this.engineCylinderCountLabel.TabIndex = 2;
+            this.engineCylinderCountLabel.Text = "Cylinders : 0";
+            // 
+            // engineNameLabel
+            // 
+            this.engineNameLabel.AutoSize = true;
+            this.engineNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.engineNameLabel.Location = new System.Drawing.Point(3, 195);
+            this.engineNameLabel.Name = "engineNameLabel";
+            this.engineNameLabel.Size = new System.Drawing.Size(170, 24);
+            this.engineNameLabel.TabIndex = 0;
+            this.engineNameLabel.Text = "Name : Unknown";
+            // 
+            // gearLabel
+            // 
+            this.gearLabel.AutoSize = true;
+            this.gearLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gearLabel.Location = new System.Drawing.Point(96, 20);
+            this.gearLabel.Name = "gearLabel";
+            this.gearLabel.Size = new System.Drawing.Size(115, 108);
+            this.gearLabel.TabIndex = 5;
+            this.gearLabel.Text = "N";
+            this.gearLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // engineRedlineLabel
+            // 
+            this.engineRedlineLabel.AutoSize = true;
+            this.engineRedlineLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.engineRedlineLabel.Location = new System.Drawing.Point(3, 217);
+            this.engineRedlineLabel.Name = "engineRedlineLabel";
+            this.engineRedlineLabel.Size = new System.Drawing.Size(161, 24);
+            this.engineRedlineLabel.TabIndex = 1;
+            this.engineRedlineLabel.Text = "Redline : 0 RPM";
             // 
             // loadGauge
             // 
@@ -380,7 +622,7 @@
             this.loadGauge.DialColor = System.Drawing.Color.White;
             this.loadGauge.DialText = "Load %";
             this.loadGauge.Glossiness = 11.36364F;
-            this.loadGauge.Location = new System.Drawing.Point(920, 295);
+            this.loadGauge.Location = new System.Drawing.Point(926, 295);
             this.loadGauge.MaxValue = 100F;
             this.loadGauge.MinValue = 0F;
             this.loadGauge.Name = "loadGauge";
@@ -396,7 +638,7 @@
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.panel5.Controls.Add(this.calibratingLabel);
             this.panel5.Controls.Add(this.button7);
-            this.panel5.Location = new System.Drawing.Point(920, 494);
+            this.panel5.Location = new System.Drawing.Point(926, 494);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(199, 71);
             this.panel5.TabIndex = 6;
@@ -421,17 +663,6 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // gearLabel
-            // 
-            this.gearLabel.AutoSize = true;
-            this.gearLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gearLabel.Location = new System.Drawing.Point(513, 97);
-            this.gearLabel.Name = "gearLabel";
-            this.gearLabel.Size = new System.Drawing.Size(115, 108);
-            this.gearLabel.TabIndex = 5;
-            this.gearLabel.Text = "N";
-            this.gearLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -439,7 +670,7 @@
             this.panel4.Controls.Add(this.button1);
             this.panel4.Controls.Add(this.label2);
             this.panel4.Controls.Add(this.trackBar1);
-            this.panel4.Location = new System.Drawing.Point(923, 201);
+            this.panel4.Location = new System.Drawing.Point(926, 201);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(199, 71);
             this.panel4.TabIndex = 1;
@@ -540,7 +771,7 @@
             this.timingGauge.DialColor = System.Drawing.Color.White;
             this.timingGauge.DialText = "Timing";
             this.timingGauge.Glossiness = 11.36364F;
-            this.timingGauge.Location = new System.Drawing.Point(923, 3);
+            this.timingGauge.Location = new System.Drawing.Point(926, 3);
             this.timingGauge.MaxValue = 100F;
             this.timingGauge.MinValue = -100F;
             this.timingGauge.Name = "timingGauge";
@@ -639,48 +870,6 @@
             this.tpsGauge.ThresholdPercent = 0F;
             this.tpsGauge.Value = 0F;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.engineCylinderCountLabel);
-            this.groupBox1.Controls.Add(this.engineRedlineLabel);
-            this.groupBox1.Controls.Add(this.engineNameLabel);
-            this.groupBox1.Location = new System.Drawing.Point(8, 396);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(554, 182);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Information";
-            // 
-            // engineCylinderCountLabel
-            // 
-            this.engineCylinderCountLabel.AutoSize = true;
-            this.engineCylinderCountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.engineCylinderCountLabel.Location = new System.Drawing.Point(6, 137);
-            this.engineCylinderCountLabel.Name = "engineCylinderCountLabel";
-            this.engineCylinderCountLabel.Size = new System.Drawing.Size(238, 42);
-            this.engineCylinderCountLabel.TabIndex = 2;
-            this.engineCylinderCountLabel.Text = "Cylinders : 0";
-            // 
-            // engineRedlineLabel
-            // 
-            this.engineRedlineLabel.AutoSize = true;
-            this.engineRedlineLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.engineRedlineLabel.Location = new System.Drawing.Point(6, 74);
-            this.engineRedlineLabel.Name = "engineRedlineLabel";
-            this.engineRedlineLabel.Size = new System.Drawing.Size(304, 42);
-            this.engineRedlineLabel.TabIndex = 1;
-            this.engineRedlineLabel.Text = "Redline : 0 RPM";
-            // 
-            // engineNameLabel
-            // 
-            this.engineNameLabel.AutoSize = true;
-            this.engineNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.engineNameLabel.Location = new System.Drawing.Point(6, 15);
-            this.engineNameLabel.Name = "engineNameLabel";
-            this.engineNameLabel.Size = new System.Drawing.Size(318, 42);
-            this.engineNameLabel.TabIndex = 0;
-            this.engineNameLabel.Text = "Name : Unknown";
-            // 
             // rpmGauge
             // 
             this.rpmGauge.BackColor = System.Drawing.Color.Transparent;
@@ -701,22 +890,32 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tabControl2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1132, 584);
+            this.tabPage2.Size = new System.Drawing.Size(1132, 582);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Maps";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabControl2
             // 
+            this.tabControl2.BorderColor = System.Drawing.SystemColors.ControlDark;
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Controls.Add(this.tabPage10);
+            this.tabControl2.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.tabControl2.ItemSize = new System.Drawing.Size(60, 20);
+            this.tabControl2.lastTabFunction = true;
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(1136, 584);
+            this.tabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabControl2.TabControlBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.tabControl2.TabHeaderColor = System.Drawing.SystemColors.Control;
+            this.tabControl2.TabHeaderInactiveColor = System.Drawing.Color.LightGray;
+            this.tabControl2.TabHeaderTextColor = System.Drawing.Color.Black;
+            this.tabControl2.TabHeaderTextInactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.tabControl2.TabIndex = 10;
             this.tabControl2.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl2_Selecting);
             this.tabControl2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseDown);
@@ -735,10 +934,10 @@
             this.tabPage5.Controls.Add(this.button2);
             this.tabPage5.Controls.Add(this.label3);
             this.tabPage5.Controls.Add(this.label4);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Location = new System.Drawing.Point(4, 24);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(1128, 558);
+            this.tabPage5.Size = new System.Drawing.Size(1128, 556);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Ignition";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -864,9 +1063,9 @@
             // tabPage10
             // 
             this.tabPage10.Controls.Add(this.label5);
-            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Location = new System.Drawing.Point(4, 24);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Size = new System.Drawing.Size(1128, 558);
+            this.tabPage10.Size = new System.Drawing.Size(1128, 556);
             this.tabPage10.TabIndex = 2;
             this.tabPage10.Text = "+";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -892,13 +1091,23 @@
             this.tabPage3.Controls.Add(this.panel7);
             this.tabPage3.Controls.Add(this.panel6);
             this.tabPage3.Controls.Add(this.dynoChart);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1132, 584);
+            this.tabPage3.Size = new System.Drawing.Size(1132, 582);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Dyno";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // screenshotButton
+            // 
+            this.screenshotButton.Location = new System.Drawing.Point(1042, 399);
+            this.screenshotButton.Name = "screenshotButton";
+            this.screenshotButton.Size = new System.Drawing.Size(82, 23);
+            this.screenshotButton.TabIndex = 10;
+            this.screenshotButton.Text = "Copy";
+            this.screenshotButton.UseVisualStyleBackColor = true;
+            this.screenshotButton.Click += new System.EventHandler(this.screenshotButton_Click);
             // 
             // groupBox16
             // 
@@ -1105,26 +1314,27 @@
             // 
             // dynoChart
             // 
+            this.dynoChart.BorderlineColor = System.Drawing.Color.Silver;
             this.dynoChart.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea3.AxisY.TitleForeColor = System.Drawing.Color.DimGray;
-            chartArea3.Name = "ChartArea1";
-            this.dynoChart.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.dynoChart.Legends.Add(legend3);
+            chartArea1.AxisY.TitleForeColor = System.Drawing.Color.DimGray;
+            chartArea1.Name = "ChartArea1";
+            this.dynoChart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.dynoChart.Legends.Add(legend1);
             this.dynoChart.Location = new System.Drawing.Point(8, 6);
             this.dynoChart.Name = "dynoChart";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.dynoChart.Series.Add(series3);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.dynoChart.Series.Add(series1);
             this.dynoChart.Size = new System.Drawing.Size(1028, 572);
             this.dynoChart.TabIndex = 0;
             // 
             // tabPage6
             // 
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Location = new System.Drawing.Point(4, 24);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(1132, 584);
+            this.tabPage6.Size = new System.Drawing.Size(1132, 582);
             this.tabPage6.TabIndex = 4;
             this.tabPage6.Text = "Drag Strip";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -1137,10 +1347,10 @@
             this.tabPage4.Controls.Add(this.groupBox9);
             this.tabPage4.Controls.Add(this.groupBox6);
             this.tabPage4.Controls.Add(this.groupBox2);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1132, 584);
+            this.tabPage4.Size = new System.Drawing.Size(1132, 582);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Modules";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1524,13 +1734,23 @@
             // 
             // twoStepTabControl
             // 
+            this.twoStepTabControl.BorderColor = System.Drawing.SystemColors.ControlDark;
             this.twoStepTabControl.Controls.Add(this.tabPage7);
             this.twoStepTabControl.Controls.Add(this.tabPage8);
             this.twoStepTabControl.Controls.Add(this.tabPage9);
+            this.twoStepTabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.twoStepTabControl.ItemSize = new System.Drawing.Size(94, 20);
+            this.twoStepTabControl.lastTabFunction = false;
             this.twoStepTabControl.Location = new System.Drawing.Point(6, 19);
             this.twoStepTabControl.Name = "twoStepTabControl";
             this.twoStepTabControl.SelectedIndex = 0;
             this.twoStepTabControl.Size = new System.Drawing.Size(738, 313);
+            this.twoStepTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.twoStepTabControl.TabControlBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.twoStepTabControl.TabHeaderColor = System.Drawing.SystemColors.Control;
+            this.twoStepTabControl.TabHeaderInactiveColor = System.Drawing.Color.LightGray;
+            this.twoStepTabControl.TabHeaderTextColor = System.Drawing.Color.Black;
+            this.twoStepTabControl.TabHeaderTextInactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.twoStepTabControl.TabIndex = 0;
             // 
             // tabPage7
@@ -1542,10 +1762,10 @@
             this.tabPage7.Controls.Add(this.limiterLight);
             this.tabPage7.Controls.Add(this.groupBox11);
             this.tabPage7.Controls.Add(this.groupBox10);
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Location = new System.Drawing.Point(4, 24);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(730, 287);
+            this.tabPage7.Size = new System.Drawing.Size(730, 285);
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "Basic";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -1808,10 +2028,10 @@
             this.tabPage8.Controls.Add(this.powerBuilderGain);
             this.tabPage8.Controls.Add(this.powerBuilderRev2);
             this.tabPage8.Controls.Add(this.powerBuilderRev1);
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Location = new System.Drawing.Point(4, 24);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(730, 287);
+            this.tabPage8.Size = new System.Drawing.Size(730, 285);
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "Power Builder";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -1917,12 +2137,12 @@
             // 
             // tabPage9
             // 
-            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Location = new System.Drawing.Point(4, 24);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(730, 287);
+            this.tabPage9.Size = new System.Drawing.Size(730, 285);
             this.tabPage9.TabIndex = 2;
-            this.tabPage9.Text = "Omex Clubman";
+            this.tabPage9.Text = "Omex";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
             // groupBox6
@@ -2184,45 +2404,6 @@
             this.quickShifterEnabled.UseVisualStyleBackColor = true;
             this.quickShifterEnabled.CheckedChanged += new System.EventHandler(this.quickShifterEnabled_CheckedChanged);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 644);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Status : ";
-            // 
-            // statusLabel
-            // 
-            this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(46, 644);
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(73, 13);
-            this.statusLabel.TabIndex = 3;
-            this.statusLabel.Text = "Disconnected";
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(1069, 644);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(71, 17);
-            this.checkBox2.TabIndex = 4;
-            this.checkBox2.Text = "Top Most";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
-            // 
-            // screenshotButton
-            // 
-            this.screenshotButton.Location = new System.Drawing.Point(1042, 399);
-            this.screenshotButton.Name = "screenshotButton";
-            this.screenshotButton.Size = new System.Drawing.Size(82, 23);
-            this.screenshotButton.TabIndex = 10;
-            this.screenshotButton.Text = "Copy";
-            this.screenshotButton.UseVisualStyleBackColor = true;
-            this.screenshotButton.Click += new System.EventHandler(this.screenshotButton_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2244,7 +2425,12 @@
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.panel12.ResumeLayout(false);
+            this.panel12.PerformLayout();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -2253,8 +2439,6 @@
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
@@ -2322,13 +2506,12 @@
 
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private CustomTabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label statusLabel;
         private AquaControls.AquaGauge rpmGauge;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label engineCylinderCountLabel;
         private System.Windows.Forms.Label engineRedlineLabel;
         private System.Windows.Forms.Label engineNameLabel;
@@ -2381,13 +2564,13 @@
         private System.Windows.Forms.TextBox autoBlipTimeBox;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label gearLabel;
-        private System.Windows.Forms.TabControl tabControl2;
+        private CustomTabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ComboBox twoStepSwitch;
         private System.Windows.Forms.CheckBox twoStepEnabled;
-        private System.Windows.Forms.TabControl twoStepTabControl;
+        private CustomTabControl twoStepTabControl;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.TabPage tabPage9;
@@ -2497,6 +2680,18 @@
         private System.Windows.Forms.Label dynoPowerRPMLabel;
         private System.Windows.Forms.Label dynoPowerLabel;
         private System.Windows.Forms.Button screenshotButton;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Panel panel12;
+        private AquaControls.AquaGauge tempGauge;
+        private System.Windows.Forms.Panel panel11;
+        private AquaControls.AquaGauge afrGauge;
+        private System.Windows.Forms.Panel panel9;
+        private AquaControls.AquaGauge airGauge;
+        private System.Windows.Forms.RadioButton air500Button;
+        private System.Windows.Forms.RadioButton air10000Button;
+        private System.Windows.Forms.RadioButton air2000Button;
+        private System.Windows.Forms.CheckBox scfmSmoothing;
+        private System.Windows.Forms.CheckBox tempSmoothing;
     }
 }
 

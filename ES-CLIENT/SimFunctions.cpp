@@ -14,4 +14,5 @@ SimFunctions::SimFunctions() {
 	m_gasSystemReset = 0;
 	m_showMainText = 0;
 	m_updateHpAndTorque = 0;
+	m_afrClusterRender = 0;
 }

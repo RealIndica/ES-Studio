@@ -95,6 +95,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DynoUtil.cs" />
     <Compile Include="comPipe.cs" />
     <Compile Include="CreateMapForm.cs">

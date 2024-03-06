@@ -53,6 +53,18 @@ namespace ES_GUI
                 c.BackColor = Color.FromArgb(255, 25, 25, 25);
             }
 
+            if (c is CustomTabControl tab)
+            {
+                tab.ForeColor = Color.White;
+                tab.BackColor = Color.FromArgb(255, 20, 20, 20);
+                tab.TabHeaderColor = Color.FromArgb(255, 35, 35, 35);
+                tab.TabHeaderTextInactiveColor = Color.FromArgb(255, 180, 180, 180);
+                tab.BorderColor = Color.FromArgb(255, 25, 25, 25);
+                tab.TabHeaderTextColor = Color.White;
+                tab.TabHeaderInactiveColor = Color.FromArgb(255, 15, 15, 15);
+                tab.TabControlBackgroundColor = Color.FromArgb(255, 30, 30, 30);
+            }
+
             if (c is Panel && !(c is TabPage))
             {
                 c.BackColor = Color.FromArgb(255, 20, 20, 20);
@@ -109,6 +121,8 @@ namespace ES_GUI
                     e.BackColor = Color.FromArgb(255, 20, 20, 20);
                     e.ForeColor = Color.White;
                 }
+
+                ch.BorderlineColor = Color.FromArgb(255, 50, 50, 50);
             }
 
             Debug.WriteLog(c.Name + " new : " + c.BackColor);

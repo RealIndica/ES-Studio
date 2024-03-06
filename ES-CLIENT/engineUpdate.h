@@ -26,6 +26,8 @@ public:
 	double power;
 	double torque;
 	double airSCFM;
+	double afr;
+	double temperature;
 };
 
 #endif

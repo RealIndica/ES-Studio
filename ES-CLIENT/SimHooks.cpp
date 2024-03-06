@@ -28,6 +28,7 @@ void* setThrottlePistonPtr;
 void* gasSystemResetPtr;
 void* showMainTextPtr;
 void* updateHpAndTorquePtr;
+void* afrClusterPtr;
 
 struct Mix {
     double p_fuel = 0.0;
@@ -50,6 +51,15 @@ struct Intake { // Size 0x1A0
     double m_runnerLength; //0x118
     double m_velocityDecay; //0x120
     char pad1[0x1A0 - 0x120 - sizeof(double)];
+};
+
+struct CombustionChamber { //Size 0x2A8 (TODO: Disect Combustion Chamber Struct)
+    char pad0[0x18];
+    double v; //0x18
+    double t; //0x20
+    char pad1[0x30];
+    int c; //0x58
+    char pad2[0x2A8 - 0x58 - sizeof(int)];
 };
 
 #pragma region Functions
@@ -87,6 +97,23 @@ void setStarter(bool enabled) {
 
 double getStarterRPM() {
     return units::toRpm(std::fabs(*(double*)(_g->simulatorInstance + 0x1B8)));
+}
+
+double getTemperature() {
+    if (_g->engineInstance) {
+        double temperature = 0;
+        int m_chamberCount = engineUpdate->cylinderCount;
+        CombustionChamber* chambers = *(CombustionChamber**)(_g->engineInstance + 0x1C0);
+        for (int i = 0; i < m_chamberCount; ++i) {
+            double v = chambers[i].v;
+            double c = (double)chambers[i].c * 0.5 * v * 8.31446261815324;
+            double t = chambers[i].t / c;
+
+            temperature += t;
+        }
+        return temperature / m_chamberCount;
+    }
+    return 0;
 }
 
 #pragma endregion
@@ -137,6 +164,8 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
         engineUpdate->manifoldPressure = simFunctions->m_getManifoldPressure(_g->engineInstance);
         engineUpdate->airSCFM = intakeFlow;
 
+        engineUpdate->temperature = getTemperature();
+
         if (engineEdit->loadCalibrationMode) {
             if (!_g->calibrationCleared) {
                 loadCalculator->ClearCalibration();
@@ -178,6 +207,7 @@ void __fastcall simProcessHk(__int64 a1, float a2) {
             Memory::WriteLogAddress("Ignition Function", _g->ignitionFunctionInstance, false);
             Memory::WriteLogAddress("Speed", _g->speedInstance, false);
             Memory::WriteLogAddress("Dyno", _g->dynoInstance, false);
+            Memory::WriteLogAddress("AFR", _g->afrInstance, false);
             _g->debugShow = true;
         }
 
@@ -343,6 +373,16 @@ unsigned __int64* __fastcall updateHpAndTorqueHk(__int64 instance, float dt) {
     return simFunctions->m_updateHpAndTorque(instance, dt);
 }
 
+__int64 __fastcall afrClusterRenderHk(__int64 a1) {
+    if (_g->fullAttached) {
+        _g->afrInstance = a1;
+        QWORD LabeledGauge = *(QWORD*)(a1 + 0x78);
+        QWORD Gauge = *(QWORD*)(LabeledGauge + 0x70);
+        engineUpdate->afr = *(float*)(Gauge + 0x70);
+    }
+    return simFunctions->m_afrClusterRender(a1);
+}
+
 #pragma endregion
 
 void SetupHooks() {
@@ -378,6 +418,9 @@ void SetupHooks() {
     uintptr_t updateHpAndTorqueFunc = Memory::FindPatternIDA("40 53 48 83 EC 40 48 8B D9 48 8B 89 ? ? ? ? 48 85 C9 0F 84 ? ? ? ? 48 8B 01 0F 29 74 24 ? 0F 29 7C 24 ? 0F 57 FF F3 0F 5A F9 0F 28 C7 F2 0F 58 05 ? ? ? ? F2");
     updateHpAndTorquePtr = (void*)updateHpAndTorqueFunc;
 
+    uintptr_t afrClusterFunc = Memory::FindPatternIDA("48 8B C4 53 48 81 EC ? ? ? ? 0F 29 70 E8 48 8B D9 F3 0F 10 35 ? ? ? ? 0F 29 78 D8 0F 28 CE 44 0F 29 40 ? F3 44 0F 10 05 ? ? ? ? 44 0F 29 48 ? 41 0F 28 C0 44 0F 29 50");
+    afrClusterPtr = (void*)afrClusterFunc;
+
     simFunctions->m_sampleTriangleMod = (_sampleTriangle)(sampleTriangleFunc); //So we can call the hooked function instead of the original easily
 
     simFunctions->m_getManifoldPressure = (_getManifoldPressure)(Memory::FindPatternIDA("4C 63 91 ? ? ? ? 45 33 C9 F2 0F 10 2D ? ? ? ? 48 8B D1 0F 57 D2 0F 57 DB 4D 8B C2 49 83 FA 04 0F 8C ? ? ? ? 48 8B 81 ? ?"));
@@ -394,6 +437,7 @@ void SetupHooks() {
     Memory::WriteLogAddress("Gas System Reset", gasSystemResetFunc);
     Memory::WriteLogAddress("Show Main Text", showMainTextFunc);
     Memory::WriteLogAddress("Dyno Update", updateHpAndTorqueFunc);
+    Memory::WriteLogAddress("AFR Render", afrClusterFunc);
     Memory::WriteLogAddress("Get Manifold Pressure", (uintptr_t)simFunctions->m_getManifoldPressure);
     Memory::WriteLogAddress("Get Cycle Angle", (uintptr_t)simFunctions->m_getCycleAngle);
 
@@ -476,6 +520,14 @@ void SetupHooks() {
     }
     else {
         MH_EnableHook(updateHpAndTorquePtr);
+    }
+
+    if (MH_CreateHook(afrClusterPtr, &afrClusterRenderHk, reinterpret_cast<LPVOID*>(&simFunctions->m_afrClusterRender)) != MH_OK) {
+        printf("Unable to hook afr render\n");
+        return;
+    }
+    else {
+        MH_EnableHook(afrClusterPtr);
     }
 
     _g->fullAttached = true;

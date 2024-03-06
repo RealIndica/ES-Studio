@@ -76,7 +76,7 @@ namespace ES_GUI
         private DataGridView gridView;
         public DataTable dataTable;
 
-        private TabControl parentTabControl;
+        private CustomTabControl parentTabControl;
         private TabPage parentPage;
         private Label xName;
         private Label yName;
@@ -112,7 +112,7 @@ namespace ES_GUI
             };
         }
 
-        public void LoadFromSerializableData(SerializableMapData data, TabControl parentTab, ESClient inclient)
+        public void LoadFromSerializableData(SerializableMapData data, CustomTabControl parentTab, ESClient inclient)
         {
             Configure(data.xParam, data.yParam, data.controlParam, data.name);
             Create(parentTab, inclient);
@@ -349,9 +349,10 @@ namespace ES_GUI
             disable();
             client.customMaps.Remove(this);
             parentTabControl.TabPages.Remove(parentPage);
+            parentTabControl.AdjustTabSizes();
         }
 
-        public void Create(TabControl parentTab, ESClient inclient)
+        public void Create(CustomTabControl parentTab, ESClient inclient)
         {
             TabPage newTab = new TabPage();
             parentPage = newTab;

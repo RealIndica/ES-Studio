@@ -19,6 +19,8 @@ namespace ES_GUI
         public string status;
 
         public double smoothRPM;
+        public double smoothSCFM;
+        public double smoothTemp;
 
         public engineUpdate update;
         public engineEdit edit;
@@ -28,6 +30,14 @@ namespace ES_GUI
         private List<double> rpmSmoothingList = new List<double>();
         private double rpmSmoothingNext = 0d;
         private double rpmSmoothingLast = 0d;
+
+        private List<double> scfmSmoothingList = new List<double>();
+        private double scfmSmoothingNext = 0d;
+        private double scfmSmoothingLast = 0d;
+
+        private List<double> tempSmoothingList = new List<double>();
+        private double tempSmoothingNext = 0d;
+        private double tempSmoothingLast = 0d;
 
         private comPipe outputPipe; //send
         private NamedPipeServerStream inputPipe; //recv
@@ -92,6 +102,52 @@ namespace ES_GUI
 
             rpmSmoothingList.Add(update.RPM);
             smoothRPM = (float)Helpers.Lerp((float)rpmSmoothingLast, (float)rpmSmoothingNext, (float)(rpmSmoothingList.Count) / 10f);
+        }
+
+        private void calcSmoothSCFM()
+        {
+            double smoothResult = 0;
+            if (scfmSmoothingList.Count >= 10)
+            {
+                foreach (double v in scfmSmoothingList)
+                {
+                    smoothResult += v;
+                }
+                smoothResult /= scfmSmoothingList.Count;
+                scfmSmoothingNext = smoothResult;
+                scfmSmoothingList.Clear();
+            }
+
+            if (scfmSmoothingList.Count == 0)
+            {
+                scfmSmoothingLast = smoothSCFM;
+            }
+
+            scfmSmoothingList.Add(update.airSCFM);
+            smoothSCFM = (float)Helpers.Lerp((float)scfmSmoothingLast, (float)scfmSmoothingNext, (float)(scfmSmoothingList.Count) / 10f);
+        }
+
+        private void calcSmoothTEMP()
+        {
+            double smoothResult = 0;
+            if (tempSmoothingList.Count >= 10)
+            {
+                foreach (double v in tempSmoothingList)
+                {
+                    smoothResult += v;
+                }
+                smoothResult /= tempSmoothingList.Count;
+                tempSmoothingNext = smoothResult;
+                tempSmoothingList.Clear();
+            }
+
+            if (tempSmoothingList.Count == 0)
+            {
+                tempSmoothingLast = smoothTemp;
+            }
+
+            tempSmoothingList.Add(update.temperature);
+            smoothTemp = (float)Helpers.Lerp((float)tempSmoothingLast, (float)tempSmoothingNext, (float)(tempSmoothingList.Count) / 10f);
         }
 
         private void pushEdits()
@@ -168,6 +224,8 @@ namespace ES_GUI
             inputPipe.Dispose();
 
             calcSmoothRPM();
+            calcSmoothSCFM();
+            calcSmoothTEMP();
             pushEdits();
         }
     }

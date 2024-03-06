@@ -129,5 +129,15 @@ namespace ES_GUI
         {
             return (int)ToDouble(s);
         }
+
+        public static double Average(this List<double> l)
+        {
+            double sum = 0;
+            foreach (double d in l)
+            {
+                sum += d;
+            }
+            return sum / l.Count;
+        }
     }
 }

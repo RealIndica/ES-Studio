@@ -19,4 +19,6 @@ EngineUpdate::EngineUpdate() {
 	power = 0;
 	torque = 0;
 	airSCFM = 0;
+	afr = 0;
+	temperature = 0;
 }

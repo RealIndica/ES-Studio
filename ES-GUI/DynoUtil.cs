@@ -85,6 +85,12 @@ namespace ES_GUI
             airSeries.ChartArea = "DynoArea";
             dynoChart.Series.Add(airSeries);
 
+            Series afrSeries = new Series("AFR");
+            afrSeries.ChartType = SeriesChartType.Line;
+            afrSeries.Color = Color.Pink;
+            afrSeries.ChartArea = "DynoArea";
+            dynoChart.Series.Add(afrSeries);
+
             dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.Enabled = true;
             dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.LineColor = Color.LightGray;
             dynoChart.ChartAreas["DynoArea"].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
@@ -106,7 +112,7 @@ namespace ES_GUI
             ThemeManager.ApplyTheme(dynoChart);
         }
 
-        public void AddDataToChart(double rpm, double torque, double horsepower, double tps, double spark, double air)
+        public void AddDataToChart(double rpm, double torque, double horsepower, double tps, double spark, double air, double afr)
         {
             DataPointCollection hpPoints = dynoChart.Series["Power"].Points;
             if (hpPoints.Count > 0 && rpm <= hpPoints[hpPoints.Count - 1].XValue)
@@ -116,6 +122,7 @@ namespace ES_GUI
             dynoChart.Series["Torque"].Points.AddXY(rpm, torque);
             dynoChart.Series["TPS"].Points.AddXY(rpm, tps);
             dynoChart.Series["Spark"].Points.AddXY(rpm, spark);
+            dynoChart.Series["AFR"].Points.AddXY(rpm, afr);
 
             if (dynoChart.Series["Air"].Points.Any())
             {

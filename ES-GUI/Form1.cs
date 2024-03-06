@@ -74,6 +74,7 @@ namespace ES_GUI
             positionAsset(ledOnPicture, powerBuilderPicture, true, ledOffPicture);
 
             tabControl2.TabPages.RemoveAt(0);
+            tabControl2.AdjustTabSizes();
 
             ThemeManager.ApplyTheme(this);
         }
@@ -108,7 +109,7 @@ namespace ES_GUI
 
         private void UpdateCheck()
         {
-#if !DEBUG
+            #if !DEBUG
             string newVersion = string.Empty;
             try
             {
@@ -128,7 +129,7 @@ namespace ES_GUI
                     Process.Start("https://github.com/RealIndica/ES-Studio/releases");
                 }
             }
-#endif
+            #endif
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -137,11 +138,11 @@ namespace ES_GUI
             {
                 if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                 {
-#if DEBUG
+                    #if DEBUG
                     manageControls(true);
                     manageModules(false);
                     this.Text += " - UI Preview Mode";
-#endif
+                    #endif
                 }
                 else
                 {
@@ -249,7 +250,7 @@ namespace ES_GUI
         {
             Thread t = new Thread(() =>
             {
-                for (int i = 1; i <= 100; i++)
+                for (int i = 1; i <= 50; i++)
                 {
                     foreach (Control c in tabPage1.Controls)
                     {
@@ -258,14 +259,14 @@ namespace ES_GUI
                             AquaGauge g = (AquaGauge)c;
                             g.Invoke((MethodInvoker)delegate
                             {
-                                g.Value = (g.MaxValue / 100) * i;
+                                g.Value = (g.MaxValue / 50) * i;
                             });
                         }
                     }
                     Thread.Sleep(2);
                 }
                 Thread.Sleep(100);
-                for (int i = 100; i >= 1; i--)
+                for (int i = 50; i >= 1; i--)
                 {
                     foreach (Control c in tabPage1.Controls)
                     {
@@ -274,7 +275,7 @@ namespace ES_GUI
                             AquaGauge g = (AquaGauge)c;
                             g.Invoke((MethodInvoker)delegate
                             {
-                                g.Value = (g.MaxValue / 100) * i;
+                                g.Value = (g.MaxValue / 50) * i;
                             });
                         }
                     }
@@ -439,6 +440,41 @@ namespace ES_GUI
                             loadGauge.MaxValue = 100;
                         });
 
+                        airGauge.Invoke((MethodInvoker) delegate
+                        {
+                            if (scfmSmoothing.Checked)
+                            {
+                                airGauge.Value = (float)client.smoothSCFM;
+                            } else
+                            {
+                                airGauge.Value = (float)client.update.airSCFM;
+                            }
+                            if (air500Button.Checked) { airGauge.MaxValue = 500; return; }
+                            if (air2000Button.Checked) { airGauge.MaxValue = 2000; return; }
+                            if (air10000Button.Checked) { airGauge.MaxValue = 10000; return; }
+                        });
+
+                        tempGauge.Invoke((MethodInvoker)delegate
+                        {
+                            tempGauge.Value = (float)client.update.temperature;
+
+                            if (tempSmoothing.Checked)
+                            {
+                                tempGauge.Value = (float)client.smoothTemp;
+                            } else
+                            {
+                                tempGauge.Value = (float)client.update.temperature;
+                            }
+
+                            tempGauge.MaxValue = 4000;
+                        });
+
+                        afrGauge.Invoke((MethodInvoker)delegate
+                        {
+                            afrGauge.Value = (float)client.update.afr;
+                            afrGauge.MaxValue = 50;
+                        });
+
                         engineNameLabel.Invoke((MethodInvoker)delegate
                         {
                             engineNameLabel.Text = "Name : " + client.update.Name;
@@ -531,7 +567,7 @@ namespace ES_GUI
                 return;
             }
 
-            chartUtil.AddDataToChart(client.update.RPM, client.update.power, client.update.torque, client.update.tps * 100, client.update.sparkAdvance, client.update.airSCFM);
+            chartUtil.AddDataToChart(client.update.RPM, client.update.power, client.update.torque, client.update.tps * 100, client.update.sparkAdvance, client.update.airSCFM, client.update.afr);
         }
 
         private void ShowMessage(string message, string title)
@@ -856,7 +892,7 @@ namespace ES_GUI
         private void tabControl2_MouseDown(object sender, MouseEventArgs e)
         {
             int l = tabControl2.TabCount - 1;
-            if (tabControl2.GetTabRect(l).Contains(e.Location))
+            if (tabControl2.GetLastTabRect().Contains(e.Location))
             {
                 Map newMap = new Map(this);
                 CreateMapForm f = new CreateMapForm(newMap, client.customMaps);
@@ -870,6 +906,8 @@ namespace ES_GUI
                     tabControl2.Selecting += tabControl2_Selecting;
                     newMap.BuildTable();
 
+                    tabControl2.AdjustTabSizes();
+
                     checkIgnitionModule();
 
                     return;
@@ -877,6 +915,7 @@ namespace ES_GUI
                 f.Dispose();
             }
         }
+
         private void tabControl2_Selecting(object sender, TabControlCancelEventArgs e)
         {
             if (tabControl2.TabCount == 1)
@@ -893,7 +932,7 @@ namespace ES_GUI
 
         private void tabControl2_HandleCreated(object sender, EventArgs e)
         {
-            SendMessage(this.tabControl2.Handle, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
+
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e) // save
@@ -979,6 +1018,8 @@ namespace ES_GUI
                         tabControl2.SelectedIndex = tabControl2.TabCount - 2;
                         tabControl2.Selecting += tabControl2_Selecting;
                     }
+
+                    tabControl2.AdjustTabSizes();
 
                     checkIgnitionModule();
 

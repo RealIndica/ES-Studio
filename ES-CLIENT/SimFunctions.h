@@ -19,6 +19,7 @@ public:
 	_gasSystemReset m_gasSystemReset;
 	_showMainText m_showMainText;
 	_updateHpAndTorque m_updateHpAndTorque;
+	_afrClusterRender m_afrClusterRender;
 };
 
 #endif
