@@ -121,7 +121,7 @@ namespace ES_GUI
                 return;
             }
 
-            if (newVersion != version)
+            if (!newVersion.Contains(version))
             {
                 DialogResult = MessageBox.Show("A new version of ES-Studio is available.\r\nWould you like to go download it now?", "Outdated Client", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (DialogResult == DialogResult.Yes)
