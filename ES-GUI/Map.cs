@@ -90,10 +90,16 @@ namespace ES_GUI
         private Button disableButton;
         private Button deleteMapButton;
         private Form mainForm;
+        private Button btnAdjustTable;
 
         public MapController mapController;
 
         public PictureBox tableOverlay;
+        
+        public DataGridView GridView
+        {
+            get { return gridView; }
+        }
 
         public Map(Form parentForm) 
         {
@@ -459,6 +465,16 @@ namespace ES_GUI
 
             gridView.CellValueChanged += gridView_CellValueChanged;
             gridView.KeyDown += gridView_KeyDown;
+            
+            btnAdjustTable = new Button();
+            btnAdjustTable.Location = new Point(19, 434);
+            btnAdjustTable.Name = "btnAdjustTable";
+            btnAdjustTable.Size = new Size(102, 23);
+            btnAdjustTable.TabIndex = 19;
+            btnAdjustTable.Text = "Adjust Selection";
+            btnAdjustTable.UseVisualStyleBackColor = true;
+            btnAdjustTable.Click += btnAdjustTable_Click;
+            newTab.Controls.Add(btnAdjustTable);
 
             parentTabControl.TabPages.Insert(parentTabControl.TabPages.Count - 1, newTab);
             client.customMaps.Add(this);
@@ -589,6 +605,25 @@ namespace ES_GUI
             if (res == DialogResult.Yes)
             {
                 Delete();
+            }
+        }
+        
+        private void btnAdjustTable_Click(object sender, EventArgs e)
+        {
+            var sel = gridView.SelectedCells;
+            if(!enabled)
+            {
+                var frmGridSelectionAdj = new FrmAdjust(ref sel);
+                var dialogResult = frmGridSelectionAdj.ShowDialog();
+                if ((uint)(dialogResult - 1) <= 1u)
+                {
+                    frmGridSelectionAdj.Dispose();
+                }
+            }
+            else
+            {
+                MessageBox.Show(@"Please disable the map before adjusting the table", 
+                    @"Map Enabled", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -748,9 +783,96 @@ namespace ES_GUI
                 Debug.WriteLog("Built map data");
             });
         }
+        private int[] GetCells()
+        {
+            var selectedCells = gridView.SelectedCells;
+            var column1 = 255;
+            var column2 = 0;
+            var row1 = 255;
+            var row2 = 0;
+            foreach (DataGridViewCell item in selectedCells)
+            {
+                if (item.ColumnIndex < column1)
+                    column1 = item.ColumnIndex;
+                if (item.RowIndex < row1)
+                    row1 = item.RowIndex;
+            }
 
+            foreach (DataGridViewCell item2 in selectedCells)
+            {   
+                if (item2.ColumnIndex > column2)
+                    column2 = item2.ColumnIndex;
+                if (item2.RowIndex > row2)
+                    row2 = item2.RowIndex;
+            }
+
+            return new int[4] { column1, row1, column2, row2 };
+        }
+        
+        private void InterpolateRows(object sender, EventArgs e)
+        {
+            var cols1 = GetCells()[0]; // first column/row set to interpolate
+            var rows1 = GetCells()[1];
+            var cols2 = GetCells()[2]; // end column/row set to interpolate
+            var rows2 = GetCells()[3];
+            if (rows2 - rows1 < 2) return;
+            var num = (float.Parse(gridView[cols1, rows2].Value.ToString()) -
+                       float.Parse(gridView[cols1, rows1].Value.ToString()))
+                      / (float.Parse(gridView.Rows[rows2].HeaderCell.Value.ToString()) -
+                         float.Parse(gridView.Rows[rows1].HeaderCell.Value.ToString()));
+
+            var num2 = float.Parse(gridView[cols1, rows1].Value.ToString()) -
+                       num * float.Parse(gridView.Rows[rows1].HeaderCell.Value.ToString());
+
+            for (var b5 = (byte)(rows1 + 1); b5 < rows2; b5 = (byte)(b5 + 1))
+            {
+                var @float = num * float.Parse(gridView.Rows[b5].HeaderCell.Value.ToString()) + num2;
+                gridView[cols1, b5].Value = Math.Round(@float, 1);
+            }
+
+            if (cols1 >= cols2) return;
+            num = (float.Parse(gridView[cols2, rows2].Value.ToString()) -
+                   float.Parse(gridView[cols2, rows1].Value.ToString()))
+                  / (float.Parse(gridView.Rows[rows2].HeaderCell.Value.ToString()) -
+                     float.Parse(gridView.Rows[rows1].HeaderCell.Value.ToString()));
+
+            num2 = float.Parse(gridView[cols2, rows1].Value.ToString()) -
+                   num * float.Parse(gridView.Rows[rows1].HeaderCell.Value.ToString());
+            for (var b6 = (byte)(rows1 + 1); b6 < rows2; b6 = (byte)(b6 + 1))
+            {
+                var float2 = num * float.Parse(gridView.Rows[b6].HeaderCell.Value.ToString()) + num2;
+                gridView[cols2, b6].Value = Math.Round(float2, 1);
+            }
+
+        }
+        
+        private void InterpolateColumns(object sender, EventArgs e)
+        {
+            var cols1 = GetCells()[0]; // first column/row set to interpolate
+            var rows1 = GetCells()[1];
+            var cols2 = GetCells()[2]; // end column/row set to interpolate
+            var rows2 = GetCells()[3];
+            if (cols2 - cols1 < 2)
+                return;
+            
+            for (var b5 = rows1; b5 <= rows2; b5++)
+            {
+                var num = (float.Parse(gridView[cols2, b5].Value.ToString()) - float.Parse(gridView[cols1, b5].Value.ToString()))
+                          / (float.Parse(gridView.Columns[cols2].HeaderText) - float.Parse(gridView.Columns[cols1].HeaderText));
+                var num2 = float.Parse(gridView[cols1, b5].Value.ToString()) -
+                           num * float.Parse(gridView.Columns[cols1].HeaderText);
+
+                for (var b6 = cols1 + 1; b6 < cols2; b6++)
+                {
+                    var @float = num * float.Parse(gridView.Columns[b6].HeaderText) + num2;
+                    gridView[b6, b5].Value = Math.Round(@float, 1);
+                }
+            }
+        }
+        
         private void gridView_KeyDown(object sender, KeyEventArgs e)
         {
+            
             if (e.Control)
             {
                 if (e.KeyCode == Keys.V)
@@ -766,6 +888,20 @@ namespace ES_GUI
                     DataGridViewCell c = gridView.SelectedCells[0];
                     Clipboard.SetText(c.Value.ToString());
                     return;
+                }
+            }
+            else if(e.Alt)
+            {
+                if (e.KeyCode == Keys.V)
+                {
+                    if(gridView.SelectedCells.Count > 3)
+                        InterpolateRows(null, null);
+                }
+
+                if (e.KeyCode == Keys.H)
+                {
+                    if(gridView.SelectedCells.Count > 3)
+                        InterpolateColumns(null, null);
                 }
             }
         }
