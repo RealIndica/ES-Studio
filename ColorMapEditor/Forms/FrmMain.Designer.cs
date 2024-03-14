@@ -1,4 +1,4 @@
-﻿namespace ColorMapEditor
+﻿namespace ColorMapEditor.Forms
 {
     partial class FrmMain
     {
