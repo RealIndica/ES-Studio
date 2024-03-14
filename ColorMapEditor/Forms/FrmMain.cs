@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using ColorMapEditor.Classes;
 
-namespace ColorMapEditor.Forms
+namespace ColorMapEditor
 {
     public partial class FrmMain : Form
     {
