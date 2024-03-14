@@ -95,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorHeatMap.cs" />
     <Compile Include="CustomTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
