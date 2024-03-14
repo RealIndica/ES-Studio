@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -221,7 +221,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.quickShifterMode = new System.Windows.Forms.ComboBox();
             this.quickShifterEnabled = new System.Windows.Forms.CheckBox();
-            this.heatmapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -276,7 +275,9 @@
             // toolStrip1
             // 
             this.toolStrip1.BackColor = System.Drawing.SystemColors.Control;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.toolStripDropDownButton1, this.toolStripButton1 });
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButton1,
+            this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1140, 25);
@@ -286,7 +287,10 @@
             // toolStripDropDownButton1
             // 
             this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.toolStripMenuItem1, this.toolStripMenuItem2, this.configToolStripMenuItem });
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2,
+            this.configToolStripMenuItem});
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -296,29 +300,32 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem1.Text = "Save";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem2.Text = "Load";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // configToolStripMenuItem
             // 
-            this.configToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.darkModeWIPToolStripMenuItem, this.heatmapToolStripMenuItem });
+            this.configToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.darkModeWIPToolStripMenuItem});
             this.configToolStripMenuItem.Name = "configToolStripMenuItem";
-            this.configToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.configToolStripMenuItem.Text = "Config";
             // 
             // darkModeWIPToolStripMenuItem
             // 
-            this.darkModeWIPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.lightToolStripMenuItem, this.darkToolStripMenuItem });
+            this.darkModeWIPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lightToolStripMenuItem,
+            this.darkToolStripMenuItem});
             this.darkModeWIPToolStripMenuItem.Name = "darkModeWIPToolStripMenuItem";
-            this.darkModeWIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.darkModeWIPToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.darkModeWIPToolStripMenuItem.Text = "Theme";
             this.darkModeWIPToolStripMenuItem.Click += new System.EventHandler(this.darkModeWIPToolStripMenuItem_Click);
             // 
@@ -1240,13 +1247,25 @@
             // 
             // smoothWindow
             // 
-            this.smoothWindow.Increment = new decimal(new int[] { 5, 0, 0, 0 });
+            this.smoothWindow.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.smoothWindow.Location = new System.Drawing.Point(7, 36);
-            this.smoothWindow.Minimum = new decimal(new int[] { 5, 0, 0, 0 });
+            this.smoothWindow.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.smoothWindow.Name = "smoothWindow";
             this.smoothWindow.Size = new System.Drawing.Size(71, 20);
             this.smoothWindow.TabIndex = 1;
-            this.smoothWindow.Value = new decimal(new int[] { 5, 0, 0, 0 });
+            this.smoothWindow.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
             // smoothChartData
             // 
@@ -1309,17 +1328,17 @@
             // 
             this.dynoChart.BorderlineColor = System.Drawing.Color.Silver;
             this.dynoChart.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea1.AxisY.TitleForeColor = System.Drawing.Color.DimGray;
-            chartArea1.Name = "ChartArea1";
-            this.dynoChart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.dynoChart.Legends.Add(legend1);
+            chartArea2.AxisY.TitleForeColor = System.Drawing.Color.DimGray;
+            chartArea2.Name = "ChartArea1";
+            this.dynoChart.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.dynoChart.Legends.Add(legend2);
             this.dynoChart.Location = new System.Drawing.Point(8, 6);
             this.dynoChart.Name = "dynoChart";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.dynoChart.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.dynoChart.Series.Add(series2);
             this.dynoChart.Size = new System.Drawing.Size(1028, 572);
             this.dynoChart.TabIndex = 0;
             // 
@@ -2397,13 +2416,6 @@
             this.quickShifterEnabled.UseVisualStyleBackColor = true;
             this.quickShifterEnabled.CheckedChanged += new System.EventHandler(this.quickShifterEnabled_CheckedChanged);
             // 
-            // heatmapToolStripMenuItem
-            // 
-            this.heatmapToolStripMenuItem.Name = "heatmapToolStripMenuItem";
-            this.heatmapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.heatmapToolStripMenuItem.Text = "Heatmap";
-            this.heatmapToolStripMenuItem.Click += new System.EventHandler(this.heatmapToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2499,9 +2511,8 @@
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-        }
 
-        private System.Windows.Forms.ToolStripMenuItem heatmapToolStripMenuItem;
+        }
 
         #endregion
 

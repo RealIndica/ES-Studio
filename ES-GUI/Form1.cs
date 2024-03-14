@@ -23,10 +23,6 @@ using Melanchall.DryWetMidi.Common;
 using System.Net;
 using System.Runtime.Remoting.Messaging;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Drawing;
-using ES_GUI.Properties;
-using Point = System.Drawing.Point;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace ES_GUI
 {
@@ -58,7 +54,7 @@ namespace ES_GUI
         private DynoUtil chartUtil;
 
         private bool readyToConnect = false;
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -899,8 +895,6 @@ namespace ES_GUI
             if (tabControl2.GetLastTabRect().Contains(e.Location))
             {
                 Map newMap = new Map(this);
-                newMap.HeatMap =  new ColorHeatMap($"{Directory.GetCurrentDirectory()}/assets/colormaps/{Settings.Default.HeatmapPath}");
-
                 CreateMapForm f = new CreateMapForm(newMap, client.customMaps);
                 f.ShowDialog(this);
                 if (f.CreateForm)
@@ -1369,31 +1363,6 @@ namespace ES_GUI
             {
                 frmGridSelectionAdj.Dispose();
             }
-        }
-
-        private void heatmapToolStripMenuItem_Click(object sender, EventArgs e)
-        {                    
-            ColorSettings frm = new ColorSettings();
-
-            DialogResult dialogresult = frm.ShowDialog();
-            if (dialogresult == DialogResult.OK)
-            {
-                try
-                {
-                    Settings.Default.HeatmapPath = frm.HeatmapPath;
-                    //Update all the existing heatmaps when you change
-                    foreach (Map m in client.customMaps)
-                    {
-                        //debug set map to new color map
-                        ES_GUI.Debug.WriteLog($"Setting {m.name} to {Directory.GetCurrentDirectory()}/assets/colormaps/{Settings.Default.HeatmapPath}");
-                        m.SetHeatMapColor(new ColorHeatMap($"{Directory.GetCurrentDirectory()}/assets/colormaps/{Settings.Default.HeatmapPath}"));
-
-                    }
-                    Settings.Default.Save();
-                }
-                catch { return; }
-            }
-
         }
     }
 }
