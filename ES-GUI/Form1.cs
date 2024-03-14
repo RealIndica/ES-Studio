@@ -1351,5 +1351,18 @@ namespace ES_GUI
             dynoChart.DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
             Clipboard.SetImage(bitmap);
         }
+
+        private void btnAdjustSelection_Click(object sender, EventArgs e)
+        {
+            //Get the current selected cells from the grid of the currently selected client.custommap
+            var sel = client.customMaps[tabControl2.SelectedIndex].GridView.SelectedCells;
+
+            var frmGridSelectionAdj = new FrmAdjust(ref sel);
+            var dialogResult = frmGridSelectionAdj.ShowDialog();
+            if ((uint)(dialogResult - 1) <= 1u)
+            {
+                frmGridSelectionAdj.Dispose();
+            }
+        }
     }
 }

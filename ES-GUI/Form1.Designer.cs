@@ -220,6 +220,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.quickShifterMode = new System.Windows.Forms.ComboBox();
             this.quickShifterEnabled = new System.Windows.Forms.CheckBox();
+            this.btnAdjustSelection = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -922,6 +923,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.btnAdjustSelection);
             this.tabPage5.Controls.Add(this.button6);
             this.tabPage5.Controls.Add(this.pictureBox2);
             this.tabPage5.Controls.Add(this.pictureBox1);
@@ -2404,6 +2406,16 @@
             this.quickShifterEnabled.UseVisualStyleBackColor = true;
             this.quickShifterEnabled.CheckedChanged += new System.EventHandler(this.quickShifterEnabled_CheckedChanged);
             // 
+            // btnAdjustSelection
+            // 
+            this.btnAdjustSelection.Location = new System.Drawing.Point(19, 434);
+            this.btnAdjustSelection.Name = "btnAdjustSelection";
+            this.btnAdjustSelection.Size = new System.Drawing.Size(102, 23);
+            this.btnAdjustSelection.TabIndex = 19;
+            this.btnAdjustSelection.Text = "Adjust Selection";
+            this.btnAdjustSelection.UseVisualStyleBackColor = true;
+            this.btnAdjustSelection.Click += new System.EventHandler(this.btnAdjustSelection_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2692,6 +2704,7 @@
         private System.Windows.Forms.RadioButton air2000Button;
         private System.Windows.Forms.CheckBox scfmSmoothing;
         private System.Windows.Forms.CheckBox tempSmoothing;
+        private System.Windows.Forms.Button btnAdjustSelection;
     }
 }
 
