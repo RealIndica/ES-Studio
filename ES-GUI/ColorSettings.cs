@@ -1,3 +1,4 @@
+using ES_GUI.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -68,6 +69,10 @@ namespace ES_GUI
             {
                 lbColormaps.Items.Add(file.Name);
             }
+            
+            lbColormaps.SelectedItem = Settings.Default.HeatmapPath != null ? "DEFAULT.map" : Settings.Default.HeatmapPath;
+
+            ThemeManager.ApplyTheme(this);
         }
     }
 }

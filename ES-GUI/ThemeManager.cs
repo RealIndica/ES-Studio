@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
-using Microsoft.Win32;
+using ES_GUI.Properties;
 
 namespace ES_GUI
 {
@@ -130,23 +130,13 @@ namespace ES_GUI
 
         public static void setThemeState(bool darkModeEnabled)
         {
-            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(userSettingsPath))
-            {
-                key.SetValue("DarkMode", darkModeEnabled ? "1" : "0");
-            }
+            Settings.Default.DarkMode = darkModeEnabled;
+            Settings.Default.Save();
         }
 
         public static bool getThemeState()
         {
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(userSettingsPath))
-            {
-                if (key != null)
-                {
-                    object value = key.GetValue("DarkMode", "0");
-                    return value.ToString() == "1";
-                }
-            }
-            return false;
+            return Settings.Default.DarkMode;
         }
 
         public static void ApplyTheme(Control control)

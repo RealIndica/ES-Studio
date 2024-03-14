@@ -65,7 +65,7 @@ namespace ES_GUI
             this.groupBox33.Size = new System.Drawing.Size(277, 328);
             this.groupBox33.TabIndex = 44;
             this.groupBox33.TabStop = false;
-            this.groupBox33.Text = "Colormap Gradient";
+            this.groupBox33.Text = "Preview";
             // 
             // groupBox34
             // 
@@ -75,7 +75,7 @@ namespace ES_GUI
             this.groupBox34.Size = new System.Drawing.Size(247, 328);
             this.groupBox34.TabIndex = 43;
             this.groupBox34.TabStop = false;
-            this.groupBox34.Text = "Colormaps";
+            this.groupBox34.Text = "Map Colours";
             // 
             // btnAccept
             // 
@@ -97,12 +97,19 @@ namespace ES_GUI
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.groupBox33);
             this.Controls.Add(this.groupBox34);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ColorSettings";
-            this.Text = "ColorSettings";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Heatmap Colour";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.ColorSettings_Load);
             this.groupBox33.ResumeLayout(false);
             this.groupBox34.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.Panel panel1;

@@ -1375,7 +1375,7 @@ namespace ES_GUI
         {                    
             ColorSettings frm = new ColorSettings();
 
-            DialogResult dialogresult = frm.ShowDialog();
+            DialogResult dialogresult = frm.ShowDialog(this);
             if (dialogresult == DialogResult.OK)
             {
                 try
