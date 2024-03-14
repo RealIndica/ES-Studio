@@ -148,8 +148,16 @@
             this.Controls.Add(this.rbSet);
             this.Controls.Add(this.rbAdd);
             this.Controls.Add(this.rbPercent);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FrmAdjust";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Adjust Selection";
+            this.TopMost = true;
+            this.Load += new System.EventHandler(this.FrmAdjust_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

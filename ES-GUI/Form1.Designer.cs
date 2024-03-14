@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,6 +88,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new ES_GUI.CustomTabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.btnAdjustSelection = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -220,7 +221,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.quickShifterMode = new System.Windows.Forms.ComboBox();
             this.quickShifterEnabled = new System.Windows.Forms.CheckBox();
-            this.btnAdjustSelection = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -944,6 +944,16 @@
             this.tabPage5.Text = "Ignition";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // btnAdjustSelection
+            // 
+            this.btnAdjustSelection.Location = new System.Drawing.Point(19, 434);
+            this.btnAdjustSelection.Name = "btnAdjustSelection";
+            this.btnAdjustSelection.Size = new System.Drawing.Size(102, 23);
+            this.btnAdjustSelection.TabIndex = 19;
+            this.btnAdjustSelection.Text = "Adjust Selection";
+            this.btnAdjustSelection.UseVisualStyleBackColor = true;
+            this.btnAdjustSelection.Click += new System.EventHandler(this.btnAdjustSelection_Click);
+            // 
             // button6
             // 
             this.button6.ForeColor = System.Drawing.Color.Red;
@@ -1318,17 +1328,17 @@
             // 
             this.dynoChart.BorderlineColor = System.Drawing.Color.Silver;
             this.dynoChart.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea1.AxisY.TitleForeColor = System.Drawing.Color.DimGray;
-            chartArea1.Name = "ChartArea1";
-            this.dynoChart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.dynoChart.Legends.Add(legend1);
+            chartArea2.AxisY.TitleForeColor = System.Drawing.Color.DimGray;
+            chartArea2.Name = "ChartArea1";
+            this.dynoChart.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.dynoChart.Legends.Add(legend2);
             this.dynoChart.Location = new System.Drawing.Point(8, 6);
             this.dynoChart.Name = "dynoChart";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.dynoChart.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.dynoChart.Series.Add(series2);
             this.dynoChart.Size = new System.Drawing.Size(1028, 572);
             this.dynoChart.TabIndex = 0;
             // 
@@ -2405,16 +2415,6 @@
             this.quickShifterEnabled.Text = "Enabled";
             this.quickShifterEnabled.UseVisualStyleBackColor = true;
             this.quickShifterEnabled.CheckedChanged += new System.EventHandler(this.quickShifterEnabled_CheckedChanged);
-            // 
-            // btnAdjustSelection
-            // 
-            this.btnAdjustSelection.Location = new System.Drawing.Point(19, 434);
-            this.btnAdjustSelection.Name = "btnAdjustSelection";
-            this.btnAdjustSelection.Size = new System.Drawing.Size(102, 23);
-            this.btnAdjustSelection.TabIndex = 19;
-            this.btnAdjustSelection.Text = "Adjust Selection";
-            this.btnAdjustSelection.UseVisualStyleBackColor = true;
-            this.btnAdjustSelection.Click += new System.EventHandler(this.btnAdjustSelection_Click);
             // 
             // Form1
             // 

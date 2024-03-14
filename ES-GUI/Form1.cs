@@ -32,7 +32,7 @@ namespace ES_GUI
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
         private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
 
-        private string version = "0.3.0";
+        private string version = "0.3.1";
 
         private ESClient client;
 

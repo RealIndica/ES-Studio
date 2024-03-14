@@ -134,5 +134,10 @@ namespace ES_GUI
             tbPercent.Text = "0";
             tbSet.Text = "0";
         }
+
+        private void FrmAdjust_Load(object sender, EventArgs e)
+        {
+            ThemeManager.ApplyTheme(this);
+        }
     }
 }

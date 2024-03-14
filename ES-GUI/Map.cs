@@ -614,7 +614,7 @@ namespace ES_GUI
             if(!enabled)
             {
                 var frmGridSelectionAdj = new FrmAdjust(ref sel);
-                var dialogResult = frmGridSelectionAdj.ShowDialog();
+                var dialogResult = frmGridSelectionAdj.ShowDialog(mainForm);
                 if ((uint)(dialogResult - 1) <= 1u)
                 {
                     frmGridSelectionAdj.Dispose();
