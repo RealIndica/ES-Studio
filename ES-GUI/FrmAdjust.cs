@@ -97,7 +97,7 @@ namespace ES_GUI
                 for (int i = 0; i < dataGridViewSelectedCellCollection.Count; i++)
                 {
                     float value = float.Parse(dataGridViewSelectedCellCollection[i].Value.ToString());
-                    dataGridViewSelectedCellCollection[i].Value = (value + value / 100f * float.Parse(tbPercent.Text));
+                    dataGridViewSelectedCellCollection[i].Value = Math.Round(value + value / 100f * float.Parse(tbPercent.Text), 2);
                 }
             }
             else if (rbAdd.Checked)
@@ -109,7 +109,7 @@ namespace ES_GUI
                 for (int j = 0; j < dataGridViewSelectedCellCollection.Count; j++)
                 {
                     float value = float.Parse(dataGridViewSelectedCellCollection[j].Value.ToString());
-                    dataGridViewSelectedCellCollection[j].Value = value + float.Parse(tbAdd.Text);
+                    dataGridViewSelectedCellCollection[j].Value = Math.Round(value + float.Parse(tbAdd.Text), 2);
                 }
             }
             else if (rbSet.Checked)
@@ -121,7 +121,7 @@ namespace ES_GUI
 
                 for (int k = 0; k < dataGridViewSelectedCellCollection.Count; k++)
                 {
-                    dataGridViewSelectedCellCollection[k].Value = float.Parse(tbSet.Text);
+                    dataGridViewSelectedCellCollection[k].Value = Math.Round(float.Parse(tbSet.Text), 2);
                 }
             }
             this.Close();
