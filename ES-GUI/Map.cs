@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.DataVisualization.Charting;
 using ES_GUI.Properties;
+using System.IO;
 
 namespace ES_GUI
 {
@@ -143,6 +144,7 @@ namespace ES_GUI
             updateHeatMap();
             BuildData();
             SetTableProperties();
+            SetHeatMapColor(new ColorHeatMap($"{Directory.GetCurrentDirectory()}/assets/colormaps/{Settings.Default.HeatmapPath}"));
             tableReadyEdit = true;
         }
 

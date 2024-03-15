@@ -1,5 +1,4 @@
 D:\GitHub\ES-Studio\ColorMapEditor\bin\Debug\ColorMapEditor.exe.config
-D:\GitHub\ES-Studio\ColorMapEditor\bin\Debug\ColorMapEditor.exe
 D:\GitHub\ES-Studio\ColorMapEditor\bin\Debug\ColorMapEditor.pdb
 D:\GitHub\ES-Studio\ColorMapEditor\obj\Debug\ColorMapEditor.csproj.AssemblyReference.cache
 D:\GitHub\ES-Studio\ColorMapEditor\obj\Debug\ColorMapEditor.csproj.SuggestedBindingRedirects.cache
@@ -10,3 +9,4 @@ D:\GitHub\ES-Studio\ColorMapEditor\obj\Debug\ColorMapEditor.csproj.GenerateResou
 D:\GitHub\ES-Studio\ColorMapEditor\obj\Debug\ColorMapEditor.csproj.CoreCompileInputs.cache
 D:\GitHub\ES-Studio\ColorMapEditor\obj\Debug\ColorMapEditor.exe
 D:\GitHub\ES-Studio\ColorMapEditor\obj\Debug\ColorMapEditor.pdb
+D:\GitHub\ES-Studio\ColorMapEditor\obj\Debug\ColorMapEditor.csproj.CopyComplete

@@ -75,5 +75,10 @@ namespace ColorMapEditor
             }
             catch { }
         }
+
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

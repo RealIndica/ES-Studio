@@ -125,7 +125,11 @@
             this.spinboxRows.Name = "spinboxRows";
             this.spinboxRows.Size = new System.Drawing.Size(52, 20);
             this.spinboxRows.TabIndex = 3;
-            this.spinboxRows.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            this.spinboxRows.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             this.spinboxRows.ValueChanged += new System.EventHandler(this.spinboxRows_ValueChanged);
             // 
             // spinboxColumns
@@ -134,7 +138,11 @@
             this.spinboxColumns.Name = "spinboxColumns";
             this.spinboxColumns.Size = new System.Drawing.Size(52, 20);
             this.spinboxColumns.TabIndex = 2;
-            this.spinboxColumns.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            this.spinboxColumns.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.spinboxColumns.ValueChanged += new System.EventHandler(this.spinboxColumns_ValueChanged);
             // 
             // btnSaveMap
@@ -175,6 +183,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "FrmMain";
             this.Text = "ES-Studio Color Map Editor";
+            this.Load += new System.EventHandler(this.FrmMain_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -188,6 +197,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.spinboxRows)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinboxColumns)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.TextBox tbEditor;
