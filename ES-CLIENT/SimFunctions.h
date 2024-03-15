@@ -20,6 +20,8 @@ public:
 	_showMainText m_showMainText;
 	_updateHpAndTorque m_updateHpAndTorque;
 	_afrClusterRender m_afrClusterRender;
+	__getCamAngle m_getCamAngle;
+	__getCamAngle2 m_getCamAngle2;
 };
 
 #endif

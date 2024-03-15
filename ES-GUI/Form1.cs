@@ -1397,5 +1397,10 @@ namespace ES_GUI
             }
 
         }
+
+        private void doubleCamSpeedBox_CheckedChanged(object sender, EventArgs e)
+        {
+            client.edit.doubleCamSpeed = doubleCamSpeedBox.Checked;
+        }
     }
 }

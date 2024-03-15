@@ -49,5 +49,6 @@ namespace ES_GUI
         public bool useAfrTable;
         public double targetAfr;
         public bool loadCalibrationMode;
+        public bool doubleCamSpeed;
     }
 }

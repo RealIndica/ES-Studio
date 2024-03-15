@@ -96,6 +96,7 @@ void HandleUpdate(const char* input) {
     engineEdit->useAfrTable = data["useAfrTable"];
     engineEdit->targetAfr = data["targetAfr"];
     engineEdit->loadCalibrationMode = data["loadCalibrationMode"];
+    engineEdit->doubleCamSpeed = data["doubleCamSpeed"];
 }
 
 void PipeReader() {

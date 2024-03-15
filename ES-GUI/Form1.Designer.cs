@@ -40,12 +40,15 @@
             this.darkModeWIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.heatmapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.label1 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new ES_GUI.CustomTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.doubleCamSpeedBox = new System.Windows.Forms.CheckBox();
             this.panel12 = new System.Windows.Forms.Panel();
             this.tempSmoothing = new System.Windows.Forms.CheckBox();
             this.tempGauge = new AquaControls.AquaGauge();
@@ -221,10 +224,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.quickShifterMode = new System.Windows.Forms.ComboBox();
             this.quickShifterEnabled = new System.Windows.Forms.CheckBox();
-            this.heatmapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.panel12.SuspendLayout();
             this.panel9.SuspendLayout();
             this.panel8.SuspendLayout();
@@ -276,7 +279,9 @@
             // toolStrip1
             // 
             this.toolStrip1.BackColor = System.Drawing.SystemColors.Control;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.toolStripDropDownButton1, this.toolStripButton1 });
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButton1,
+            this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1140, 25);
@@ -286,7 +291,10 @@
             // toolStripDropDownButton1
             // 
             this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.toolStripMenuItem1, this.toolStripMenuItem2, this.configToolStripMenuItem });
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2,
+            this.configToolStripMenuItem});
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -296,29 +304,33 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem1.Text = "Save";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem2.Text = "Load";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // configToolStripMenuItem
             // 
-            this.configToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.darkModeWIPToolStripMenuItem, this.heatmapToolStripMenuItem });
+            this.configToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.darkModeWIPToolStripMenuItem,
+            this.heatmapToolStripMenuItem});
             this.configToolStripMenuItem.Name = "configToolStripMenuItem";
-            this.configToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.configToolStripMenuItem.Text = "Config";
             // 
             // darkModeWIPToolStripMenuItem
             // 
-            this.darkModeWIPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.lightToolStripMenuItem, this.darkToolStripMenuItem });
+            this.darkModeWIPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lightToolStripMenuItem,
+            this.darkToolStripMenuItem});
             this.darkModeWIPToolStripMenuItem.Name = "darkModeWIPToolStripMenuItem";
-            this.darkModeWIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.darkModeWIPToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.darkModeWIPToolStripMenuItem.Text = "Theme";
             this.darkModeWIPToolStripMenuItem.Click += new System.EventHandler(this.darkModeWIPToolStripMenuItem_Click);
             // 
@@ -335,6 +347,13 @@
             this.darkToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.darkToolStripMenuItem.Text = "Dark";
             this.darkToolStripMenuItem.Click += new System.EventHandler(this.darkToolStripMenuItem_Click);
+            // 
+            // heatmapToolStripMenuItem
+            // 
+            this.heatmapToolStripMenuItem.Name = "heatmapToolStripMenuItem";
+            this.heatmapToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.heatmapToolStripMenuItem.Text = "Heatmap";
+            this.heatmapToolStripMenuItem.Click += new System.EventHandler(this.heatmapToolStripMenuItem_Click);
             // 
             // toolStripButton1
             // 
@@ -400,6 +419,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.panel12);
             this.tabPage1.Controls.Add(this.tempGauge);
             this.tabPage1.Controls.Add(this.panel11);
@@ -424,6 +444,27 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.doubleCamSpeedBox);
+            this.groupBox1.Location = new System.Drawing.Point(418, 295);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(297, 270);
+            this.groupBox1.TabIndex = 17;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Engine Options";
+            // 
+            // doubleCamSpeedBox
+            // 
+            this.doubleCamSpeedBox.AutoSize = true;
+            this.doubleCamSpeedBox.Location = new System.Drawing.Point(7, 20);
+            this.doubleCamSpeedBox.Name = "doubleCamSpeedBox";
+            this.doubleCamSpeedBox.Size = new System.Drawing.Size(140, 17);
+            this.doubleCamSpeedBox.TabIndex = 0;
+            this.doubleCamSpeedBox.Text = "Double Cam Speed (2T)";
+            this.doubleCamSpeedBox.UseVisualStyleBackColor = true;
+            this.doubleCamSpeedBox.CheckedChanged += new System.EventHandler(this.doubleCamSpeedBox_CheckedChanged);
             // 
             // panel12
             // 
@@ -1240,13 +1281,25 @@
             // 
             // smoothWindow
             // 
-            this.smoothWindow.Increment = new decimal(new int[] { 5, 0, 0, 0 });
+            this.smoothWindow.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.smoothWindow.Location = new System.Drawing.Point(7, 36);
-            this.smoothWindow.Minimum = new decimal(new int[] { 5, 0, 0, 0 });
+            this.smoothWindow.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.smoothWindow.Name = "smoothWindow";
             this.smoothWindow.Size = new System.Drawing.Size(71, 20);
             this.smoothWindow.TabIndex = 1;
-            this.smoothWindow.Value = new decimal(new int[] { 5, 0, 0, 0 });
+            this.smoothWindow.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
             // smoothChartData
             // 
@@ -2397,13 +2450,6 @@
             this.quickShifterEnabled.UseVisualStyleBackColor = true;
             this.quickShifterEnabled.CheckedChanged += new System.EventHandler(this.quickShifterEnabled_CheckedChanged);
             // 
-            // heatmapToolStripMenuItem
-            // 
-            this.heatmapToolStripMenuItem.Name = "heatmapToolStripMenuItem";
-            this.heatmapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.heatmapToolStripMenuItem.Text = "Heatmap";
-            this.heatmapToolStripMenuItem.Click += new System.EventHandler(this.heatmapToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2425,6 +2471,8 @@
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
             this.panel9.ResumeLayout(false);
@@ -2499,6 +2547,7 @@
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.ToolStripMenuItem heatmapToolStripMenuItem;
@@ -2694,6 +2743,8 @@
         private System.Windows.Forms.CheckBox scfmSmoothing;
         private System.Windows.Forms.CheckBox tempSmoothing;
         private System.Windows.Forms.Button btnAdjustSelection;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox doubleCamSpeedBox;
     }
 }
 

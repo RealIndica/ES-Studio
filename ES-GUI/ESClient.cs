@@ -210,7 +210,6 @@ namespace ES_GUI
 
             StreamReader reader = new StreamReader(inputPipe);
             string line = reader.ReadLine();
-
             try
             {
                 if (Helpers.IsValidJson(line))

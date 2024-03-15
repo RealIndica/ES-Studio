@@ -45,6 +45,7 @@ public:
 	bool useAfrTable;
 	double targetAfr;
 	bool loadCalibrationMode;
+	bool doubleCamSpeed;
 };
 
 #endif

@@ -15,4 +15,6 @@ SimFunctions::SimFunctions() {
 	m_showMainText = 0;
 	m_updateHpAndTorque = 0;
 	m_afrClusterRender = 0;
+	m_getCamAngle = 0;
+	m_getCamAngle2 = 0;
 }

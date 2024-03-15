@@ -41,4 +41,5 @@ EngineEdit::EngineEdit() {
 	useAfrTable = false;
 	targetAfr = 0;
 	loadCalibrationMode = false;
+	doubleCamSpeed = false;
 }

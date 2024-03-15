@@ -16,5 +16,6 @@ typedef __int64(__fastcall* _gasSystemReset)(__int64 instance, double P, double 
 typedef unsigned __int64*(__fastcall* _showMainText)(void* Src, const void* a2, size_t a3);
 typedef unsigned __int64* (_fastcall* _updateHpAndTorque)(__int64 instance, float dt);
 typedef __int64(__fastcall* _afrClusterRender)(__int64 a1);
-
+typedef double(__fastcall* __getCamAngle)(void* instance, int a1, int a2, double a3);
+typedef double(__fastcall* __getCamAngle2)(__int64 a1);
 #endif
