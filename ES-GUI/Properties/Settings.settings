@@ -3,9 +3,15 @@
   <Profiles />
   <Settings>
     <Setting Name="HeatmapPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DEFAULT.Map</Value>
+      <Value Profile="(Default)">DEFAULT.map</Value>
     </Setting>
     <Setting Name="DarkMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="HeatFontColour" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="HeatFontAuto" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

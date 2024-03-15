@@ -139,5 +139,26 @@ namespace ES_GUI
             }
             return sum / l.Count;
         }
+
+        public static Color GetReadableTextColor(Color backgroundColor)
+        {
+            Color invertedColor = Color.FromArgb(255 - backgroundColor.R, 255 - backgroundColor.G, 255 - backgroundColor.B);
+            double invertedLuminance = (0.299 * invertedColor.R + 0.587 * invertedColor.G + 0.114 * invertedColor.B) / 255;
+            double backgroundLuminance = (0.299 * backgroundColor.R + 0.587 * backgroundColor.G + 0.114 * backgroundColor.B) / 255;
+
+            if (Math.Abs(invertedLuminance - backgroundLuminance) < 0.5)
+            {
+                return backgroundLuminance > 0.5 ? Color.Black : Color.White;
+            }
+            else
+            {
+                return invertedColor;
+            }
+        }
+
+        public static bool IsNumeric(string value)
+        {
+            return decimal.TryParse(value, out _);
+        }
     }
 }

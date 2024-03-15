@@ -25,7 +25,7 @@ namespace ES_GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DEFAULT.Map")]
+        [global::System.Configuration.DefaultSettingValueAttribute("DEFAULT.map")]
         public string HeatmapPath {
             get {
                 return ((string)(this["HeatmapPath"]));
@@ -44,6 +44,29 @@ namespace ES_GUI.Properties {
             }
             set {
                 this["DarkMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color HeatFontColour {
+            get {
+                return ((global::System.Drawing.Color)(this["HeatFontColour"]));
+            }
+            set {
+                this["HeatFontColour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool HeatFontAuto {
+            get {
+                return ((bool)(this["HeatFontAuto"]));
+            }
+            set {
+                this["HeatFontAuto"] = value;
             }
         }
     }

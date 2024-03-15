@@ -73,6 +73,8 @@ namespace ES_GUI
         private float minCellValue = 0f;
         private float maxCellValue = 0f;
 
+        private object originalCellValue;
+
         private DataGridView gridView;
         public DataTable dataTable;
 
@@ -89,8 +91,8 @@ namespace ES_GUI
         private Button enableButton;
         private Button disableButton;
         private Button deleteMapButton;
-        private Form mainForm;
         private Button btnAdjustTable;
+        private Form mainForm;
 
         public MapController mapController;
 
@@ -140,6 +142,7 @@ namespace ES_GUI
             CheckCellHiLo();
             updateHeatMap();
             BuildData();
+            SetTableProperties();
             tableReadyEdit = true;
         }
 
@@ -432,6 +435,13 @@ namespace ES_GUI
             deleteMapButton.Click += deleteMapButton_Click;
             newTab.Controls.Add(deleteMapButton);
 
+            btnAdjustTable = new Button();
+            btnAdjustTable.Location = new Point(19, 434);
+            btnAdjustTable.Size = new Size(102, 23);
+            btnAdjustTable.Text = "Adjust Selection";
+            btnAdjustTable.Click += btnAdjustTable_Click;
+            newTab.Controls.Add(btnAdjustTable);
+
             ctrlName = new Label();
             ctrlName.Text = controlParam.ToString();
             ctrlName.Location = new Point(16, 402);
@@ -475,16 +485,7 @@ namespace ES_GUI
 
             gridView.CellValueChanged += gridView_CellValueChanged;
             gridView.KeyDown += gridView_KeyDown;
-            
-            btnAdjustTable = new Button();
-            btnAdjustTable.Location = new Point(19, 434);
-            btnAdjustTable.Name = "btnAdjustTable";
-            btnAdjustTable.Size = new Size(102, 23);
-            btnAdjustTable.TabIndex = 19;
-            btnAdjustTable.Text = "Adjust Selection";
-            btnAdjustTable.UseVisualStyleBackColor = true;
-            btnAdjustTable.Click += btnAdjustTable_Click;
-            newTab.Controls.Add(btnAdjustTable);
+            gridView.CellBeginEdit += gridView_CellBeginEdit;
 
             parentTabControl.TabPages.Insert(parentTabControl.TabPages.Count - 1, newTab);
             client.customMaps.Add(this);
@@ -584,6 +585,7 @@ namespace ES_GUI
                     gridView.Rows[i].HeaderCell.Value = yParamData[i];
                 }
 
+                SetTableProperties();
                 updateMapCellData();
                 CheckCellHiLo();
                 updateHeatMap();
@@ -645,110 +647,60 @@ namespace ES_GUI
         #endregion
 
         #region HeatMap
-        //Depreceated
-        /*private Color HeatMap(float value, float min, float max)
-        {
-            if (value < min)
-            {
-                return Color.FromArgb(255, 0, 0, 255);
-            }
 
-            if (min == max)
-            {
-                return Color.FromArgb(255, 0, 128, 128);
-            }
-
-            int r, g, b;
-            float val = (value - min) / (max - min);
-            if (val > 1)
-                val = 1;
-            if (val > 0.5f)
-            {
-                val = (val - 0.5f) * 2;
-                r = Convert.ToByte(255 * val);
-                g = Convert.ToByte(255 * (1 - val));
-                b = 0;
-            }
-            else
-            {
-                val = val * 2;
-                r = 0;
-                g = Convert.ToByte(255 * val);
-                b = Convert.ToByte(255 * (1 - val));
-            }
-            return Color.FromArgb(255, r, g, b);
-        }*/
-        /* //Depreciated
-        public void updateHeatMap()
-        {
-            Thread t = new Thread(() =>
-            {
-                gridView.Invoke((MethodInvoker)delegate
-                {
-                    foreach (DataGridViewRow row in gridView.Rows)
-                    {
-                        foreach (DataGridViewCell cell in row.Cells)
-                        {
-                            float i = 0f;
-                            float.TryParse(cell.Value.ToString(), out i);
-                            Color col = HeatMap(i, minCellValue, maxCellValue);
-                            DataGridViewCellStyle style = new DataGridViewCellStyle();
-                            style.BackColor = col;
-                            style.ForeColor = Color.Black;
-                            style.Font = new Font(mainForm.Font.Name, mainForm.Font.Size, FontStyle.Bold);
-                            cell.Style = style;
-                        }
-                    }
-                });
-                Debug.WriteLog("Refreshed Heat Map");
-                Thread.Sleep(10);
-            });
-            t.Start();
-        }*/
-        
         private void updateHeatMap()
         {
             Thread t = new Thread(() =>
             {
                 gridView.Invoke((MethodInvoker)delegate
                 {
-
-                var values = new List<double>();
-                foreach (DataGridViewRow row in gridView.Rows)
-                {
-                    for (var i = 0; i < gridView.Columns.Count; i++)
-                        values.Add(Convert.ToDouble(row.Cells[i].Value));
-                }
-                if (!values.Any())
-                {
-                    return;
-                }
-
-                var max = (values.Max() * 1.01);
-                var min = values.Min();
-                var colorRange = max - min;
-                var colorOffset = min;
-            
-
-                foreach (DataGridViewRow row in gridView.Rows)
-                {
-                    for (int i = 0; i < gridView.Columns.Count; i++)
+                    var values = new List<double>();
+                    foreach (DataGridViewRow row in gridView.Rows)
                     {
-                        DataGridViewCell cell = row.Cells[i];
-                        double value = Convert.ToDouble(cell.Value);
-                        if (max != min)
-                            cell.Style.BackColor = HeatMap.GetColorForValue(value, max, min);
-                        else
-                            cell.Style.BackColor = Color.FromArgb(255, (byte)0, (byte)255, (byte)0);
+                        for (var i = 0; i < gridView.Columns.Count; i++)
+                            values.Add(Convert.ToDouble(row.Cells[i].Value));
                     }
 
-                }
+                    if (!values.Any())
+                    {
+                        return;
+                    }
+
+                    var max = (values.Max() * 1.01);
+                    var min = values.Min();
+                    var colorRange = max - min;
+                    var colorOffset = min;
+
+                    foreach (DataGridViewRow row in gridView.Rows)
+                    {
+                        for (int i = 0; i < gridView.Columns.Count; i++)
+                        {
+                            DataGridViewCell cell = row.Cells[i];
+                            double value = Convert.ToDouble(cell.Value);
+                            if (max != min)
+                            {
+                                cell.Style.BackColor = HeatMap.GetColorForValue(value, max, min);
+                            }
+                            else
+                            {
+                                cell.Style.BackColor = Color.FromArgb(255, (byte)0, (byte)255, (byte)0);
+                            }
+
+                            if (Settings.Default.HeatFontAuto)
+                            {
+                                cell.Style.ForeColor = Helpers.GetReadableTextColor(cell.Style.BackColor);
+                            } else
+                            {
+                                cell.Style.ForeColor = Settings.Default.HeatFontColour;
+                            }
+                        }
+                    }
+
                 });
                 Debug.WriteLog("Refreshed Heat Map");
                 Thread.Sleep(10);
             });
             t.Start();
-
         }
 
         private void CheckCellHiLo()
@@ -809,14 +761,13 @@ namespace ES_GUI
                 float i = 0f;
                 float.TryParse(cell.Value.ToString(), out i);
 
+                if (cell.Value == null || string.IsNullOrWhiteSpace(cell.Value.ToString()) || !Helpers.IsNumeric(cell.Value.ToString()))
+                {
+                    cell.Value = originalCellValue;
+                    return;
+                }
+
                 CheckCellHiLo();
-
-                //Color col = HeatMap(i, minCellValue, maxCellValue);
-
-                DataGridViewCellStyle style = new DataGridViewCellStyle();
-                style.ForeColor = Color.Black;
-                style.Font = new Font(mainForm.Font.Name, mainForm.Font.Size, FontStyle.Bold);
-                cell.Style = style;
                 updateHeatMap();
                 BuildData();
                 
@@ -967,6 +918,28 @@ namespace ES_GUI
                 }
             }
         }
+
+        private void gridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            originalCellValue = gridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+        }
+
+        private void SetTableProperties()
+        {
+            foreach (DataGridViewColumn c in gridView.Columns)
+            {
+                c.SortMode = DataGridViewColumnSortMode.NotSortable;
+                c.Resizable = DataGridViewTriState.False;
+            }
+
+            foreach (DataGridViewRow r in gridView.Rows)
+            {
+                r.Resizable = DataGridViewTriState.False;
+            }
+
+            gridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+        }
+
         #endregion
     }
 }

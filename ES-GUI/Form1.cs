@@ -1381,6 +1381,8 @@ namespace ES_GUI
                 try
                 {
                     Settings.Default.HeatmapPath = frm.HeatmapPath;
+                    Settings.Default.HeatFontAuto = frm.useAutoFont;
+                    Settings.Default.HeatFontColour = frm.fontColor;
                     //Update all the existing heatmaps when you change
                     foreach (Map m in client.customMaps)
                     {
