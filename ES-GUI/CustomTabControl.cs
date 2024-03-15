@@ -60,6 +60,13 @@ namespace ES_GUI
 
         protected override void WndProc(ref Message m)
         {
+            if (this.DesignMode)
+            {
+                this.DrawMode = TabDrawMode.Normal;
+                base.WndProc(ref m);
+                return;
+            }
+
             const int WM_LBUTTONDOWN = 0x201;
             if (m.Msg == WM_LBUTTONDOWN && lastTabFunction && !lastTabCustomBounds.IsEmpty)
             {
