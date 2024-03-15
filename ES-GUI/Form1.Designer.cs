@@ -304,14 +304,14 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem1.Text = "Save";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(110, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem2.Text = "Load";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -321,7 +321,7 @@
             this.darkModeWIPToolStripMenuItem,
             this.heatmapToolStripMenuItem});
             this.configToolStripMenuItem.Name = "configToolStripMenuItem";
-            this.configToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.configToolStripMenuItem.Text = "Config";
             // 
             // darkModeWIPToolStripMenuItem
@@ -458,7 +458,7 @@
             // doubleCamSpeedBox
             // 
             this.doubleCamSpeedBox.AutoSize = true;
-            this.doubleCamSpeedBox.Location = new System.Drawing.Point(7, 20);
+            this.doubleCamSpeedBox.Location = new System.Drawing.Point(7, 19);
             this.doubleCamSpeedBox.Name = "doubleCamSpeedBox";
             this.doubleCamSpeedBox.Size = new System.Drawing.Size(140, 17);
             this.doubleCamSpeedBox.TabIndex = 0;
