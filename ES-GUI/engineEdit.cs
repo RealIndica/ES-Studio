@@ -50,5 +50,9 @@ namespace ES_GUI
         public double targetAfr;
         public bool loadCalibrationMode;
         public bool doubleCamSpeed;
+        public bool dfcoEnabled;
+        public double dfcoExitRPM;
+        public double dfcoSpark;
+        public double dfcoEnterDelay;
     }
 }

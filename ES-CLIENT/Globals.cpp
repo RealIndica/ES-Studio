@@ -25,4 +25,6 @@ Globals::Globals() {
 	cutFuel = false;
 	fullAttached = false;
 	debugShow = false;
+	dfco = false;
+	dfcoTimer = 0;
 }

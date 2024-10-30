@@ -129,6 +129,14 @@
             this.dynoChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.label39 = new System.Windows.Forms.Label();
+            this.dfcoEnterDelay = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.dfcoSpark = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.dfcoMinThreshold = new System.Windows.Forms.TextBox();
+            this.dfcoEnabled = new System.Windows.Forms.CheckBox();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.label29 = new System.Windows.Forms.Label();
             this.maxSpeedBox = new System.Windows.Forms.TextBox();
@@ -252,6 +260,7 @@
             this.panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dynoChart)).BeginInit();
             this.tabPage4.SuspendLayout();
+            this.groupBox17.SuspendLayout();
             this.groupBox15.SuspendLayout();
             this.groupBox14.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -304,14 +313,14 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem1.Text = "Save";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(110, 22);
             this.toolStripMenuItem2.Text = "Load";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -321,7 +330,7 @@
             this.darkModeWIPToolStripMenuItem,
             this.heatmapToolStripMenuItem});
             this.configToolStripMenuItem.Name = "configToolStripMenuItem";
-            this.configToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.configToolStripMenuItem.Text = "Config";
             // 
             // darkModeWIPToolStripMenuItem
@@ -402,7 +411,6 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControl1.ItemSize = new System.Drawing.Size(74, 20);
             this.tabControl1.lastTabFunction = false;
             this.tabControl1.Location = new System.Drawing.Point(0, 28);
@@ -460,9 +468,9 @@
             this.doubleCamSpeedBox.AutoSize = true;
             this.doubleCamSpeedBox.Location = new System.Drawing.Point(7, 19);
             this.doubleCamSpeedBox.Name = "doubleCamSpeedBox";
-            this.doubleCamSpeedBox.Size = new System.Drawing.Size(140, 17);
+            this.doubleCamSpeedBox.Size = new System.Drawing.Size(169, 17);
             this.doubleCamSpeedBox.TabIndex = 0;
-            this.doubleCamSpeedBox.Text = "Double Cam Speed (2T)";
+            this.doubleCamSpeedBox.Text = "Camshaft Speed X2 (2-Stroke)";
             this.doubleCamSpeedBox.UseVisualStyleBackColor = true;
             this.doubleCamSpeedBox.CheckedChanged += new System.EventHandler(this.doubleCamSpeedBox_CheckedChanged);
             // 
@@ -938,7 +946,6 @@
             this.tabControl2.BorderColor = System.Drawing.SystemColors.ControlDark;
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Controls.Add(this.tabPage10);
-            this.tabControl2.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControl2.ItemSize = new System.Drawing.Size(60, 20);
             this.tabControl2.lastTabFunction = true;
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
@@ -1387,6 +1394,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.groupBox17);
             this.tabPage4.Controls.Add(this.groupBox15);
             this.tabPage4.Controls.Add(this.groupBox14);
             this.tabPage4.Controls.Add(this.ignitionModuleMaster);
@@ -1400,6 +1408,87 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Modules";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox17
+            // 
+            this.groupBox17.Controls.Add(this.label39);
+            this.groupBox17.Controls.Add(this.dfcoEnterDelay);
+            this.groupBox17.Controls.Add(this.label38);
+            this.groupBox17.Controls.Add(this.dfcoSpark);
+            this.groupBox17.Controls.Add(this.label37);
+            this.groupBox17.Controls.Add(this.dfcoMinThreshold);
+            this.groupBox17.Controls.Add(this.dfcoEnabled);
+            this.groupBox17.Location = new System.Drawing.Point(207, 478);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Size = new System.Drawing.Size(239, 101);
+            this.groupBox17.TabIndex = 6;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "DFCO";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(125, 59);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(84, 13);
+            this.label39.TabIndex = 13;
+            this.label39.Text = "Enter Delay (ms)";
+            // 
+            // dfcoEnterDelay
+            // 
+            this.dfcoEnterDelay.Location = new System.Drawing.Point(128, 75);
+            this.dfcoEnterDelay.Name = "dfcoEnterDelay";
+            this.dfcoEnterDelay.Size = new System.Drawing.Size(100, 20);
+            this.dfcoEnterDelay.TabIndex = 12;
+            this.dfcoEnterDelay.Text = "50";
+            this.dfcoEnterDelay.TextChanged += new System.EventHandler(this.dfcoEnterDelay_TextChanged);
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(9, 59);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(62, 13);
+            this.label38.TabIndex = 11;
+            this.label38.Text = "Spark (deg)";
+            // 
+            // dfcoSpark
+            // 
+            this.dfcoSpark.Location = new System.Drawing.Point(12, 75);
+            this.dfcoSpark.Name = "dfcoSpark";
+            this.dfcoSpark.Size = new System.Drawing.Size(100, 20);
+            this.dfcoSpark.TabIndex = 10;
+            this.dfcoSpark.Text = "8";
+            this.dfcoSpark.TextChanged += new System.EventHandler(this.dfcoSpark_TextChanged);
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(9, 20);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(51, 13);
+            this.label37.TabIndex = 9;
+            this.label37.Text = "Exit RPM";
+            // 
+            // dfcoMinThreshold
+            // 
+            this.dfcoMinThreshold.Location = new System.Drawing.Point(12, 36);
+            this.dfcoMinThreshold.Name = "dfcoMinThreshold";
+            this.dfcoMinThreshold.Size = new System.Drawing.Size(100, 20);
+            this.dfcoMinThreshold.TabIndex = 8;
+            this.dfcoMinThreshold.Text = "3000";
+            this.dfcoMinThreshold.TextChanged += new System.EventHandler(this.dfcoMinThreshold_TextChanged);
+            // 
+            // dfcoEnabled
+            // 
+            this.dfcoEnabled.AutoSize = true;
+            this.dfcoEnabled.Location = new System.Drawing.Point(128, 36);
+            this.dfcoEnabled.Name = "dfcoEnabled";
+            this.dfcoEnabled.Size = new System.Drawing.Size(65, 17);
+            this.dfcoEnabled.TabIndex = 7;
+            this.dfcoEnabled.Text = "Enabled";
+            this.dfcoEnabled.UseVisualStyleBackColor = true;
+            this.dfcoEnabled.CheckedChanged += new System.EventHandler(this.dfcoEnabled_CheckedChanged);
             // 
             // groupBox15
             // 
@@ -1480,7 +1569,7 @@
             this.groupBox14.Controls.Add(this.label27);
             this.groupBox14.Location = new System.Drawing.Point(8, 356);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(472, 121);
+            this.groupBox14.Size = new System.Drawing.Size(438, 121);
             this.groupBox14.TabIndex = 4;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Idle Control";
@@ -1489,7 +1578,7 @@
             // 
             this.idleHelperTPSMax.Location = new System.Drawing.Point(115, 74);
             this.idleHelperTPSMax.Name = "idleHelperTPSMax";
-            this.idleHelperTPSMax.Size = new System.Drawing.Size(100, 20);
+            this.idleHelperTPSMax.Size = new System.Drawing.Size(86, 20);
             this.idleHelperTPSMax.TabIndex = 9;
             this.idleHelperTPSMax.Text = "1.00";
             this.idleHelperTPSMax.TextChanged += new System.EventHandler(this.idleHelperTPSMax_TextChanged);
@@ -1507,7 +1596,7 @@
             // idleControlEnabled
             // 
             this.idleControlEnabled.AutoSize = true;
-            this.idleControlEnabled.Location = new System.Drawing.Point(150, 35);
+            this.idleControlEnabled.Location = new System.Drawing.Point(136, 38);
             this.idleControlEnabled.Name = "idleControlEnabled";
             this.idleControlEnabled.Size = new System.Drawing.Size(65, 17);
             this.idleControlEnabled.TabIndex = 5;
@@ -1526,7 +1615,7 @@
             this.groupBox7.Controls.Add(this.midiLowRPM);
             this.groupBox7.Controls.Add(this.label33);
             this.groupBox7.Controls.Add(this.label15);
-            this.groupBox7.Location = new System.Drawing.Point(232, 12);
+            this.groupBox7.Location = new System.Drawing.Point(207, 15);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(225, 100);
             this.groupBox7.TabIndex = 6;
@@ -1784,7 +1873,6 @@
             this.twoStepTabControl.Controls.Add(this.tabPage7);
             this.twoStepTabControl.Controls.Add(this.tabPage8);
             this.twoStepTabControl.Controls.Add(this.tabPage9);
-            this.twoStepTabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.twoStepTabControl.ItemSize = new System.Drawing.Size(94, 20);
             this.twoStepTabControl.lastTabFunction = false;
             this.twoStepTabControl.Location = new System.Drawing.Point(6, 19);
@@ -1910,7 +1998,7 @@
             this.twoStepIgnitionRetardBox.Name = "twoStepIgnitionRetardBox";
             this.twoStepIgnitionRetardBox.Size = new System.Drawing.Size(100, 20);
             this.twoStepIgnitionRetardBox.TabIndex = 2;
-            this.twoStepIgnitionRetardBox.Text = "200";
+            this.twoStepIgnitionRetardBox.Text = "-80";
             this.twoStepIgnitionRetardBox.TextChanged += new System.EventHandler(this.twoStepIgnitionRetardBox_TextChanged);
             this.twoStepIgnitionRetardBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.quickShiftTimeBox_KeyPress);
             // 
@@ -2367,7 +2455,7 @@
             this.quickShiftRetardDegBox.Name = "quickShiftRetardDegBox";
             this.quickShiftRetardDegBox.Size = new System.Drawing.Size(94, 20);
             this.quickShiftRetardDegBox.TabIndex = 6;
-            this.quickShiftRetardDegBox.Text = "200";
+            this.quickShiftRetardDegBox.Text = "-80";
             this.quickShiftRetardDegBox.TextChanged += new System.EventHandler(this.quickShiftRetardDegBox_TextChanged);
             this.quickShiftRetardDegBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.quickShiftTimeBox_KeyPress);
             // 
@@ -2508,6 +2596,8 @@
             this.panel6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dynoChart)).EndInit();
             this.tabPage4.ResumeLayout(false);
+            this.groupBox17.ResumeLayout(false);
+            this.groupBox17.PerformLayout();
             this.groupBox15.ResumeLayout(false);
             this.groupBox15.PerformLayout();
             this.groupBox14.ResumeLayout(false);
@@ -2745,6 +2835,14 @@
         private System.Windows.Forms.Button btnAdjustSelection;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox doubleCamSpeedBox;
+        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.CheckBox dfcoEnabled;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.TextBox dfcoMinThreshold;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.TextBox dfcoEnterDelay;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.TextBox dfcoSpark;
     }
 }
 

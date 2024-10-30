@@ -32,6 +32,8 @@ public:
 	bool cutFuel;
 	bool fullAttached;
 	bool debugShow;
+	bool dfco;
+	double dfcoTimer;
 };
 
 #endif

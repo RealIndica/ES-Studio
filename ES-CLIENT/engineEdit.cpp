@@ -42,4 +42,8 @@ EngineEdit::EngineEdit() {
 	targetAfr = 0;
 	loadCalibrationMode = false;
 	doubleCamSpeed = false;
+	dfcoEnabled = false;
+	dfcoExitRPM = 0;
+	dfcoSpark = 0;
+	dfcoEnterDelay = 0;
 }

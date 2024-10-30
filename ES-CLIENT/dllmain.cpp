@@ -97,6 +97,10 @@ void HandleUpdate(const char* input) {
     engineEdit->targetAfr = data["targetAfr"];
     engineEdit->loadCalibrationMode = data["loadCalibrationMode"];
     engineEdit->doubleCamSpeed = data["doubleCamSpeed"];
+    engineEdit->dfcoEnabled = data["dfcoEnabled"];
+    engineEdit->dfcoExitRPM = data["dfcoExitRPM"];
+    engineEdit->dfcoSpark = data["dfcoSpark"];
+    engineEdit->dfcoEnterDelay = data["dfcoEnterDelay"];
 }
 
 void PipeReader() {

@@ -62,6 +62,35 @@ void AutoBlipLogic(double dt) {
 	}
 }
 
+void DfcoLogic(double dt, double rpm) {
+	if (engineEdit->dfcoEnabled) {
+		if (_g->cleanTps == 0 && rpm > units::rpm(engineEdit->dfcoExitRPM)) {
+			if (_g->dfcoTimer <= 0) {
+				_g->dfcoTimer = engineEdit->dfcoEnterDelay / 1000;
+			}
+			else {
+				_g->dfcoTimer -= dt;
+			}
+
+			if (_g->dfcoTimer <= 0) {
+				_g->dfco = true;
+				_g->cutFuel = true;
+				_g->dfcoTimer = 0;
+			}
+		}
+		else {
+			_g->dfco = false;
+			_g->cutFuel = false;
+			_g->dfcoTimer = 0;
+		}
+	}
+	else {
+		_g->dfco = false;
+		_g->dfcoTimer = 0;
+	}
+}
+
+
 __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 	const double cycleAngle = simFunctions->m_getCycleAngle(m_crankShaft, 0.0);
 	bool m_enabled = *(bool*)(instance + 0x50);
@@ -69,13 +98,14 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 
 	QuickShiftLogic(dt);
 	AutoBlipLogic(dt);
+	DfcoLogic(dt, std::fabs(crank_v_theta));
 
 	if (_g->quickShift && engineEdit->quickShiftMode == 0) {
 		return m_crankShaft;
 	}
 
 	bool overrideSparkCut = false;
-	if (engineEdit->twoStepEnabled && engineEdit->twoStepLimiterMode == 4) // Don't bother cutting spark, we're cutting fuel instead.
+	if (engineEdit->twoStepEnabled && engineEdit->twoStepLimiterMode == 4 && !_g->dfco) // Don't bother cutting spark, we're cutting fuel instead.
 	{
 		overrideSparkCut = true;
 		if (m_enabled && m_revLimitTimer == 0 && m_twoStepRevLimitTimer == 0 && m_speedLimiterTimer == 0 && m_hiLoNextRPM == 0) {
@@ -83,6 +113,11 @@ __int64 CustomIgnitionModule::ignitionProcess(__int64 instance, double dt) {
 		}
 		else {
 			_g->cutFuel = true;
+		}
+	}
+	else {
+		if (!_g->dfco) {
+			_g->cutFuel = false;
 		}
 	}
 

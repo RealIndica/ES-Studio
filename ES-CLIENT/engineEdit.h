@@ -46,6 +46,10 @@ public:
 	double targetAfr;
 	bool loadCalibrationMode;
 	bool doubleCamSpeed;
+	bool dfcoEnabled;
+	double dfcoExitRPM;
+	double dfcoSpark;
+	double dfcoEnterDelay;
 };
 
 #endif

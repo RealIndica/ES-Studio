@@ -271,6 +271,11 @@ double __fastcall sampleTriangleHk(__int64 a1, double a2) {
             double sample = simFunctions->m_sampleTriangle(a1, a2);
             double Offset = 0;
 
+            if (_g->dfco) {
+                engineUpdate->sparkAdvance = engineEdit->dfcoSpark;
+                return engineEdit->dfcoSpark * units::deg;
+            }
+
             if (_g->quickShift && engineEdit->quickShiftMode == 1) {
                 Offset = engineEdit->quickShiftRetardDeg;
             }
@@ -401,25 +406,34 @@ __int64 __fastcall afrClusterRenderHk(__int64 a1) {
     return simFunctions->m_afrClusterRender(a1);
 }
 
-double __fastcall getCamAngleHk(void* instance, int a1, __int64 a2, double a3) {
-    if (engineEdit->doubleCamSpeed && _g->fullAttached) { //Compiler optimization is a bitch. I pray I will never have to touch this ever again.
-        __int64 address = *(QWORD*)((char*)instance + 0x50);
-        double v5 = *(double*)(address + 0x28) - *(double*)(address + 0x60);
-
-        double v4 = *(double*)(*(QWORD*)((char*)instance + 0x60) + 8 * a1);
-
-        double angle = fmod((v5 - *(double*)((char*)instance + 0x68)) * camSpeed, 2 * constants::pi);
-        double angle0 = angle < 0.0 ? angle + 2 * constants::pi : angle;
-        double v8 = fmod(0.0 - (angle0 + v4), 2 * constants::pi);
-
-        v8 = v8 < 0.0 ? v8 + (2 * constants::pi) : v8;
-        v8 = v8 >= constants::pi ? v8 - (2 * constants::pi) : v8;
-
-        return simFunctions->m_sampleTriangle(*(QWORD*)((char*)instance + 0x58), v8);
+double __fastcall getCamAngleHk(void* instance, int index, __int64 a2, double theta) {
+    if (!engineEdit->doubleCamSpeed || !_g->fullAttached) {
+        return simFunctions->m_getCamAngle(instance, index, a2, theta);
     }
 
-    return simFunctions->m_getCamAngle(instance, a1, a2, a3);
+    __int64 baseAddress = *(QWORD*)((char*)instance + 0x50);
+    double camAngleDelta = *(double*)(baseAddress + 0x28) - *(double*)(baseAddress + 0x60);
+
+    double v4 = *(double*)(*(QWORD*)((char*)instance + 0x60) + 8 * index);
+    double adjustedCamAngle = *(double*)((char*)instance + 0x68);
+
+    double angle = fmod((camAngleDelta - adjustedCamAngle) * camSpeed, 2 * constants::pi);
+    if (angle < 0.0) {
+        angle += 2 * constants::pi;
+    }
+
+    double finalAngle = fmod(0.0 - (angle + v4), 2 * constants::pi);
+    if (finalAngle < 0.0) {
+        finalAngle += 2 * constants::pi;
+    }
+    if (finalAngle >= constants::pi) {
+        finalAngle -= 2 * constants::pi;
+    }
+
+    __int64 sampleBaseAddress = *(QWORD*)((char*)instance + 0x58);
+    return simFunctions->m_sampleTriangle(sampleBaseAddress, finalAngle);
 }
+
 
 double __fastcall getCamAngle2Hk(__int64 a1) {
     if (engineEdit->doubleCamSpeed && _g->fullAttached) {

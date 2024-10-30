@@ -739,6 +739,11 @@ namespace ES_GUI
             manageModules(checkBox3.Checked);
             client.edit.useCustomIgnitionModule = checkBox3.Checked;
             client.edit.idleHelperMaxTps = idleHelperTPSMax.Text.ToDouble();
+
+            client.edit.dfcoEnabled = dfcoEnabled.Checked;
+            client.edit.dfcoEnterDelay = dfcoEnterDelay.Text.ToDouble();
+            client.edit.dfcoExitRPM = dfcoMinThreshold.Text.ToDouble();
+            client.edit.dfcoSpark = dfcoSpark.Text.ToDouble();
         }
 
         private void rev1Box_TextChanged(object sender, EventArgs e)
@@ -1239,7 +1244,7 @@ namespace ES_GUI
 
         private void button7_Click(object sender, EventArgs e)
         {
-            DialogResult doCalibrate = MessageBox.Show("Ensure that the engine has ran for at least 5 seconds before starting this process.\r\n\r\nMake sure engine is off.\r\nReady to calibrate?", "Load calibration", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult doCalibrate = MessageBox.Show("Ensure that the engine has ran for at least 5 seconds before starting this process.\r\nCalibration DOES NOT save.\r\n\r\nMake sure engine is off.\r\nReady to calibrate?", "Load calibration", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (doCalibrate == DialogResult.Yes)
             {
@@ -1401,6 +1406,26 @@ namespace ES_GUI
         private void doubleCamSpeedBox_CheckedChanged(object sender, EventArgs e)
         {
             client.edit.doubleCamSpeed = doubleCamSpeedBox.Checked;
+        }
+
+        private void dfcoEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            client.edit.dfcoEnabled = dfcoEnabled.Checked;
+        }
+
+        private void dfcoMinThreshold_TextChanged(object sender, EventArgs e)
+        {
+            client.edit.dfcoExitRPM = dfcoMinThreshold.Text.ToDouble();
+        }
+
+        private void dfcoSpark_TextChanged(object sender, EventArgs e)
+        {
+            client.edit.dfcoSpark = dfcoSpark.Text.ToDouble();
+        }
+
+        private void dfcoEnterDelay_TextChanged(object sender, EventArgs e)
+        {
+            client.edit.dfcoEnterDelay = dfcoEnterDelay.Text.ToDouble();
         }
     }
 }
